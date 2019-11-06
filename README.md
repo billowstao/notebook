@@ -1,3 +1,3 @@
 # 前端知识库
 
-## [JavaScript](./javascript/catalogue.md)
+## [JavaScript](./javascript/javascript-catalogue.md)
