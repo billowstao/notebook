@@ -125,7 +125,7 @@ console.log(printAnimalDetails({ type: dog, gender: female })); // 'No animal na
 console.log(printAnimalDetails({ type: dog, name: 'Lucy', gender: 'female' })); // 'Lucy is a female dog'
 ```
 
-在重构版本中，还包括*析构*和*默认参数*。*默认参数*确保如果我们将 `undefined` 作为参数传递给方法，我们仍然有一个要析构的值，这里是一个空对象 `{}`。
+在重构版本中，还包括*解构*和*默认参数*。*默认参数*确保如果我们将 `undefined` 作为参数传递给方法，我们仍然有一个要解构的值，这里是一个空对象 `{}`。
 
 通常，代码是在这两种方法之间编写的。
 
