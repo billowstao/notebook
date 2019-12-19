@@ -8,6 +8,7 @@
     - [this](#this)
     - [构造函数](#%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0)
   - [代码质量](#%e4%bb%a3%e7%a0%81%e8%b4%a8%e9%87%8f)
+    - [注释](#%e6%b3%a8%e9%87%8a)
     - [忍者代码](#%e5%bf%8d%e8%80%85%e4%bb%a3%e7%a0%81)
 
 ## 异常处理
@@ -23,5 +24,7 @@
 ### [构造函数](./content/constructor.md)
 
 ## 代码质量
+
+### [注释](./content/comments.md)
 
 ### [忍者代码](./content/ninja-code.md)

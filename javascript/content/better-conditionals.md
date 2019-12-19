@@ -1,12 +1,12 @@
 # 编写良好的条件表达式
 
 - [编写良好的条件表达式](#%e7%bc%96%e5%86%99%e8%89%af%e5%a5%bd%e7%9a%84%e6%9d%a1%e4%bb%b6%e8%a1%a8%e8%be%be%e5%bc%8f)
-  - [`Array.includes`](#arrayincludes)
+  - [Array.includes](#arrayincludes)
   - [提前退出 / 提前返回](#%e6%8f%90%e5%89%8d%e9%80%80%e5%87%ba--%e6%8f%90%e5%89%8d%e8%bf%94%e5%9b%9e)
-  - [使用字面值 Object 或 Map 而不是 `Switch` 语句](#%e4%bd%bf%e7%94%a8%e5%ad%97%e9%9d%a2%e5%80%bc-object-%e6%88%96-map-%e8%80%8c%e4%b8%8d%e6%98%af-switch-%e8%af%ad%e5%8f%a5)
+  - [使用字面值 Object 或 Map 而不是 Switch 语句](#%e4%bd%bf%e7%94%a8%e5%ad%97%e9%9d%a2%e5%80%bc-object-%e6%88%96-map-%e8%80%8c%e4%b8%8d%e6%98%af-switch-%e8%af%ad%e5%8f%a5)
   - [默认参数与解构](#%e9%bb%98%e8%ae%a4%e5%8f%82%e6%95%b0%e4%b8%8e%e8%a7%a3%e6%9e%84)
-  - [使用 `Array.every` & `Array.some` 匹配所有/部分条件](#%e4%bd%bf%e7%94%a8-arrayevery--arraysome-%e5%8c%b9%e9%85%8d%e6%89%80%e6%9c%89%e9%83%a8%e5%88%86%e6%9d%a1%e4%bb%b6)
-  - [使用可选链和 `Nullish` 合并](#%e4%bd%bf%e7%94%a8%e5%8f%af%e9%80%89%e9%93%be%e5%92%8c-nullish-%e5%90%88%e5%b9%b6)
+  - [使用 Array.every &amp; Array.some 匹配所有/部分条件](#%e4%bd%bf%e7%94%a8-arrayevery-amp-arraysome-%e5%8c%b9%e9%85%8d%e6%89%80%e6%9c%89%e9%83%a8%e5%88%86%e6%9d%a1%e4%bb%b6)
+  - [使用可选链和 Nullish 合并](#%e4%bd%bf%e7%94%a8%e5%8f%af%e9%80%89%e9%93%be%e5%92%8c-nullish-%e5%90%88%e5%b9%b6)
   - [参考](#%e5%8f%82%e8%80%83)
 
 ## `Array.includes`

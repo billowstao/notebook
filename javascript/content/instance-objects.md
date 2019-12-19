@@ -1,5 +1,14 @@
 # 实例对象与 `new` 命令
 
+- [实例对象与 new 命令](#%e5%ae%9e%e4%be%8b%e5%af%b9%e8%b1%a1%e4%b8%8e-new-%e5%91%bd%e4%bb%a4)
+  - [对象是什么](#%e5%af%b9%e8%b1%a1%e6%98%af%e4%bb%80%e4%b9%88)
+  - [构造函数](#%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0)
+  - [new 命令](#new-%e5%91%bd%e4%bb%a4)
+    - [基本用法](#%e5%9f%ba%e6%9c%ac%e7%94%a8%e6%b3%95)
+    - [new 命令的原理](#new-%e5%91%bd%e4%bb%a4%e7%9a%84%e5%8e%9f%e7%90%86)
+    - [new.target](#newtarget)
+  - [Object.create() 创建实例对象](#objectcreate-%e5%88%9b%e5%bb%ba%e5%ae%9e%e4%be%8b%e5%af%b9%e8%b1%a1)
+
 JavaScript 语言具有很强的面向对象编程能力，本章介绍 JavaScript 面向对象编程的基础知识。
 
 ## 对象是什么
