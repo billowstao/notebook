@@ -11,8 +11,6 @@
 
 我们通常通过注释来描述代码怎样工作和为什么这样工作。
 
-乍一看，写注释可能很简单，但初学者在编程的时候，经常错误地使用注释。
-
 ## 糟糕的注释
 
 新手倾向于使用注释来解释“代码中发生了什么”。就像这样：
@@ -35,16 +33,11 @@ code;
 
 ```js
 function showPrimes(n) {
-  nextPrime:
-  for (let i = 2; i < n; i++) {
-
-*!*
+  nextPrime: for (let i = 2; i < n; i++) {
     // 检测 i 是否是一个质数（素数）
     for (let j = 2; j < i; j++) {
       if (i % j == 0) continue nextPrime;
     }
-*/!*
-
     alert(i);
   }
 }
@@ -54,9 +47,8 @@ function showPrimes(n) {
 
 ```js
 function showPrimes(n) {
-
   for (let i = 2; i < n; i++) {
-    *!*if (!isPrime(i)) continue;*/!*
+    if (!isPrime(i)) continue;
 
     alert(i);
   }
@@ -79,14 +71,14 @@ function isPrime(n) {
 
 ```js
 // 在这里我们添加威士忌（译注：国外的一种酒）
-for(let i = 0; i < 10; i++) {
+for (let i = 0; i < 10; i++) {
   let drop = getWhiskey();
   smell(drop);
   add(drop, glass);
 }
 
 // 在这里我们添加果汁
-for(let t = 0; t < 3; t++) {
+for (let t = 0; t < 3; t++) {
   let tomato = getTomato();
   examine(tomato);
   let juice = press(tomato);
@@ -98,19 +90,19 @@ for(let t = 0; t < 3; t++) {
 
 我们像下面这样，将上面的代码重构为函数，可能会是一个更好的变体：
 
-```js
+```javascript
 addWhiskey(glass);
 addJuice(glass);
 
 function addWhiskey(container) {
-  for(let i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i++) {
     let drop = getWhiskey();
     //...
   }
 }
 
 function addJuice(container) {
-  for(let t = 0; t < 3; t++) {
+  for (let t = 0; t < 3; t++) {
     let tomato = getTomato();
     //...
   }
@@ -131,25 +123,22 @@ function addJuice(container) {
 记录函数的参数和用法
 : 有一个专门用于记录函数的语法 [JSDoc](http://en.wikipedia.org/wiki/JSDoc)：用法、参数和返回值。
 
-    例如：
-    ```js
-    /**
-     * 返回 x 的 n 次幂的值。
-     *
-     * @param {number} x 要改变的值。
-     * @param {number} n 幂数，必须是一个自然数。
-     * @return {number} x 的 n 次幂的值。
-     */
-    function pow(x, n) {
-      ...
-    }
-    ```
+  例如：
+
+  ```js
+  /**
+   * 返回 x 的 n 次幂的值。
+   *
+   * @param {number} x 要改变的值。
+   * @param {number} n 幂数，必须是一个自然数。
+   * @return {number} x 的 n 次幂的值。
+   */
+  function pow(x, n) {
+    // ...
+  }
+  ```
 
     这种注释可以帮助我们理解函数的目的，并且不需要研究其内部的实现代码，就可以直接正确地使用它。
-
-    顺便说一句，很多诸如 [WebStorm](https://www.jetbrains.com/webstorm/) 这样的编辑器，都可以很好地理解和使用这些注释，来提供自动补全和一些自动化代码检查工作。
-
-    当然，也有一些像 [JSDoc 3](https://github.com/jsdoc3/jsdoc) 这样的工具，可以通过注释直接生成 HTML 文档。你可以在 <http://usejsdoc.org/> 阅读更多关于 JSDoc 的信息。
 
 为什么任务以这种方式解决？
 : 写了什么代码很重要。但是为什么 **不** 那样写可能对于理解正在发生什么更重要。为什么任务是通过这种方式解决的？代码并没有给出答案。
@@ -183,4 +172,4 @@ function addJuice(container) {
 - 描述“代码如何工作”和“代码做了什么”。
 - 避免在代码已经足够简单或代码有很好的自描述性而不需要注释的情况下，还写些没必要的注释。
 
-注释也被用于一些如 JSDoc3 等文档自动生成工具：他们读取注释然后生成 HTML 文档（或者其他格式的文档）。
+注释也被用于一些如 [JSDoc 3](https://github.com/jsdoc3/jsdoc) 等文档自动生成工具：他们读取注释然后生成 HTML 文档（或者其他格式的文档）。

@@ -21,7 +21,7 @@
 
 ### [`this`](./content/this.md)
 
-### [构造函数](./content/constructor.md)
+### [构造函数](./content/instance-objects.md)
 
 ## 代码质量
 
