@@ -7,6 +7,8 @@
   - [面向对象编程](#%e9%9d%a2%e5%90%91%e5%af%b9%e8%b1%a1%e7%bc%96%e7%a8%8b)
     - [this](#this)
     - [构造函数](#%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0)
+  - [代码质量](#%e4%bb%a3%e7%a0%81%e8%b4%a8%e9%87%8f)
+    - [忍者代码](#%e5%bf%8d%e8%80%85%e4%bb%a3%e7%a0%81)
 
 ## 异常处理
 
@@ -19,3 +21,7 @@
 ### [`this`](./content/this.md)
 
 ### [构造函数](./content/constructor.md)
+
+## 代码质量
+
+### [忍者代码](./content/ninja-code.md)
