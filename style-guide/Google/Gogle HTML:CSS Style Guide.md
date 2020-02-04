@@ -102,10 +102,6 @@ color: #e5e5e5;
 
 （有关编码以及何时以及如何指定编码的更多信息，请参见 [处理HTML和CSS中的字符编码](https://www.w3.org/International/tutorials/tutorial-char-enc/)）
 
-Specify the encoding in HTML templates and documents via <meta charset="utf-8">. Do not specify the encoding of style sheets as these assume UTF-8.
-
-(More on encodings and when and how to specify them can be found in Handling character encodings in HTML and CSS.)
-
 ### 尽可能解释代码
 
 尽可能解释代码。
@@ -219,7 +215,8 @@ HTML5（HTML语法）是首选的所有HTML文档：<!DOCTYPE html>。
 
 出于维护原因，将结构与表示与行为分开很重要。更改HTML文档和模板总是比更新样式表和脚本代价高。
 
-<!-- Not recommended -->
+```html
+<!-- 不推荐 -->
 <!DOCTYPE html>
 <title>HTML sucks</title>
 <link rel="stylesheet" href="base.css" media="screen">
@@ -230,7 +227,8 @@ HTML5（HTML语法）是首选的所有HTML文档：<!DOCTYPE html>。
   <u>HTML is stupid!!1</u>
 <center>I can’t believe there’s no way to control the styling of
   my website without doing everything all over again!</center>
-<!-- Recommended -->
+
+<!-- 推荐 -->
 <!DOCTYPE html>
 <title>My first CSS-only redesign</title>
 <link rel="stylesheet" href="default.css">
@@ -239,25 +237,34 @@ HTML5（HTML语法）是首选的所有HTML文档：<!DOCTYPE html>。
   doing it: separating concerns and avoiding anything in the HTML of
   my website that is presentational.
 <p>It’s awesome!
-3.1.6 Entity References
-Do not use entity references.
+```
 
-There is no need to use entity references like &mdash;, &rdquo;, or &#x263a;, assuming the same encoding (UTF-8) is used for files and editors as well as among teams.
+#### 实体引用
 
-The only exceptions apply to characters with special meaning in HTML (like < and &) as well as control or “invisible” characters (like no-break spaces).
+不要使用实体引用。
 
-<!-- Not recommended -->
+假设文件，编辑器以及团队之间使用相同的编码（UTF-8），则无需使用诸如 `&mdash;` ，`&rdquo;` 或的 实体引用 `&#x263a;`。
+
+唯一的例外适用于HTML中具有特殊含义的字符（如`<` 和`&`）以及控制或“不可见”字符（如不间断空格）。
+
+```html
+<!-- 不推荐 -->
 The currency symbol for the Euro is &ldquo;&eur;&rdquo;.
-<!-- Recommended -->
+
+<!-- 推荐 -->
 The currency symbol for the Euro is “€”.
-3.1.7 Optional Tags
-Omit optional tags (optional).
+```
 
-For file size optimization and scannability purposes, consider omitting optional tags. The HTML5 specification defines what tags can be omitted.
+#### 可选标签
 
-(This approach may require a grace period to be established as a wider guideline as it’s significantly different from what web developers are typically taught. For consistency and simplicity reasons it’s best served omitting all optional tags, not just a selection.)
+省略可选标签（可选）。
 
-<!-- Not recommended -->
+出于文件大小优化和可扫描性的目的，请考虑省略可选标签。在HTML5规范定义标签可以被省略什么。
+
+（此方法可能需要将宽限期确定为更广泛的准则，因为它与Web开发人员通常所教的内容明显不同。出于一致性和简单性的考虑，最好省略所有可选标签，而不仅仅是选择。）
+
+```html
+<!-- 不推荐 -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -267,37 +274,50 @@ For file size optimization and scannability purposes, consider omitting optional
     <p>Sic.</p>
   </body>
 </html>
-<!-- Recommended -->
+
+<!-- 推荐 -->
 <!DOCTYPE html>
 <title>Saving money, saving bytes</title>
 <p>Qed.
-3.1.8 type Attributes
-Omit type attributes for style sheets and scripts.
+```
 
-Do not use type attributes for style sheets (unless not using CSS) and scripts (unless not using JavaScript).
+#### type 属性
 
-Specifying type attributes in these contexts is not necessary as HTML5 implies text/css and text/javascript as defaults. This can be safely done even for older browsers.
+省略样式表和脚本的`type`属性。
 
-<!-- Not recommended -->
+不要将`type`属性用于样式表（除非不使用CSS）和脚本（除非不使用JavaScript）。
+
+指定`type`为HTML5意味着在这些背景属性是没有必要的`text/css`，并`text/javascript`为默认值。即使对于较旧的浏览器，也可以安全地完成此操作。
+
+```html
+<!-- 不推荐 -->
 <link rel="stylesheet" href="https://www.google.com/css/maia.css"
     type="text/css">
-<!-- Recommended -->
+
+<!-- 推荐 -->
 <link rel="stylesheet" href="https://www.google.com/css/maia.css">
-<!-- Not recommended -->
+
+<!-- 不推荐 -->
 <script src="https://www.google.com/js/gweb/analytics/autotrack.js"
     type="text/javascript"></script>
-<!-- Recommended -->
+
+<!-- 推荐 -->
 <script src="https://www.google.com/js/gweb/analytics/autotrack.js"></script>
-3.2 HTML Formatting Rules
-3.2.1 General Formatting
-Use a new line for every block, list, or table element, and indent every such child element.
+```
 
-Independent of the styling of an element (as CSS allows elements to assume a different role per display property), put every block, list, or table element on a new line.
+### HTML 格式
 
-Also, indent them if they are child elements of a block, list, or table element.
+#### 通用格式
 
-(If you run into issues around whitespace between list items it’s acceptable to put all li elements in one line. A linter is encouraged to throw a warning instead of an error.)
+对每个块，列表或表元素使用换行符，并对每个此类子元素缩进。
 
+与元素的样式无关（因为CSS允许每个显示属性承担不同的角色），将每个块，列表或表元素放在新行上。
+
+此外，如果它们是块，列表或表元素的子元素，则缩进它们。
+
+（如果遇到列表项之间的空格周围的问题，可以将所有li元素放在一行中是可以接受的。通常代码检查器鼓励发出警告而不是错误。）
+
+```html
 <blockquote>
   <p><em>Space</em>, the final frontier.</p>
 </blockquote>
@@ -316,36 +336,49 @@ Also, indent them if they are child elements of a block, list, or table element.
       <td>$ 5.00
       <td>$ 4.50
 </table>
-3.2.2 HTML Line-Wrapping
-Break long lines (optional).
+```
 
-While there is no column limit recommendation for HTML, you may consider wrapping long lines if it significantly improves readability.
+#### HTML 换行
 
-When line-wrapping, each continuation line should be indented at least 4 additional spaces from the original line.
+中断长行（可选）。
 
+尽管没有针对HTML的列限制建议，但是如果可以大大提高可读性，则可以考虑使用长行换行。
+
+换行时，每条连续行应与原始行至少缩进4个空格。
+
+```html
 <md-progress-circular md-mode="indeterminate" class="md-accent"
     ng-show="ctrl.loading" md-diameter="35">
 </md-progress-circular>
+
 <md-progress-circular
     md-mode="indeterminate"
     class="md-accent"
     ng-show="ctrl.loading"
     md-diameter="35">
 </md-progress-circular>
+
 <md-progress-circular md-mode="indeterminate"
                       class="md-accent"
                       ng-show="ctrl.loading"
                       md-diameter="35">
 </md-progress-circular>
-3.2.3 HTML Quotation Marks
-When quoting attributes values, use double quotation marks.
+```
 
-Use double ("") rather than single quotation marks ('') around attribute values.
+#### HTML 引号
 
-<!-- Not recommended -->
+引用属性值时，请使用双引号。
+
+在属性值周围使用双引号（`""`）而不是单引号（`''`）。
+
+```html
+<!-- 不推荐 -->
 <a class='maia-button maia-button-secondary'>Sign in</a>
-<!-- Recommended -->
+
+<!-- 推荐 -->
 <a class="maia-button maia-button-secondary">Sign in</a>
+```
+
 4 CSS
 4.1 CSS Style Rules
 4.1.1 CSS Validity
