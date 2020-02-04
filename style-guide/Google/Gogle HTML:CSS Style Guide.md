@@ -1,8 +1,62 @@
 # Google HTML / CSS 规约指南
 
+- [Google HTML / CSS 规约指南](#google-html--css-%e8%a7%84%e7%ba%a6%e6%8c%87%e5%8d%97)
+  - [背景](#%e8%83%8c%e6%99%af)
+  - [一般](#%e4%b8%80%e8%88%ac)
+    - [一般样式规则](#%e4%b8%80%e8%88%ac%e6%a0%b7%e5%bc%8f%e8%a7%84%e5%88%99)
+      - [协议](#%e5%8d%8f%e8%ae%ae)
+    - [通用格式规则](#%e9%80%9a%e7%94%a8%e6%a0%bc%e5%bc%8f%e8%a7%84%e5%88%99)
+      - [缩进](#%e7%bc%a9%e8%bf%9b)
+      - [大小写](#%e5%a4%a7%e5%b0%8f%e5%86%99)
+      - [行尾随空格](#%e8%a1%8c%e5%b0%be%e9%9a%8f%e7%a9%ba%e6%a0%bc)
+    - [一般元原则](#%e4%b8%80%e8%88%ac%e5%85%83%e5%8e%9f%e5%88%99)
+      - [编码](#%e7%bc%96%e7%a0%81)
+      - [注释](#%e6%b3%a8%e9%87%8a)
+      - [行为项](#%e8%a1%8c%e4%b8%ba%e9%a1%b9)
+  - [HTML](#html)
+    - [HTML 规约](#html-%e8%a7%84%e7%ba%a6)
+      - [文档类型](#%e6%96%87%e6%a1%a3%e7%b1%bb%e5%9e%8b)
+      - [HTML 有效性](#html-%e6%9c%89%e6%95%88%e6%80%a7)
+      - [语义化](#%e8%af%ad%e4%b9%89%e5%8c%96)
+      - [多媒体后备](#%e5%a4%9a%e5%aa%92%e4%bd%93%e5%90%8e%e5%a4%87)
+      - [关注点分离](#%e5%85%b3%e6%b3%a8%e7%82%b9%e5%88%86%e7%a6%bb)
+      - [实体引用](#%e5%ae%9e%e4%bd%93%e5%bc%95%e7%94%a8)
+      - [可选标签](#%e5%8f%af%e9%80%89%e6%a0%87%e7%ad%be)
+      - [type 属性](#type-%e5%b1%9e%e6%80%a7)
+    - [HTML 格式](#html-%e6%a0%bc%e5%bc%8f)
+      - [通用格式](#%e9%80%9a%e7%94%a8%e6%a0%bc%e5%bc%8f)
+      - [HTML 换行](#html-%e6%8d%a2%e8%a1%8c)
+      - [HTML 引号](#html-%e5%bc%95%e5%8f%b7)
+  - [CSS](#css)
+    - [CSS 样式规则](#css-%e6%a0%b7%e5%bc%8f%e8%a7%84%e5%88%99)
+      - [CSS 有效性](#css-%e6%9c%89%e6%95%88%e6%80%a7)
+      - [ID 和 class 命名](#id-%e5%92%8c-class-%e5%91%bd%e5%90%8d)
+      - [ID 和 class 命名规则](#id-%e5%92%8c-class-%e5%91%bd%e5%90%8d%e8%a7%84%e5%88%99)
+      - [类型选择器](#%e7%b1%bb%e5%9e%8b%e9%80%89%e6%8b%a9%e5%99%a8)
+      - [属性缩写](#%e5%b1%9e%e6%80%a7%e7%bc%a9%e5%86%99)
+      - [0 和单位](#0-%e5%92%8c%e5%8d%95%e4%bd%8d)
+      - [前导 0](#%e5%89%8d%e5%af%bc-0)
+      - [十六进制表示法](#%e5%8d%81%e5%85%ad%e8%bf%9b%e5%88%b6%e8%a1%a8%e7%a4%ba%e6%b3%95)
+      - [前缀](#%e5%89%8d%e7%bc%80)
+      - [ID 和 class 界定符](#id-%e5%92%8c-class-%e7%95%8c%e5%ae%9a%e7%ac%a6)
+      - [Hacks](#hacks)
+    - [CSS 格式化规则](#css-%e6%a0%bc%e5%bc%8f%e5%8c%96%e8%a7%84%e5%88%99)
+      - [声明顺序](#%e5%a3%b0%e6%98%8e%e9%a1%ba%e5%ba%8f)
+      - [块内容缩进](#%e5%9d%97%e5%86%85%e5%ae%b9%e7%bc%a9%e8%bf%9b)
+      - [声明停止](#%e5%a3%b0%e6%98%8e%e5%81%9c%e6%ad%a2)
+      - [属性名停止](#%e5%b1%9e%e6%80%a7%e5%90%8d%e5%81%9c%e6%ad%a2)
+      - [声明块分隔](#%e5%a3%b0%e6%98%8e%e5%9d%97%e5%88%86%e9%9a%94)
+      - [选择器和声明分隔](#%e9%80%89%e6%8b%a9%e5%99%a8%e5%92%8c%e5%a3%b0%e6%98%8e%e5%88%86%e9%9a%94)
+      - [规则分离](#%e8%a7%84%e5%88%99%e5%88%86%e7%a6%bb)
+      - [CSS 引号](#css-%e5%bc%95%e5%8f%b7)
+    - [CSS 元规则](#css-%e5%85%83%e8%a7%84%e5%88%99)
+      - [块注释](#%e5%9d%97%e6%b3%a8%e9%87%8a)
+  - [分词](#%e5%88%86%e8%af%8d)
+  - [原文](#%e5%8e%9f%e6%96%87)
+
 ## 背景
 
-本文档定义了 HTML 和 CSS 的格式和规约规则。它旨在改善协作，代码质量并支持基础架构。它适用于使用 HTML 和CSS 的原始工作文件，包括 GSS 文件。只要可以保持常规代码的质量，工具就可以自由地进行混淆，最小化和编译。
+本文档定义了 HTML 和 CSS 的格式和规约规则。它旨在改善协作，代码质量并支持基础架构。它适用于使用 HTML 和 CSS 的原始工作文件，包括 GSS 文件。只要可以保持常规代码的质量，工具就可以自由地进行混淆，最小化和编译。
 
 ## 一般
 
@@ -18,7 +72,7 @@
 <!-- 不推荐：省略协议 -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
-<!-- 不推荐：使用 `HTTP` -->
+<!-- 不推荐：使用 HTTP -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
 <!-- 推荐 -->
@@ -33,9 +87,9 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans';
 ```
 
-## 通用格式规则
+### 通用格式规则
 
-### 缩颈
+#### 缩进
 
 每次缩进2个空格。
 
@@ -54,7 +108,7 @@
 }
 ```
 
-### 大小写
+#### 大小写
 
 仅使用小写字母。
 
@@ -76,23 +130,23 @@ color: #E5E5E5;
 color: #e5e5e5;
 ```
 
-### 行尾随空格
+#### 行尾随空格
 
 删除尾随空格。
 
 尾部的空格是不必要的，并且会使差异变得复杂。
 
 ```html
-<!-- Not recommended -->
+<!-- 不推荐 -->
 <p>What?_
 
-<!-- Recommended -->
+<!-- 推荐 -->
 <p>Yes please.
 ```
 
-## 一般元原则
+### 一般元原则
 
-### 编码
+#### 编码
 
 使用 UTF-8 (无 BOM).
 
@@ -102,7 +156,7 @@ color: #e5e5e5;
 
 （有关编码以及何时以及如何指定编码的更多信息，请参见 [处理HTML和CSS中的字符编码](https://www.w3.org/International/tutorials/tutorial-char-enc/)）
 
-### 尽可能解释代码
+#### 注释
 
 尽可能解释代码。
 
@@ -110,7 +164,7 @@ color: #e5e5e5;
 
 （此项目是可选的，因为它并不总是要求完全记录代码的现实期望。对于HTML和CSS代码，注释的必要性可能会有很大差异，并取决于项目的复杂性。）
 
-### 行为项
+#### 行为项
 
 用标记待办事项和动作项 `TODO`.
 
@@ -126,7 +180,7 @@ color: #e5e5e5;
 ```
 
 ```html
-<!-- TODO: 移除可选项元素 -->
+<!-- TODO: 移除选项元素 -->
 <ul>
   <li>Apples</li>
   <li>Oranges</li>
@@ -141,11 +195,11 @@ color: #e5e5e5;
 
 使用 HTML5
 
-HTML5（HTML语法）是首选的所有HTML文档：<!DOCTYPE html>。
+HTML5（HTML语法）是首选的所有HTML文档：`<!DOCTYPE html>。`
 
-（建议使用 HTML，例如 text/html。不要使用 XHTML。XHTML application/xhtml+xml 既缺乏浏览器基础结构支持，并且也比 HTML 更少的优化。）
+（建议使用 HTML，例如 `text/html`。不要使用 XHTML。XHTML, `application/xhtml+xml` 既缺乏浏览器基础结构支持，并且也比 HTML 优化的更少。）
 
-尽管 HTML 很好，但不要关闭空元素，例如：写 `<br>`，而不是 `<br/>`。
+尽管编写 HTML 很好，但不要关闭空元素，例如：写 `<br>`，而不是 `<br/>`。
 
 #### HTML 有效性
 
@@ -153,7 +207,7 @@ HTML5（HTML语法）是首选的所有HTML文档：<!DOCTYPE html>。
 
 除非由于文件大小的其他无法达到的性能目标而无法使用，否则请使用有效的HTML代码。
 
-使用 [W3C HTML验证程序之类的工具](https://validator.w3.org/nu/) 进行测试。
+使用 [W3C HTML验证程序](https://validator.w3.org/nu/) 之类的工具进行测试。
 
 使用有效的HTML是可测量的基线质量属性，有助于了解技术要求和约束，并确保正确使用HTML。
 
@@ -189,11 +243,11 @@ HTML5（HTML语法）是首选的所有HTML文档：<!DOCTYPE html>。
 
 提供多媒体的替代内容。
 
-对于通过的图像，视频，canvas 动画，确保提供其他访问权限。对于图像，这意味着使用有意义的替代文本（alt），以及对于视频和音频则是字幕（如果有）。
+对于通过的图像，视频，canvas 动画，确保提供其他访问权限。对于图像，这意味着使用有意义的替代文本（`alt`），以及对于视频和音频则是字幕（如果有）。
 
 出于可访问性的原因，提供替代内容很重要：除了 `@alt` 盲人用户几乎没有线索可以告诉您图像的含义，而其他用户可能无法理解视频或音频内容的含义。
 
-（对于其alt属性会引入冗余的图像，以及仅出于装饰目的而不能立即使用CSS的图像，请不要使用替代文字，如alt=""。）
+（对于其`alt`属性会引入冗余的图像，以及仅出于装饰目的而不能立即使用CSS的图像，请不要使用替代文字，如`alt=""`。）
 
 ```html
 <!-- 不推荐 -->
@@ -209,7 +263,7 @@ HTML5（HTML语法）是首选的所有HTML文档：<!DOCTYPE html>。
 
 严格将结构（标记），表示（样式）和行为（脚本）分开，并尝试将三者之间的相互作用保持在最低限度。
 
-也就是说，确保文档和模板仅包含HTML和仅用于结构目的的HTML。将所有表示形式的内容移入样式表，并将所有行为形式的脚本移入脚本。
+也就是说，确保文档和模板仅包含 HTML 和仅用于结构目的的 HTML。将所有表示形式的内容移入样式表，并将所有行为形式的脚本移入脚本。
 
 另外，通过从文档和模板中链接尽可能少的样式表和脚本，使联系区域尽可能小。
 
@@ -245,7 +299,7 @@ HTML5（HTML语法）是首选的所有HTML文档：<!DOCTYPE html>。
 
 假设文件，编辑器以及团队之间使用相同的编码（UTF-8），则无需使用诸如 `&mdash;` ，`&rdquo;` 或的 实体引用 `&#x263a;`。
 
-唯一的例外适用于HTML中具有特殊含义的字符（如`<` 和`&`）以及控制或“不可见”字符（如不间断空格）。
+唯一的例外适用于 HTML 中具有特殊含义的字符（如`<` 和`&`）以及控制或“不可见”字符（如不间断空格）。
 
 ```html
 <!-- 不推荐 -->
@@ -259,9 +313,9 @@ The currency symbol for the Euro is “€”.
 
 省略可选标签（可选）。
 
-出于文件大小优化和可扫描性的目的，请考虑省略可选标签。在HTML5规范定义标签可以被省略什么。
+出于文件大小优化和可扫描性的目的，请考虑省略可选标签。在 HTML5 规范定义标签可以被省略什么。
 
-（此方法可能需要将宽限期确定为更广泛的准则，因为它与Web开发人员通常所教的内容明显不同。出于一致性和简单性的考虑，最好省略所有可选标签，而不仅仅是选择。）
+（此方法可能需要将宽限期确定为更广泛的准则，因为它与 Web 开发人员通常所教的内容明显不同。出于一致性和简单性的考虑，最好省略所有可选标签，而不仅仅是选择。）
 
 ```html
 <!-- 不推荐 -->
@@ -311,21 +365,23 @@ The currency symbol for the Euro is “€”.
 
 对每个块，列表或表元素使用换行符，并对每个此类子元素缩进。
 
-与元素的样式无关（因为CSS允许每个显示属性承担不同的角色），将每个块，列表或表元素放在新行上。
+与元素的样式无关（因为CSS允许每个 `display` 属性承担不同的角色），将每个块，列表或表元素放在新行上。
 
-此外，如果它们是块，列表或表元素的子元素，则缩进它们。
+此外，缩进块，列表或表元素的子元素。
 
-（如果遇到列表项之间的空格周围的问题，可以将所有li元素放在一行中是可以接受的。通常代码检查器鼓励发出警告而不是错误。）
+（如果遇到列表项之间的空格周围的问题，可以将所有 `li` 元素放在一行。通常代码检查器鼓励发出警告而不是错误。）
 
 ```html
 <blockquote>
   <p><em>Space</em>, the final frontier.</p>
 </blockquote>
+
 <ul>
   <li>Moe
   <li>Larry
   <li>Curly
 </ul>
+
 <table>
   <thead>
     <tr>
@@ -342,9 +398,9 @@ The currency symbol for the Euro is “€”.
 
 中断长行（可选）。
 
-尽管没有针对HTML的列限制建议，但是如果可以大大提高可读性，则可以考虑使用长行换行。
+尽管没有针对 HTML 的列限制建议，但是如果可以大大提高可读性，则可以考虑使用长行换行。
 
-换行时，每条连续行应与原始行至少缩进4个空格。
+换行时，每条连续行应与原始行至少缩进 4 个空格。
 
 ```html
 <md-progress-circular md-mode="indeterminate" class="md-accent"
@@ -379,76 +435,96 @@ The currency symbol for the Euro is “€”.
 <a class="maia-button maia-button-secondary">Sign in</a>
 ```
 
-4 CSS
-4.1 CSS Style Rules
-4.1.1 CSS Validity
-Use valid CSS where possible.
+## CSS
 
-Unless dealing with CSS validator bugs or requiring proprietary syntax, use valid CSS code.
+### CSS 样式规则
 
-Use tools such as the W3C CSS validator to test.
+#### CSS 有效性
 
-Using valid CSS is a measurable baseline quality attribute that allows to spot CSS code that may not have any effect and can be removed, and that ensures proper CSS usage.
+尽可能使用有效的 CSS。
 
-4.1.2 ID and Class Naming
-Use meaningful or generic ID and class names.
+除非处理 CSS 验证程序错误或需要专有语法，否则请使用有效的CSS代码。
 
-Instead of presentational or cryptic names, always use ID and class names that reflect the purpose of the element in question, or that are otherwise generic.
+使用 [W3C CSS验证器](https://jigsaw.w3.org/css-validator/) 之类的工具进行测试。
 
-Names that are specific and reflect the purpose of the element should be preferred as these are most understandable and the least likely to change.
+使用有效的 CSS 是可测量的基线质量属性，可能发现无效的 CSS 代码并可以将其删除，并确保正确使用 CSS。
 
-Generic names are simply a fallback for elements that have no particular or no meaning different from their siblings. They are typically needed as “helpers.”
+#### ID 和 class 命名
 
-Using functional or generic names reduces the probability of unnecessary document or template changes.
+使用有意义的或通用的 ID 和 class。
 
-/* Not recommended: meaningless */
+始终使用 ID 和 class 代替反映性或含糊不清的名称，这些 ID 和 class 应反映所讨论元素的用途，或者是通用名称。
+
+最好使用能反映元素目的的特定名称，因为这些名称最容易理解，更改的可能性最小。
+
+通用名称只是与它们的同辈元素没有特殊或没有意义的名称，通常需要它们作为“帮助者”。
+
+使用功能名称或通用名称可以减少不必要的文档或模板更改的可能性。
+
+```css
+/* 不推荐：无意义 */
 #yee-1901 {}
 
-/* Not recommended: presentational */
+/* 不推荐：表面的 */
 .button-green {}
 .clear {}
-/* Recommended: specific */
+
+/* 推荐：具体的 */
 #gallery {}
 #login {}
 .video {}
 
-/* Recommended: generic */
+/* 推荐：归类 */
 .aux {}
 .alt {}
-4.1.3 ID and Class Name Style
-Use ID and class names that are as short as possible but as long as necessary.
+```
 
-Try to convey what an ID or class is about while being as brief as possible.
+#### ID 和 class 命名规则
 
-Using ID and class names this way contributes to acceptable levels of understandability and code efficiency.
+使用尽可能短但必要的 ID 和 class 名称。
 
-/* Not recommended */
+尽量简短地传达 ID 或 class 的含义。
+
+以这种方式使用 ID 和 class 名称有助于提高可接受的可理解性和代码效率。
+
+```css
+/* 不推荐 */
 #navigation {}
 .atr {}
-/* Recommended */
+
+/* 推荐 */
 #nav {}
 .author {}
-4.1.4 Type Selectors
-Avoid qualifying ID and class names with type selectors.
+```
 
-Unless necessary (for example with helper classes), do not use element names in conjunction with IDs or classes.
+#### 类型选择器
 
-Avoiding unnecessary ancestor selectors is useful for performance reasons.
+避免使用类型选择器来限定 ID 和 class。
 
-/* Not recommended */
+除非有必要（例如，使用帮助器类），否则请勿将元素名称与 ID 或 class 一起使用。
+
+出于[性能原因](http://www.stevesouders.com/blog/2009/06/18/simplifying-css-selectors/)，避免使用不必要的祖先选择器很有用。
+
+```css
+/* 不推荐 */
 ul#example {}
 div.error {}
-/* Recommended */
+
+/* 推荐 */
 #example {}
 .error {}
-4.1.5 Shorthand Properties
-Use shorthand properties where possible.
+```
 
-CSS offers a variety of shorthand properties (like font) that should be used whenever possible, even in cases where only one value is explicitly set.
+#### 属性缩写
 
-Using shorthand properties is useful for code efficiency and understandability.
+尽可能使用属性缩写。
 
-/* Not recommended */
+CSS提供了各种属性缩写（如`font`），即使在仅显式设置一个值的情况下，也应尽可能使用它们。
+
+使用速记属性对于代码效率和易理解性很有用。
+
+```css
+/* 不推荐 */
 border-top-style: none;
 font-family: palatino, georgia, serif;
 font-size: 100%;
@@ -457,69 +533,98 @@ padding-bottom: 2em;
 padding-left: 1em;
 padding-right: 1em;
 padding-top: 0;
-/* Recommended */
+
+/* 推荐 */
 border-top: 0;
 font: 100%/1.6 palatino, georgia, serif;
 padding: 0 1em 2em;
-4.1.6 0 and Units
-Omit unit specification after “0” values, unless required.
+```
 
-Do not use units after 0 values unless they are required.
+#### 0 和单位
 
-flex: 0px; /* This flex-basis component requires a unit. */
-flex: 1 1 0px; /* Not ambiguous without the unit, but needed in IE11. */
+除非需要，否则在`0`数值之后省略单位规格。
+
+除非需要，否则请勿在`0`数值后使用单位。
+
+```css
+flex: 0px; /* flex-basis 组件需要单位 */
+flex: 1 1 0px; /* 在没有单位的情况下不是很明确，但是在 IE11 中是必须的 */
 margin: 0;
 padding: 0;
-4.1.7 Leading 0s
-Omit leading “0”s in values.
+```
 
-Do not put 0s in front of values or lengths between -1 and 1.
+#### 前导 0
 
+省略数值的前导`0`。
+
+不要将`0`放在`-1`和`1`之间的值或长度前面。
+
+```css
 font-size: .8em;
-4.1.8 Hexadecimal Notation
-Use 3 character hexadecimal notation where possible.
+```
 
-For color values that permit it, 3 character hexadecimal notation is shorter and more succinct.
+#### 十六进制表示法
 
-/* Not recommended */
+尽可能使用3个字符的十六进制表示法。
+
+对于允许的颜色值，3个字符的十六进制表示法更短，更简洁。
+
+```css
+/* 不推荐 */
 color: #eebbcc;
-/* Recommended */
+
+/* 推荐 */
 color: #ebc;
-4.1.9 Prefixes
-Prefix selectors with an application-specific prefix (optional).
+```
 
-In large projects as well as for code that gets embedded in other projects or on external sites use prefixes (as namespaces) for ID and class names. Use short, unique identifiers followed by a dash.
+#### 前缀
 
-Using namespaces helps preventing naming conflicts and can make maintenance easier, for example in search and replace operations.
+具有应用程序特定前缀的前缀选择器（可选）。
 
+在大型项目以及嵌入到其他项目或外部站点中的代码中，请使用前缀（作为名称空间）作为 ID 和 class。使用简短的唯一标识符，后接破折号。
+
+使用名称空间有助于防止命名冲突，并可以简化维护，例如在搜索和替换操作中。
+
+```css
 .adw-help {} /* AdWords */
 #maia-note {} /* Maia */
-4.1.10 ID and Class Name Delimiters
-Separate words in ID and class names by a hyphen.
+```
 
-Do not concatenate words and abbreviations in selectors by any characters (including none at all) other than hyphens, in order to improve understanding and scannability.
+#### ID 和 class 界定符
 
-/* Not recommended: does not separate the words “demo” and “image” */
+ID 和 class 中的单词用连字符分隔。
+
+不要将选择器中的单词和缩写用连字符以外的任何字符（包括连字符）连接起来，以提高理解和可扫描性。
+
+```css
+/* 不推荐：没有分隔单词“demo” 和 “image” */
 .demoimage {}
 
-/* Not recommended: uses underscore instead of hyphen */
+/* 不推荐：使用下划线而不是连字符 */
 .error_status {}
-/* Recommended */
+
+/* 推荐 */
 #video-id {}
 .ads-sample {}
-4.1.11 Hacks
-Avoid user agent detection as well as CSS “hacks”—try a different approach first.
+```
 
-It’s tempting to address styling differences over user agent detection or special CSS filters, workarounds, and hacks. Both approaches should be considered last resort in order to achieve and maintain an efficient and manageable code base. Put another way, giving detection and hacks a free pass will hurt projects in the long run as projects tend to take the way of least resistance. That is, allowing and making it easy to use detection and hacks means using detection and hacks more frequently—and more frequently is too frequently.
+#### Hacks
 
-4.2 CSS Formatting Rules
-4.2.1 Declaration Order
-Alphabetize declarations.
+避免用户代理检测和 CSS hacks 首先尝试其他方法去实现。
 
-Put declarations in alphabetical order in order to achieve consistent code in a way that is easy to remember and maintain.
+试图解决用户代理检测或特殊CSS过滤器，变通办法和 hacks 的样式差异是很诱人的。两种方法都应被视为万不得已，以实现并维护有效且可管理的代码库。换句话说，如果项目倾向于采取阻力最小的方式，从长远来看对检测用户代理和 hacks 手段损害项目。就是说，允许并简单的使用检测用户代理和 hacks 手段意味着以后将更频繁地使用它们。
 
-Ignore vendor-specific prefixes for sorting purposes. However, multiple vendor-specific prefixes for a certain CSS property should be kept sorted (e.g. -moz prefix comes before -webkit).
+### CSS 格式化规则
 
+#### 声明顺序
+
+按字母顺序排列声明。
+
+以字母顺序放置声明，以易于记忆和维护的方式获得一致的代码。
+
+忽略供应商特定的前缀以进行排序。但是，应将特定CSS属性的多个特定于供应商的前缀排序（例如-moz前缀位于-webkit之前）。
+
+```css
 background: fuchsia;
 border: 1px solid;
 -moz-border-radius: 4px;
@@ -528,11 +633,15 @@ border-radius: 4px;
 color: black;
 text-align: center;
 text-indent: 2em;
-4.2.2 Block Content Indentation
-Indent all block content.
+```
 
-Indent all block content, that is rules within rules as well as declarations, so to reflect hierarchy and improve understanding.
+#### 块内容缩进
 
+缩进所有块内容。
+
+缩进所有块内容，即缩进规则中的规则和声明，以反映层次结构并增进理解。
+
+```css
 @media screen, projection {
 
   html {
@@ -541,76 +650,100 @@ Indent all block content, that is rules within rules as well as declarations, so
   }
 
 }
-4.2.3 Declaration Stops
-Use a semicolon after every declaration.
+```
 
-End every declaration with a semicolon for consistency and extensibility reasons.
+#### 声明停止
 
-/* Not recommended */
+每次声明后都使用分号。
+
+出于一致性和可扩展性的原因，请以分号结尾每个声明。
+
+```css
+/* 不推荐 */
 .test {
   display: block;
   height: 100px
 }
-/* Recommended */
+
+/* 推荐 */
 .test {
   display: block;
   height: 100px;
 }
-4.2.4 Property Name Stops
-Use a space after a property name’s colon.
+```
 
-Always use a single space between property and value (but no space between property and colon) for consistency reasons.
+#### 属性名停止
 
-/* Not recommended */
+在属性名称的冒号后面使用空格。
+
+出于一致性原因，请始终在属性和值之间使用单个空格（但在属性和冒号之间不要使用空格）。
+
+```css
+/* 不推荐 */
 h3 {
   font-weight:bold;
 }
-/* Recommended */
+
+/* 推荐 */
 h3 {
   font-weight: bold;
 }
-4.2.5 Declaration Block Separation
-Use a space between the last selector and the declaration block.
+```
 
-Always use a single space between the last selector and the opening brace that begins the declaration block.
+#### 声明块分隔
 
-The opening brace should be on the same line as the last selector in a given rule.
+在最后一个选择器和声明块之间使用空格。
 
-/* Not recommended: missing space */
+在最后一个选择器和[声明块](https://www.w3.org/TR/CSS21/syndata.html#rule-sets)开头的开括号之间始终使用单个空格。
+
+左括号应与给定规则中的最后一个选择器在同一行上。
+
+```css
+/* 不推荐：缺少空格 */
 #video{
   margin-top: 1em;
 }
 
-/* Not recommended: unnecessary line break */
+/* 不推荐：不必要的换行 */
 #video
 {
   margin-top: 1em;
 }
-/* Recommended */
+
+/* 推荐 */
 #video {
   margin-top: 1em;
 }
-4.2.6 Selector and Declaration Separation
-Separate selectors and declarations by new lines.
+```
 
-Always start a new line for each selector and declaration.
+#### 选择器和声明分隔
 
-/* Not recommended */
+用新行将选择器和声明分开。
+
+始终为每个选择器和声明开始新行。
+
+```css
+/* 不推荐 */
 a:focus, a:active {
   position: relative; top: 1px;
 }
-/* Recommended */
+
+/* 推荐 */
 h1,
 h2,
 h3 {
   font-weight: normal;
   line-height: 1.2;
 }
-4.2.7 Rule Separation
-Separate rules by new lines.
+```
 
-Always put a blank line (two line breaks) between rules.
+#### 规则分离
 
+用新行分隔规则。
+
+始终在规则之间放置空白行（两个换行符）。
+
+```css
 html {
   background: #fff;
 }
@@ -619,31 +752,41 @@ body {
   margin: auto;
   width: 50%;
 }
-4.2.8 CSS Quotation Marks
-Use single ('') rather than double ("") quotation marks for attribute selectors and property values.
+```
 
-Do not use quotation marks in URI values (url()).
+#### CSS 引号
 
-Exception: If you do need to use the @charset rule, use double quotation marks—single quotation marks are not permitted.
+对于属性选择器和属性值，请使用单引号（`''`）而不是双引号（`""`）。
 
-/* Not recommended */
+请勿在URI值（`url()`）中使用引号。
+
+例外：如果确实需要使用`@charset`规则，请使用双引号，不允许使用单引号。
+
+```css
+/* 不推荐 */
 @import url("https://www.google.com/css/maia.css");
 
 html {
   font-family: "open sans", arial, sans-serif;
 }
-/* Recommended */
+
+/* 推荐 */
 @import url(https://www.google.com/css/maia.css);
 
 html {
   font-family: 'open sans', arial, sans-serif;
 }
-4.3 CSS Meta Rules
-4.3.1 Section Comments
-Group sections by a section comment (optional).
+```
 
-If possible, group style sheet sections together by using comments. Separate sections with new lines.
+### CSS 元规则
 
+#### 块注释
+
+通过块注释对块进行分组（可选）。
+
+如果可能，请通过使用注释将样式表的各个部分组合在一起。用新行分隔各部分。
+
+```css
 /* Header */
 
 #adw-header {}
@@ -655,9 +798,16 @@ If possible, group style sheet sections together by using comments. Separate sec
 /* Gallery */
 
 .adw-gallery {}
-Parting Words
-Be consistent.
+```
 
-If you’re editing code, take a few minutes to look at the code around you and determine its style. If they use spaces around all their arithmetic operators, you should too. If their comments have little boxes of hash marks around them, make your comments have little boxes of hash marks around them too.
+## 分词
 
-The point of having style guidelines is to have a common vocabulary of coding so people can concentrate on what you’re saying rather than on how you’re saying it. We present global style rules here so people know the vocabulary, but local style is also important. If code you add to a file looks drastically different from the existing code around it, it throws readers out of their rhythm when they go to read it. Avoid this.
+始终如一。
+
+如果要编辑代码，请花几分钟时间查看您周围的代码并确定其样式。如果他们在所有算术运算符周围使用空格，您也应该这样做。如果他们的注释周围有小方框，则使您的注释周围也有小方框。
+
+制定样式指南的目的是拥有通用的编码词汇，以便人们可以专注于您在说的而不是在怎么说。我们在这里介绍全局样式规则，以便人们了解词汇表，但是局部样式也很重要。如果您添加到文件中的代码看上去与周围的现有代码完全不同，则当读者阅读文件时，它会使读者失去节奏。避免这种情况。
+
+## 原文
+
+[https://google.github.io/styleguide/htmlcssguide.html](https://google.github.io/styleguide/htmlcssguide.html)
