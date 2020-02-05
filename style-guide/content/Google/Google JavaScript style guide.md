@@ -1,70 +1,34 @@
-# Google JavaScript 风格规约
+# Google JavaScript 风格指南
 
-1 Introduction
-1.1 Terminology notes
-1.2 Guide notes
-2 Source file basics
-2.1 File name
-2.2 File encoding: UTF-8
-2.3 Special characters
-3 Source file structure
-3.1 License or copyright information, if present
-3.2 @fileoverview JSDoc, if present
-3.3 goog.module statement
-3.3.3 goog.module Exports
-3.4 ES modules
-3.5 goog.setTestOnly
-3.6 goog.require and goog.requireType statements
-3.7 The file’s implementation
-4 Formatting
-4.1 Braces
-4.2 Block indentation: +2 spaces
-4.3 Statements
-4.4 Column limit: 80
-4.5 Line-wrapping
-4.6 Whitespace
-4.7 Grouping parentheses: recommended
-4.8 Comments
-5 Language features
-5.1 Local variable declarations
-5.2 Array literals
-5.3 Object literals
-5.4 Classes
-5.5 Functions
-5.6 String literals
-5.7 Number literals
-5.8 Control structures
-5.9 this
-5.10 Equality Checks
-5.11 Disallowed features
-6 Naming
-6.1 Rules common to all identifiers
-6.2 Rules by identifier type
-6.3 Camel case: defined
-7 JSDoc
-7.1 General form
-7.2 Markdown
-7.3 JSDoc tags
-7.4 Line wrapping
-7.5 Top/file-level comments
-7.6 Class comments
-7.7 Enum and typedef comments
-7.8 Method and function comments
-7.9 Property comments
-7.10 Type annotations
-7.11 Visibility annotations
-8 Policies
-8.1 Issues unspecified by Google Style: Be Consistent!
-8.2 Compiler warnings
-8.3 Deprecation
-8.4 Code not in Google Style
-8.5 Local style rules
-8.6 Generated code: mostly exempt
-9 Appendices
-9.1 JSDoc tag reference
-9.2 Commonly misunderstood style rules
-9.3 Style-related tools
-9.4 Exceptions for legacy platforms
+- [Google JavaScript 风格指南](#google-javascript-%e9%a3%8e%e6%a0%bc%e6%8c%87%e5%8d%97)
+  - [引言](#%e5%bc%95%e8%a8%80)
+    - [术语说明](#%e6%9c%af%e8%af%ad%e8%af%b4%e6%98%8e)
+    - [向导说明](#%e5%90%91%e5%af%bc%e8%af%b4%e6%98%8e)
+  - [源文件基础](#%e6%ba%90%e6%96%87%e4%bb%b6%e5%9f%ba%e7%a1%80)
+    - [文件名](#%e6%96%87%e4%bb%b6%e5%90%8d)
+    - [文件编码：UTF-8](#%e6%96%87%e4%bb%b6%e7%bc%96%e7%a0%81utf-8)
+    - [特殊字符](#%e7%89%b9%e6%ae%8a%e5%ad%97%e7%ac%a6)
+      - [空格字符](#%e7%a9%ba%e6%a0%bc%e5%ad%97%e7%ac%a6)
+      - [特殊转义字符序列](#%e7%89%b9%e6%ae%8a%e8%bd%ac%e4%b9%89%e5%ad%97%e7%ac%a6%e5%ba%8f%e5%88%97)
+      - [非 ASCII 字符](#%e9%9d%9e-ascii-%e5%ad%97%e7%ac%a6)
+  - [源文件结构](#%e6%ba%90%e6%96%87%e4%bb%b6%e7%bb%93%e6%9e%84)
+    - [许可或版权信息（如果有）](#%e8%ae%b8%e5%8f%af%e6%88%96%e7%89%88%e6%9d%83%e4%bf%a1%e6%81%af%e5%a6%82%e6%9e%9c%e6%9c%89)
+    - [`@fileoverview` JSDoc（如果存在）](#fileoverview-jsdoc%e5%a6%82%e6%9e%9c%e5%ad%98%e5%9c%a8)
+    - [`goog.module` 声明](#googmodule-%e5%a3%b0%e6%98%8e)
+      - [层次结构](#%e5%b1%82%e6%ac%a1%e7%bb%93%e6%9e%84)
+      - [`goog.module.declareLegacyNamespace`](#googmoduledeclarelegacynamespace)
+      - [导出 `goog.module`](#%e5%af%bc%e5%87%ba-googmodule)
+    - [ES 模块](#es-%e6%a8%a1%e5%9d%97)
+      - [导入](#%e5%af%bc%e5%85%a5)
+      - [导入路径](#%e5%af%bc%e5%85%a5%e8%b7%af%e5%be%84)
+      - [导入路径中的文件拓展名](#%e5%af%bc%e5%85%a5%e8%b7%af%e5%be%84%e4%b8%ad%e7%9a%84%e6%96%87%e4%bb%b6%e6%8b%93%e5%b1%95%e5%90%8d)
+      - [多次导入同一文件](#%e5%a4%9a%e6%ac%a1%e5%af%bc%e5%85%a5%e5%90%8c%e4%b8%80%e6%96%87%e4%bb%b6)
+      - [命名导入](#%e5%91%bd%e5%90%8d%e5%af%bc%e5%85%a5)
+        - [命名模块导入](#%e5%91%bd%e5%90%8d%e6%a8%a1%e5%9d%97%e5%af%bc%e5%85%a5)
+        - [命名默认导入](#%e5%91%bd%e5%90%8d%e9%bb%98%e8%ae%a4%e5%af%bc%e5%85%a5)
+        - [别名导入](#%e5%88%ab%e5%90%8d%e5%af%bc%e5%85%a5)
+      - [导出](#%e5%af%bc%e5%87%ba)
+        - [命名与默认导出](#%e5%91%bd%e5%90%8d%e4%b8%8e%e9%bb%98%e8%ae%a4%e5%af%bc%e5%87%ba)
 
 ## 引言
 
@@ -178,7 +142,7 @@ goog.module('foo.bar');   // 尽管 'foo.bar.qux' 很好
 goog.module('foo.bar.baz');
 ```
 
-目录层次结构反映了名称空间层次结构，因此，嵌套较深的子级是较高级父目录的子目录。请注意，这意味着“父”名称空间组的所有者必须知道所有子名称空间，因为它们存在于同一目录中。
+目录层次结构反映了名称空间层次结构，因此嵌套更深的子目录是更高层的父目录的子目录。注意，这意味着“父”名称空间组的所有者必须知道所有子名称空间，因为它们存在于相同的目录中。
 
 #### `goog.module.declareLegacyNamespace`
 
@@ -192,16 +156,15 @@ goog.module.declareLegacyNamespace();
 goog.setTestOnly();
 ```
 
-Example:
+`goog.module.declareLegacyNamespace` 的存在是为了简化从传统的基于对象层次结构的名称空间的转换，但是它也有一些命名限制。由于子模块名必须在父名称空间之后创建，因此此名称不能是任何其他 `goog.module` 的子或父节点。模块(例如 `goog.module('parent')够同时安全的存在;` 和 `goog.module('parent.child');` 不能同时安全存在，也不能同时存在 `goog.module('parent');` 和 `goog.module('parent.child.grandchild');`)。
 
+#### 导出 `goog.module`
 
-goog.module.declareLegacyNamespace exists to ease the transition from traditional object hierarchy-based namespaces but comes with some naming restrictions. As the child module name must be created after the parent namespace, this name must not be a child or parent of any other goog.module (for example, goog.module('parent'); and goog.module('parent.child'); cannot both exist safely, nor can goog.module('parent'); and goog.module('parent.child.grandchild');).
+使用 `exports` 对象导出类、枚举、函数、常量和其他符号。导出的符号可以直接在导出对象上定义，也可以在本地声明并单独导出。符号只有在用于模块外部时才会被导出。非导出模块本地符号不会声明为`@private`，它们的名称也不会以下划线结尾。对于导出和模块本地符号没有规定的顺序。
 
-3.3.3 goog.module Exports
-Classes, enums, functions, constants, and other symbols are exported using the exports object. Exported symbols may be defined directly on the exports object, or else declared locally and exported separately. Symbols are only exported if they are meant to be used outside the module. Non-exported module-local symbols are not declared @private nor do their names end with an underscore. There is no prescribed ordering for exported and module-local symbols.
+示例
 
-Examples:
-
+```js
 const /** !Array<number> */ exportedArray = [1, 2, 3];
 
 const /** !Array<number> */ moduleLocalArray = [4, 5, 6];
@@ -217,94 +180,148 @@ function exportedFunction() {
 }
 
 exports = {exportedArray, exportedFunction};
+```
+
+```js
 /** @const {number} */
 exports.CONSTANT_ONE = 1;
 
 /** @const {string} */
 exports.CONSTANT_TWO = 'Another constant';
-Do not annotate the exports object as @const as it is already treated as a constant by the compiler.
+```
 
+不要注释该 `exports` 对象为 `@const` 因为编译器已将其视为常量。
+
+```js
+// 不推荐
 /** @const */
 exports = {exportedFunction};
+```
 
-3.4 ES modules
+### ES 模块
 
-3.4.1 Imports
-Import statements must not be line wrapped and are therefore an exception to the 80-column limit.
+#### 导入
 
+导入语句不能换行，80 列限制的例外。
 
-3.4.1.1 Import paths
-ES module files must use the import statement to import other ES module files. Do not goog.require another ES module.
+#### 导入路径
 
+ES 模块文件必须使用 `import` 语句来导入其他ES模块文件。不要使用 `goog.require` 其他 ES 模块。
+
+```js
 import './sideeffects.js';
 
 import * as goog from '../closure/goog/goog.js';
 import * as parent from '../parent.js';
 
 import {name} from './sibling.js';
+```
 
-3.4.1.1.1 File extensions in import paths
-The .js file extension is not optional in import paths and must always be included.
+#### 导入路径中的文件拓展名
 
+`.js` 文件的扩展名不是可选的，拓展名必须始终被包括在内。
+
+```js
+// 错误
 import '../directory/file';
-import '../directory/file.js';
-3.4.1.2 Importing the same file multiple times
-Do not import the same file multiple times. This can make it hard to determine the aggregate imports of a file.
 
-// Imports have the same path, but since it doesn't align it can be hard to see.
+// 正确
+import '../directory/file.js';
+```
+
+#### 多次导入同一文件
+
+不要多次导入同一个文件。这可能使确定文件的聚合导入变得困难。
+
+```js
+// 导入相同的路径，但是由于没有对齐，因此很难看出来
 import {short} from './long/path/to/a/file.js';
 import {aLongNameThatBreaksAlignment} from './long/path/to/a/file.js';
+```
 
-3.4.1.3 Naming imports
-3.4.1.3.1 Naming module imports
-Module import names (import * as name) are lowerCamelCase names that are derived from the imported file name.
+#### 命名导入
 
+##### 命名模块导入
+
+模块导入名称（`import * as name`）是派生自导入文件名的小写驼峰名称。
+
+```js
 import * as fileOne from '../file-one.js';
 import * as fileTwo from '../file_two.js';
 import * as fileThree from '../filethree.js';
+```
+
+```js
 import * as libString from './lib/string.js';
 import * as math from './math/math.js';
 import * as vectorMath from './vector/math.js';
-3.4.1.3.2 Naming default imports
-Default import names are derived from the imported file name and follow the rules in 6.2 Rules by identifier type.
+```
 
+##### 命名默认导入
+
+TODO: 添加文件锚点超链接
+
+命名默认导入派生自导入的文件名，并按照 [6.2 标识符类型遵循规则]() 中的规则。
+
+```js
 import MyClass from '../my-class.js';
 import myFunction from '../my_function.js';
 import SOME_CONSTANT from '../someconstant.js';
-Note: In general this should not happen as default exports are banned by this style guide, see 3.4.2.1 Named vs default exports. Default imports are only used to import modules that do not conform to this style guide.
+```
 
-3.4.1.3.3 Naming named imports
-In general symbols imported via the named import (import {name}) should keep the same name. Avoid aliasing imports (import {SomeThing as SomeOtherThing}). Prefer fixing name collisions by using a module import (import *) or renaming the exports themselves.
+TODO: 添加文档锚点超链接
 
+> 注意:一般情况下这是不应该发生的，因为默认导出是被这个风格指南禁止的，参见 [命名与默认导出]()。默认导入仅用于导入不符合此样式指南的模块
+
+##### 别名导入
+
+通常，通过命名的 `import`（`import {name}`）导入的符号应保持相同的名称。避免导入模块使用别名（`import {SomeThing as SomeOtherThing}`）。最好通过使用模块导入 `import`（ `import *` ）或重命名导出模块本身来解决名称冲突。
+
+```js
 import * as bigAnimals from './biganimals.js';
 import * as domesticatedAnimals from './domesticatedanimals.js';
 
 new bigAnimals.Cat();
 new domesticatedAnimals.Cat();
-If renaming a named import is needed then use components of the imported module's file name or path in the resulting alias.
+```
 
+如果任需要重命名名称导入的模块，则使用导入模块的文件名或路径作为别名。
+
+```js
 import {Cat as BigCat} from './biganimals.js';
 import {Cat as DomesticatedCat} from './domesticatedanimals.js';
 
 new BigCat();
 new DomesticatedCat();
+```
 
-3.4.2 Exports
-Symbols are only exported if they are meant to be used outside the module. Non-exported module-local symbols are not declared @private nor do their names end with an underscore. There is no prescribed ordering for exported and module-local symbols.
+#### 导出
 
-3.4.2.1 Named vs default exports
-Use named exports in all code. You can apply the export keyword to a declaration, or use the export {name}; syntax.
+符号只有在用于模块外部时才会被导出。非导出模块本地符号不会声明为`@private`，它们的名称也不会以下划线结尾。对于导出和模块本地符号没有规定的顺序。
 
-Do not use default exports. Importing modules must give a name to these values, which can lead to inconsistencies in naming across modules.
+##### 命名与默认导出
 
-// Do not use default exports:
+在所有代码中使用命名导出。您可以将 `export` 关键字应用于声明，或者使用 `export {name};` 语法。
+
+不要使用默认导出。导入模块必须为这些值指定一个名称，这可能导致模块之间的命名不一致。
+
+```js
+// 不要使用默认导出：
 export default class Foo { ... } // BAD!
-// Use named exports:
+```
+
+```js
+// 使用名称导出：
 export class Foo { ... }
-// Alternate style named exports:
+```
+
+```js
+// 另一种命名导出格式:
 class Foo { ... }
 
 export {Foo};
+```
+
 3.4.2.2 Exporting static container classes and objects
 Do not export container classes or objects with static methods or properties for the sake of namespacing.
 
