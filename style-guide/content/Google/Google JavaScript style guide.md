@@ -65,100 +65,136 @@
 9.2 Commonly misunderstood style rules
 9.3 Style-related tools
 9.4 Exceptions for legacy platforms
-1 Introduction
-This document serves as the complete definition of Google’s coding standards for source code in the JavaScript programming language. A JavaScript source file is described as being in Google Style if and only if it adheres to the rules herein.
 
-Like other programming style guides, the issues covered span not only aesthetic issues of formatting, but other types of conventions or coding standards as well. However, this document focuses primarily on the hard-and-fast rules that we follow universally, and avoids giving advice that isn't clearly enforceable (whether by human or tool).
+## 引言
 
-1.1 Terminology notes
-In this document, unless otherwise clarified:
+本文档是 Google 的 JavaScript 编程语言源代码编码标准的完整定义。当且仅当 JavaScript 源文件遵守此处的规则时，它才被描述为 Google 风格。
 
-The term comment always refers to implementation comments. We do not use the phrase documentation comments, instead using the common term “JSDoc” for both human-readable text and machine-readable annotations within /** … */.
+像其他编程风格指南一样，这些问题不仅涵盖格式方面的美学问题，而且还涵盖其他类型的约定或编码标准。但是，本文档主要关注我们普遍遵循的一成不变的规则，并避免提供无法明确执行的建议（无论是理念还是工具）。
 
-This Style Guide uses RFC 2119 terminology when using the phrases must, must not, should, should not, and may. The terms prefer and avoid correspond to should and should not, respectively. Imperative and declarative statements are prescriptive and correspond to must.
+### 术语说明
 
-Other terminology notes will appear occasionally throughout the document.
+在本文档中，除非另有说明：
 
-1.2 Guide notes
-Example code in this document is non-normative. That is, while the examples are in Google Style, they may not illustrate the only stylish way to represent the code. Optional formatting choices made in examples must not be enforced as rules.
+术语注释始终指实施注释。我们不使用短语文档注释，而是使用通用术语"JSDoc"来表示其中的人类可读文本和机器可读注释 `/**...*/`。
 
-2 Source file basics
-2.1 File name
-File names must be all lowercase and may include underscores (_) or dashes (-), but no additional punctuation. Follow the convention that your project uses. Filenames’ extension must be .js.
+本样式指南在使用短语“必须”，“不能”，“应该”，“不应该”和“可能”时使用 RFC 2119 术语。术语“首选”和“避免”分别对应于“应该”和“不应该”。祈使式和陈述式陈述是规定性的，并与”必须“相符。
 
-2.2 File encoding: UTF-8
-Source files are encoded in UTF-8.
+其他术语注释有时会出现在整个文档中。
 
-2.3 Special characters
-2.3.1 Whitespace characters
-Aside from the line terminator sequence, the ASCII horizontal space character (0x20) is the only whitespace character that appears anywhere in a source file. This implies that
+### 向导说明
 
-All other whitespace characters in string literals are escaped, and
+本文档中的示例代码是非规范性的。也就是说，尽管这些示例采用的是 Google 样式，但它们可能并未说明表示代码的唯一实现方式。在示例中做出的可选格式选择不得作为规则执行。
 
-Tab characters are not used for indentation.
+## 源文件基础
 
-2.3.2 Special escape sequences
-For any character that has a special escape sequence (\', \", \\, \b, \f, \n, \r, \t, \v), that sequence is used rather than the corresponding numeric escape (e.g \x0a, \u000a, or \u{a}). Legacy octal escapes are never used.
+### 文件名
 
-2.3.3 Non-ASCII characters
-For the remaining non-ASCII characters, either the actual Unicode character (e.g. ∞) or the equivalent hex or Unicode escape (e.g. \u221e) is used, depending only on which makes the code easier to read and understand.
+文件名必须全部为小写，并且可以包含下划线（`_`）或破折号（`-`），但不能包含其他标点符号。请遵循项目使用的约定。文件名的扩展名必须为`.js`。
 
-Tip: In the Unicode escape case, and occasionally even when actual Unicode characters are used, an explanatory comment can be very helpful.
+### 文件编码：UTF-8
 
-/* Best: perfectly clear even without a comment. */
+源文件以 UTF-8 编码。
+
+### 特殊字符
+
+#### 空格字符
+
+除了行终止符序列之外，ASCII 水平空格字符（0x20）是唯一出现在源文件中任何地方的空格字符。这意味着：
+
+- 字符串文字中的所有其他空白字符均被转义
+
+- 制表符不用于缩进。
+
+#### 特殊转义字符序列
+
+对于任何特殊的转义字符序列（`\'`，`\"`，`\\`，`\b`， `\f`，`\n`，`\r`，`\t`，`\v`），应该直接使用该序列，而不是对应的数字转义（例如`\x0a`，`\u000a`或`\u{a}`），不要使用传统八进制转义符。
+
+#### 非 ASCII 字符
+
+对于其他的非 ASCII 字符，使用实际的 Unicode 字符（例如`∞`）或等效的十六进制或 Unicode转义符（例如）`\u221e`，这仅取决于使代码更易于阅读和理解的方式。
+
+> 提示：在Unicode转义符的情况下，有时甚至使用实际的Unicode字符，解释性注释也可能非常有帮助。
+
+```js
+/* 最佳：即使没有评论，也非常清晰。 */
 const units = 'μs';
 
-/* Allowed: but unncessary as μ is a printable character. */
+/* 允许：但不必要，因为 μ 是可打印字符。 */
 const units = '\u03bcs'; // 'μs'
 
-/* Good: use escapes for non-printable characters with a comment for clarity. */
-return '\ufeff' + content;  // Prepend a byte order mark.
-/* Poor: the reader has no idea what character this is. */
+/* 很好：对带有注释的非可打印字符使用转义符，以保持清晰度。 */
+return '\ufeff' + content;  // 附加一个字节顺序标记。
+
+/* 较差：读者不知道这是什么字符 */
 const units = '\u03bcs';
-Tip: Never make your code less readable simply out of fear that some programs might not handle non-ASCII characters properly. If that happens, those programs are broken and they must be fixed.
+```
 
-3 Source file structure
-All new source files should either be a goog.module file (a file containing a goog.module call) or an ECMAScript (ES) module (uses import and export statements). Files consist of the following, in order:
+> 提示：不要因为担心某些程序可能无法正确处理非 ASCII 字符而使代码的可读性降低。如果发生这种情况，这些程序将被破坏，必须对其进行修复。
 
-License or copyright information, if present
-@fileoverview JSDoc, if present
-goog.module statement, if a goog.module file
-ES import statements, if an ES module
-goog.require and goog.requireType statements
-The file’s implementation
-Exactly one blank line separates each section that is present, except the file's implementation, which may be preceded by 1 or 2 blank lines.
+## 源文件结构
 
-3.1 License or copyright information, if present
-If license or copyright information belongs in a file, it belongs here.
+所有新建的源文件应为 `goog.module` 文件（包含 `goog.module` 调用的文件 ）或 ECMAScript（ES）模块（用法 `import` 和 `export` 语句）。文件按顺序包括以下内容：
 
-3.2 @fileoverview JSDoc, if present
-See 7.5 Top/file-level comments for formatting rules.
+1. 许可或版权信息（如果有）
+1. `@fileoverview` JSDoc（如果存在）
+1. `goog.module` 声明（如果有 `goog.module` 文件）
+1. ES `import` 语句（如果有 ES 模块）
+1. `goog.require` 和 `goog.requireType` 声明
+1. 文件的实现
 
-3.3 goog.module statement
-All goog.module files must declare exactly one goog.module name on a single line: lines containing a goog.module declaration must not be wrapped, and are therefore an exception to the 80-column limit.
+除了文件的实现之外，每个块区域间只有一个空行，文件的实现之前可能有 1 或 2 个空行。
 
-The entire argument to goog.module is what defines a namespace. It is the package name (an identifier that reflects the fragment of the directory structure where the code lives) plus, optionally, the main class/enum/interface that it defines concatenated to the end.
+### 许可或版权信息（如果有）
 
-Example
+如果一个文件存在许可证或者版权信息则应该添加。
 
+### `@fileoverview` JSDoc（如果存在）
+
+TODO: 添加锚点超链接
+
+有关格式设置规则，请参见 [7.5 顶级/文件级注释]()。
+
+### `goog.module` 声明
+
+所有 `goog.module` 文件必须单独声明一行 `goog.module`：`goog.module` 声明不得换行，除了存在 80 列限制。
+
+`goog.module` 定义名称空间。它是程序包名称（一个标识符，反映了代码所在的目录结构的片段）同时（可选）它定义的主类/枚举/接口连接到后面。
+
+示例
+
+```js
 goog.module('search.urlHistory.UrlHistoryService');
-3.3.1 Hierarchy
-Module namespaces may never be named as a direct child of another module's namespace.
+```
 
-Disallowed:
+#### 层次结构
 
-goog.module('foo.bar');   // 'foo.bar.qux' would be fine, though
+模块名称空间永远不能被命名为另一个模块名称空间的直接子代。
+
+不允许
+
+```js
+goog.module('foo.bar');   // 尽管 'foo.bar.qux' 很好
 goog.module('foo.bar.baz');
-The directory hierarchy reflects the namespace hierarchy, so that deeper-nested children are subdirectories of higher-level parent directories. Note that this implies that owners of “parent” namespace groups are necessarily aware of all child namespaces, since they exist in the same directory.
+```
 
-3.3.2 goog.module.declareLegacyNamespace
-The single goog.module statement may optionally be followed by a call to goog.module.declareLegacyNamespace();. Avoid goog.module.declareLegacyNamespace() when possible.
+目录层次结构反映了名称空间层次结构，因此，嵌套较深的子级是较高级父目录的子目录。请注意，这意味着“父”名称空间组的所有者必须知道所有子名称空间，因为它们存在于同一目录中。
 
-Example:
+#### `goog.module.declareLegacyNamespace`
 
+单个 `goog.module` 语句后可以选择调用 `goog.module.declareLegacyNamespace();`。尽可能避免调用 `goog.module.declareLegacyNamespace()`。
+
+示例
+
+```js
 goog.module('my.test.helpers');
 goog.module.declareLegacyNamespace();
 goog.setTestOnly();
+```
+
+Example:
+
+
 goog.module.declareLegacyNamespace exists to ease the transition from traditional object hierarchy-based namespaces but comes with some naming restrictions. As the child module name must be created after the parent namespace, this name must not be a child or parent of any other goog.module (for example, goog.module('parent'); and goog.module('parent.child'); cannot both exist safely, nor can goog.module('parent'); and goog.module('parent.child.grandchild');).
 
 3.3.3 goog.module Exports
