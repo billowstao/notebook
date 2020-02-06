@@ -38,6 +38,7 @@
         - [ES 模块中的 `goog.require`](#es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e7%9a%84-googrequire)
         - [在 ES 模块中声明闭包模块的 ID](#%e5%9c%a8-es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e5%a3%b0%e6%98%8e%e9%97%ad%e5%8c%85%e6%a8%a1%e5%9d%97%e7%9a%84-id)
     - [`goog.setTestOnly`](#googsettestonly)
+    - [`goog.require` 和 `goog.requireType` 声明](#googrequire-%e5%92%8c-googrequiretype-%e5%a3%b0%e6%98%8e)
 
 ## 引言
 
@@ -495,38 +496,40 @@ export class Class {};
 
 ### `goog.setTestOnly`
 
+在 `goog.module` 文件中 `goog.module` 声明语句之后可以有选择的调用 `goog.setTestOnly()`。
 
-3.5 goog.setTestOnly
-In a goog.module file the goog.module statement may optionally be followed by a call to goog.setTestOnly().
+在 ES 模块中，`import` 语句之后可以有选择的调用 `goog.setTestOnly()`。
 
-In an ES module the import statements may optionally be followed by a call to goog.setTestOnly().
+### `goog.require` 和 `goog.requireType` 声明
 
-3.6 goog.require and goog.requireType statements
-Imports are done with goog.require and goog.requireType statements. The names imported by a goog.require statement may be used both in code and in type annotations, while those imported by a goog.requireType may be used in type annotations only.
+使用 `goog.require` 和 `goog.requireType` 声明进行导入操作。这意味着可以同时在代码和类型注释中使用 `goog.require` 声明，而 `goog.requireType` 只能在类型注释中使用。
 
-The goog.require and goog.requireType statements form a contiguous block with no empty lines. This block follows the goog.module declaration separated by a single empty line. The entire argument to goog.require or goog.requireType is a namespace defined by a goog.module in a separate file. goog.require and goog.requireType statements may not appear anywhere else in the file.
+`goog.require` 和 `goog.requireType` 声明语句形成一个没有空行的连续代码块。 这个代码块位于 `goog.module` 之后并且与其隔开一行。`goog.require` 或 `goog.requireType` 的所有参数是位于一个单独存放文件中的名称空间。 `goog.require` 和 `goog.requireType` 声明语句不会出现在其他文件的任何地方。
 
-Each goog.require or goog.requireType is assigned to a single constant alias, or else destructured into several constant aliases. These aliases are the only acceptable way to refer to dependencies in type annotations or code. Fully qualified namespaces must not be used anywhere, except as an argument to goog.require or goog.requireType.
+每个 `goog.require` 或 `goog.requireType` 被分配给一个常量别名，或者分解为几个常量别名。这些别名是引用类型注释或代码中的依赖项的惟一可访问方式。除了 `goog.require` 与 `goog.requireType` 的参数之外，任何地方都不能使用完全限定的名称空间。
 
-Exception: Types, variables, and functions declared in externs files have to use their fully qualified name in type annotations and code.
+> 例外：在外部文件中声明的类型、变量和函数必须在类型注释和代码中使用它们的完全限定名。
 
-Aliases must match the final dot-separated component of the imported module's namespace.
+别名必须与导入模块名称空间的点分隔组件名称匹配。
 
-Exception: In certain cases, additional components of the namespace can be used to form a longer alias. The resulting alias must retain the original identifier's casing such that it still correctly identifies its type. Longer aliases may be used to disambiguate otherwise identical aliases, or if it significantly improves readability. In addition, a longer alias must be used to prevent masking native types such as Element, Event, Error, Map, and Promise (for a more complete list, see Standard Built-in Objects and Web APIs at MDN). When renaming destructured aliases, a space must follow the colon as required in 4.6.2 Horizontal whitespace.
+TODO: 添加锚点超链接
 
-A file should not contain both a goog.require and a goog.requireType statement for the same namespace. If the imported name is used both in code and in type annotations, it should be imported by a single goog.require statement.
+> 例外：在某些情况下，可以使用名称空间的其他组件来形成更长的别名。产生的别名必须保留原始标识符的包装，以便它仍然正确地标识其类型。较长的别名可用于消除其他相同别名的歧义，或者显著提高可读性。此外，必须使用更长的别名来防止屏蔽本地类型，如：`Element`、`Event`、`Error`、`Map` 和 `Promise`（有关更完整的列表，请参阅 MDN 上的 [标准内置对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) 和 [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API)）。重命名析构别名时，必须按照 [水平空格]() 的要求在冒号后面加上空格。
 
-If a module is imported only for its side effects, the call must be a goog.require (not a goog.requireType) and assignment may be omitted. A comment is required to explain why this is needed and suppress a compiler warning.
+一个文件不应该在同时包含同一个名称空间的 `goog.require` 和 `goog.requireType` 声明语句。如果导入的名称同时在代码和类型注释中使用，则应该由单个 `goog.require` 语句声明。
 
-The lines are sorted according to the following rules: All requires with a name on the left hand side come first, sorted alphabetically by those names. Then destructuring requires, again sorted by the names on the left hand side. Finally, any require calls that are standalone (generally these are for modules imported just for their side effects).
+如果一个模块仅仅因为其副作用而被导入，那么必须使用 `goog.require`(不是 `goog.requireType`) 并且可以省略赋值。需要添加注释来解释为什么需要这样做，并阻止编译器警告。
 
-Tip: There’s no need to memorize this order and enforce it manually. You can rely on your IDE to report requires that are not sorted correctly.
+这些代码声明按照以下规则进行排序：所有的行都需要在左侧有一个名称，然后按照这些名称的字母顺序排列。然后需要进行析构，再次按左侧的名称排序。最后，任何 `require` 调用要是独立的（通常是为了避免模块导入的副作用）。
 
-If a long alias or module name would cause a line to exceed the 80-column limit, it must not be wrapped: require lines are an exception to the 80-column limit.
+> 提示：没有必要记住这个顺序并手动执行它。您可以依赖您的 IDE 来报告未正确排序的导入处理。
 
-Example:
+如果一个很长的别名或模块名会导致一行超过 80 列的限制，一定不要换行。`require` 行是 80 列限制的例外。
 
-// Standard alias style.
+示例
+
+```js
+// 标准别名格式
 const MyClass = goog.require('some.package.MyClass');
 const MyType = goog.requireType('some.package.MyType');
 // Namespace-based alias used to disambiguate.
@@ -537,7 +540,7 @@ const RendererElement = goog.require('web.renderer.Element');
 // Also, require lines longer than 80 columns must not be wrapped.
 const SomeDataStructureModel = goog.requireType('identical.package.identifiers.models.SomeDataStructure');
 const SomeDataStructureProto = goog.require('proto.identical.package.identifiers.SomeDataStructure');
-// Standard alias style.
+// 标准别名格式
 const asserts = goog.require('goog.asserts');
 // Namespace-based alias used to disambiguate.
 const testingAsserts = goog.require('goog.testing.asserts');
@@ -550,13 +553,19 @@ const {clear: objectClear, clone: objectClone} = goog.require('goog.object');
 // goog.require without an alias in order to trigger side effects.
 /** @suppress {extraRequire} Initializes MyFramework. */
 goog.require('my.framework.initialization');
-Discouraged:
+```
 
+不推荐
+
+```js
 // If necessary to disambiguate, prefer PackageClass over SomeClass as it is
 // closer to the format of the module name.
 const SomeClass = goog.require('some.package.Class');
-Disallowed:
+```
 
+不允许
+
+```js
 // Extra terms must come from the namespace.
 const MyClassForBizzing = goog.require('some.package.MyClass');
 // Alias must include the entire final namespace component.
@@ -583,6 +592,8 @@ function someFunction(param) {
   const alias = goog.require('my.long.name.alias');
   // ...
 }
+```
+
 3.7 The file’s implementation
 The actual implementation follows after all dependency information is declared (separated by at least one blank line).
 
