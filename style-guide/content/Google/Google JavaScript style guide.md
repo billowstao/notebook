@@ -33,6 +33,11 @@
         - [导出的可变性](#%e5%af%bc%e5%87%ba%e7%9a%84%e5%8f%af%e5%8f%98%e6%80%a7)
         - [导出源](#%e5%af%bc%e5%87%ba%e6%ba%90)
       - [ES 模块中的循环依赖](#es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e7%9a%84%e5%be%aa%e7%8e%af%e4%be%9d%e8%b5%96)
+      - [与闭包互操作](#%e4%b8%8e%e9%97%ad%e5%8c%85%e4%ba%92%e6%93%8d%e4%bd%9c)
+        - [引用 `goog`](#%e5%bc%95%e7%94%a8-goog)
+        - [ES 模块中的 `goog.require`](#es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e7%9a%84-googrequire)
+        - [在 ES 模块中声明闭包模块的 ID](#%e5%9c%a8-es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e5%a3%b0%e6%98%8e%e9%97%ad%e5%8c%85%e6%a8%a1%e5%9d%97%e7%9a%84-id)
+    - [`goog.setTestOnly`](#googsettestonly)
 
 ## 引言
 
@@ -442,43 +447,55 @@ import './b.js';
 export let x;
 ```
 
+#### 与闭包互操作
 
-3.4.4 Interoperating with Closure
+##### 引用 `goog`
 
-3.4.4.1 Referencing goog
-To reference the Closure goog namespace, import Closure's goog.js.
+如果需要引用闭包 `goog` 名称空间，请导入闭包 `goog.js`。
 
+```js
 import * as goog from '../closure/goog/goog.js';
 
 const name = goog.require('a.name');
 
 export const CONSTANT = name.compute();
-goog.js exports only a subset of properties from the global goog that can be used in ES modules.
+```
 
+`goog.js` 只导出可以在 ES 模块中使用的全局 `goog` 子属性。
 
-3.4.4.2 goog.require in ES modules
-goog.require in ES modules works as it does in goog.module files. You can require any Closure namespace symbol (i.e., symbols created by goog.provide or goog.module) and goog.require will return the value.
+##### ES 模块中的 `goog.require`
 
+ES 模块中的 `goog.require` 工作方式与 `goog.module` 文件中的一致。你可以 `require` 任何闭包命名空间中的符号（例如：`goog.provide` 或 `goog.module` 创建的符号），并且 `goog.require` 将会返回相应值。
+
+```js
 import * as goog from '../closure/goog/goog.js';
 import * as anEsModule from './anEsModule.js';
 
 const GoogPromise = goog.require('goog.Promise');
 const myNamespace = goog.require('my.namespace');
+```
 
-3.4.4.3 Declaring Closure Module IDs in ES modules
-goog.declareModuleId can be used within ES modules to declare a goog.module-like module ID. This means that this module ID can be goog.required, goog.module.getd, goog.forwardDeclare'd, etc. as if it were a goog.module that did not call goog.module.declareLegacyNamespace. It does not create the module ID as a globally available JavaScript symbol.
+##### 在 ES 模块中声明闭包模块的 ID
 
-A goog.require (or goog.module.get) for a module ID from goog.declareModuleId will always return the module object (as if it was import *'d). As a result, the argument to goog.declareModuleId should always end with a lowerCamelCaseName.
+`goog.declareModuleId` 可以在 ES 模块中用来声明一个类似 `goog.module` 模块的 ID. 这意味着这个模块 ID 可以是类似 `goog.required`, `goog.module.getd`, `goog.forwardDeclare` 的模块。如果一个 `goog.module` 没有调用 `goog.module.declareLegacyNamespace`，将不会把模块 ID 创建为 JavaScript 全局符号。
 
-Note: It is an error to call goog.module.declareLegacyNamespace in an ES module, it can only be called from goog.module files. There is no direct way to associate a legacy namespace with an ES module.
+调用 `goog.declareModuleId` 返回的一个 `goog.require` (或 `goog.module.get`) 模块 ID 总是会返回模块对象（就像是 `import *`）。因此，`goog.declareModuleId` 的参数应该为小写驼峰命名法。
 
-goog.declareModuleId should only be used to upgrade Closure files to ES modules in place, where named exports are used.
+> 注意：在 ES 模块中调用 `goog.module.declareLegacyNamespace` 是错误的，这个方法只应该在从 `goog.module` 文件中调用。没有将传统名称空间与 ES 模块关联的方法。
 
+`goog.declareModuleId` 应该只用于将闭包文件升级到 ES 模块中，其中使用了命名导出。
+
+```js
 import * as goog from '../closure/goog.js';
 
 goog.declareModuleId('my.esm');
 
 export class Class {};
+```
+
+### `goog.setTestOnly`
+
+
 3.5 goog.setTestOnly
 In a goog.module file the goog.module statement may optionally be followed by a call to goog.setTestOnly().
 
