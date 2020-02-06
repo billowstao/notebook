@@ -152,7 +152,7 @@ color: #e5e5e5;
 
 确保您的编辑器使用UTF-8作为字符编码，并且没有字节顺序标记。
 
-通过 HTML 模板和文档中的编码 `<meta charset="utf-8">` 指定。不要指定样式表的编码，因为它们采用 UTF-8。
+通过 `<meta charset="utf-8">` 指定 HTML 模板和文档中的编码。不要指定样式表的编码，因为它们采用 UTF-8。
 
 （有关编码以及何时以及如何指定编码的更多信息，请参见 [处理HTML和CSS中的字符编码](https://www.w3.org/International/tutorials/tutorial-char-enc/)）
 
