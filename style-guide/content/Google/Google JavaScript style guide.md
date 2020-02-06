@@ -29,6 +29,10 @@
         - [别名导入](#%e5%88%ab%e5%90%8d%e5%af%bc%e5%85%a5)
       - [导出](#%e5%af%bc%e5%87%ba)
         - [命名与默认导出](#%e5%91%bd%e5%90%8d%e4%b8%8e%e9%bb%98%e8%ae%a4%e5%af%bc%e5%87%ba)
+        - [导出静态容器类和对象](#%e5%af%bc%e5%87%ba%e9%9d%99%e6%80%81%e5%ae%b9%e5%99%a8%e7%b1%bb%e5%92%8c%e5%af%b9%e8%b1%a1)
+        - [导出的可变性](#%e5%af%bc%e5%87%ba%e7%9a%84%e5%8f%af%e5%8f%98%e6%80%a7)
+        - [导出源](#%e5%af%bc%e5%87%ba%e6%ba%90)
+      - [ES 模块中的循环依赖](#es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e7%9a%84%e5%be%aa%e7%8e%af%e4%be%9d%e8%b5%96)
 
 ## 引言
 
@@ -89,8 +93,10 @@ const units = '\u03bcs'; // 'μs'
 
 /* 很好：对带有注释的非可打印字符使用转义符，以保持清晰度。 */
 return '\ufeff' + content;  // 附加一个字节顺序标记。
+```
 
-/* 较差：读者不知道这是什么字符 */
+```js
+/* 糟糕：读者不知道这是什么字符 */
 const units = '\u03bcs';
 ```
 
@@ -121,7 +127,7 @@ TODO: 添加锚点超链接
 
 ### `goog.module` 声明
 
-所有 `goog.module` 文件必须单独声明一行 `goog.module`：`goog.module` 声明不得换行，除了存在 80 列限制。
+所有 `goog.module` 文件必须单独声明一行 `goog.module`：`goog.module` 声明不得换行，因此是80列限制的例外。
 
 `goog.module` 定义名称空间。它是程序包名称（一个标识符，反映了代码所在的目录结构的片段）同时（可选）它定义的主类/枚举/接口连接到后面。
 
@@ -202,7 +208,7 @@ exports = {exportedFunction};
 
 #### 导入
 
-导入语句不能换行，80 列限制的例外。
+导入语句不能换行，因此是 80 列限制的例外。
 
 #### 导入路径
 
@@ -224,7 +230,9 @@ import {name} from './sibling.js';
 ```js
 // 错误
 import '../directory/file';
+```
 
+```js
 // 正确
 import '../directory/file.js';
 ```
@@ -307,7 +315,7 @@ new DomesticatedCat();
 
 ```js
 // 不要使用默认导出：
-export default class Foo { ... } // BAD!
+export default class Foo { ... } // 糟糕!
 ```
 
 ```js
@@ -322,11 +330,13 @@ class Foo { ... }
 export {Foo};
 ```
 
-3.4.2.2 Exporting static container classes and objects
-Do not export container classes or objects with static methods or properties for the sake of namespacing.
+##### 导出静态容器类和对象
 
+不要为了命名空间而导出带有静态方法或属性的容器类或对象。
+
+```js
 // container.js
-// Bad: Container is an exported class that has only static methods and fields.
+// 糟糕: Container 是一个导出的类，它只有静态方法和字段。
 export class Container {
   /** @return {number} */
   static bar() {
@@ -336,25 +346,31 @@ export class Container {
 
 /** @const {number} */
 Container.FOO = 1;
-Instead, export individual constants and functions:
+```
 
+相反，导出单独的常量和函数。
+
+```js
 /** @return {number} */
 export function bar() {
   return 1;
 }
 
 export const /** number */ FOO = 1;
+```
 
-3.4.2.3 Mutability of exports
-Exported variables must not be mutated outside of module initialization.
+##### 导出的可变性
 
-There are alternatives if mutation is needed, including exporting a constant reference to an object that has mutable fields or exporting accessor functions for mutable data.
+导出的变量不能在模块初始化之外发生变化。
 
-// Bad: both foo and mutateFoo are exported and mutated.
+如果需要突变，还有其他选择，包括导出对具有可变字段的对象的常量引用或导出可变数据的访问器函数。
+
+```js
+// 糟糕：foo 和 mutateFoo 都被导出并且发生了变化。
 export let /** number */ foo = 0;
 
 /**
- * Mutates foo.
+ * foo 变化
  */
 export function mutateFoo() {
   ++foo;
@@ -364,14 +380,17 @@ export function mutateFoo() {
  * @param {function(number): number} newMutateFoo
  */
 export function setMutateFoo(newMutateFoo) {
-  // Exported classes and functions can be mutated!
+  // 可以修改导出的类和函数！
   mutateFoo = () => {
     foo = newMutateFoo(foo);
   };
 }
-// Good: Rather than export the mutable variables foo and mutateFoo directly,
-// instead make them module scoped and export a getter for foo and a wrapper for
-// mutateFooFunc.
+```
+
+```js
+// 与其直接导出可变变量 foo 和 mutateFoo，
+// 相反，将它们设置为模块作用域，并为 foo 导出一个 getter
+// 为 mutateFooFunc 导出一个包装。
 let /** number */ foo = 0;
 let /** function(number): number */ mutateFooFunc = foo => foo + 1;
 
@@ -388,26 +407,41 @@ export function mutateFoo() {
 export function setMutateFoo(mutateFoo) {
   mutateFooFunc = mutateFoo;
 }
+```
 
-3.4.2.4 export from
-export from statements must not be line wrapped and are therefore an exception to the 80-column limit. This applies to both export from flavors.
+##### 导出源
 
+导出语句不能行包装，因此是 80 列限制的例外。这适用于所有导出风格。
+
+```js
 export {specificName} from './other.js';
 export * from './another.js';
-3.4.3 Circular Dependencies in ES modules
-Do not create cycles between ES modules, even though the ECMAScript specification allows this. Note that it is possible to create cycles with both the import and export statements.
+```
 
+#### ES 模块中的循环依赖
+
+不要在 ES 模块之间创建循环，即使 ECMAScript 规范允许这样做。注意，可以使用`import`和`export`语句创建循环。
+
+```js
 // a.js
 import './b.js';
+```
+
+```js
 // b.js
 import './a.js';
 
 // `export from` can cause circular dependencies too!
 export {x} from './c.js';
+```
+
+```js
 // c.js
 import './b.js';
 
 export let x;
+```
+
 
 3.4.4 Interoperating with Closure
 
