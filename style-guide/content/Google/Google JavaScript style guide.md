@@ -502,7 +502,7 @@ export class Class {};
 
 ### `goog.require` 和 `goog.requireType` 声明
 
-使用 `goog.require` 和 `goog.requireType` 声明进行导入操作。这意味着可以同时在代码和类型注释中使用 `goog.require` 声明，而 `goog.requireType` 只能在类型注释中使用。
+使用 `goog.require` 和 `goog.requireType` 声明进行导入操作。这意味 `goog.require` 可以同时在代码和类型注释中使用，而 `goog.requireType` 只能在类型注释中使用。
 
 `goog.require` 和 `goog.requireType` 声明语句形成一个没有空行的连续代码块。 这个代码块位于 `goog.module` 之后并且与其隔开一行。`goog.require` 或 `goog.requireType` 的所有参数是位于一个单独存放文件中的名称空间。 `goog.require` 和 `goog.requireType` 声明语句不会出现在其他文件的任何地方。
 
@@ -532,63 +532,62 @@ TODO: 添加锚点超链接
 // 标准别名格式
 const MyClass = goog.require('some.package.MyClass');
 const MyType = goog.requireType('some.package.MyType');
-// Namespace-based alias used to disambiguate.
+// 基于名称空间的别名，用于消除歧义的。
 const NsMyClass = goog.require('other.ns.MyClass');
-// Namespace-based alias used to prevent masking native type.
+// 基于名称空间的别名，用于防止屏蔽本机类型。
 const RendererElement = goog.require('web.renderer.Element');
-// Out of sequence namespace-based aliases used to improve readability.
-// Also, require lines longer than 80 columns must not be wrapped.
+// 基于序列名称空间的别名，用于提高可读性的。
+// 要求超过 80 列的行不能换行。
 const SomeDataStructureModel = goog.requireType('identical.package.identifiers.models.SomeDataStructure');
 const SomeDataStructureProto = goog.require('proto.identical.package.identifiers.SomeDataStructure');
 // 标准别名格式
 const asserts = goog.require('goog.asserts');
-// Namespace-based alias used to disambiguate.
+// 用于消除歧义的基于名称空间的别名。
 const testingAsserts = goog.require('goog.testing.asserts');
-// Standard destructuring into aliases.
+// 标准结构为别名。
 const {clear, clone} = goog.require('goog.array');
 const {Rgb} = goog.require('goog.color');
-// Namespace-based destructuring into aliases in order to disambiguate.
+// 基于名称空间的解构为别名，用于消除歧义
 const {SomeType: FooSomeType} = goog.requireType('foo.types');
 const {clear: objectClear, clone: objectClone} = goog.require('goog.object');
-// goog.require without an alias in order to trigger side effects.
-/** @suppress {extraRequire} Initializes MyFramework. */
+// `goog.require` 为了触发副作用没有别名。
+/** @suppress {extraRequire} 初始化 MyFramework. */
 goog.require('my.framework.initialization');
 ```
 
 不推荐
 
 ```js
-// If necessary to disambiguate, prefer PackageClass over SomeClass as it is
-// closer to the format of the module name.
+// 如果需要消除歧义，最好选择使用别名 `PackageClass` 而不是 `SomeClass`，因为它更接近模块名的格式。
 const SomeClass = goog.require('some.package.Class');
 ```
 
 不允许
 
 ```js
-// Extra terms must come from the namespace.
+// 额外的术语必须来自名称空间。
 const MyClassForBizzing = goog.require('some.package.MyClass');
-// Alias must include the entire final namespace component.
+// 别名必须包含整个最终的名称空间组件。
 const MyClass = goog.require('some.package.MyClassForBizzing');
-// Alias must not mask native type (should be `const JspbMap` here).
+// 别名不能覆盖本地变量 (这里原本应该为 `const JspbMap`)。
 const Map = goog.require('jspb.Map');
-// Don't break goog.require lines over 80 columns.
+// 不要打破 `goog.require` 行超过 80 列。
 const SomeDataStructure =
     goog.require('proto.identical.package.identifiers.SomeDataStructure');
-// Alias must be based on the namespace.
+// 别名必须基于名称空间。
 const randomName = goog.require('something.else');
-// Missing a space after the colon.
+// 冒号后面少了一个空格。
 const {Foo:FooProto} = goog.require('some.package.proto.Foo');
-// goog.requireType without an alias.
+// `goog.requireType` 没有别名。
 goog.requireType('some.package.with.a.Type');
 
 
 /**
- * @param {!some.unimported.Dependency} param All external types used in JSDoc
- *     annotations must be goog.require'd, unless declared in externs.
+ * @param {!some.unimported.Dependency} param 除非在外部声明，
+ *    JSDoc 注释中使用的所有外部类型必须是 `goog.require` 中的。
  */
 function someFunction(param) {
-  // goog.require lines must be at the top level before any other code.
+  // `goog.require` 行必须独立位于其他代码之前。
   const alias = goog.require('my.long.name.alias');
   // ...
 }
