@@ -50,7 +50,9 @@
       - [字面量对象：块状结构](#%e5%ad%97%e9%9d%a2%e9%87%8f%e5%af%b9%e8%b1%a1%e5%9d%97%e7%8a%b6%e7%bb%93%e6%9e%84)
       - [字面量类](#%e5%ad%97%e9%9d%a2%e9%87%8f%e7%b1%bb)
       - [函数表达式](#%e5%87%bd%e6%95%b0%e8%a1%a8%e8%be%be%e5%bc%8f)
-      - [`switch` 声明](#switch-%e5%a3%b0%e6%98%8e)
+      - [`switch` 语句](#switch-%e8%af%ad%e5%8f%a5)
+    - [语句](#%e8%af%ad%e5%8f%a5)
+      - [每行一个语句](#%e6%af%8f%e8%a1%8c%e4%b8%80%e4%b8%aa%e8%af%ad%e5%8f%a5)
 
 ## 引言
 
@@ -647,7 +649,7 @@ if (shortCondition()) foo();
 - 不要在左括号前换行。
 - 在左括号后面换行。
 - 在右括号之前换行。
-- 在终止了语句、函数声明体、类声明或类方法的右括号后面换行。具体的说，如果大括号后面跟着 `else`、`catch`、`while` 或逗号、分号、右括号则不需要换行。
+- 在终止语句、函数或类结构，类申明的右括号后面换行。具体的说，如果大括号后面跟着 `else`、`catch`、`while` 或逗号、分号、右括号则不需要换行。
 
 示例：
 
@@ -671,7 +673,7 @@ class InnerClass {
 
 #### 空代码块：可能比较简洁
 
-空的代码块或类似块的结构应该在右括号后立即关闭，代码块中没有字符、空格或换行（例如 `{}`），除非它是多块声明（直接包含多个块的语句：`if/else`, `try/catch/finally`）的一部分。
+空的代码块或类似块的结构应该在右括号后立即关闭，代码块中没有字符、空格或换行（例如 `{}`），除非它是多块语句（直接包含多个块的语句：`if/else`, `try/catch/finally`）的一部分。
 
 示例：
 
@@ -786,7 +788,7 @@ class Frobnicator {
 
 ```js
 prefix.something.reallyLongFunctionName('whatever', (a1, a2) => {
-  // 相比于之前声明行的缩进深度，当前函数体多缩进 2 个空格
+  // 相比于之前语句行的缩进深度，当前函数体多缩进 2 个空格
   if (a1.equals(a2)) {
     someOtherLongFunctionName(a1);
   } else {
@@ -804,7 +806,7 @@ some.reallyLongFunctionCall(arg1, arg2, arg3)
     });
 ```
 
-#### `switch` 声明
+#### `switch` 语句
 
 与其他块一样，`switch` 块的内容缩进 +2 空格。
 
@@ -829,9 +831,11 @@ switch (animal) {
 }
 ```
 
-4.3 Statements
-4.3.1 One statement per line
-Each statement is followed by a line-break.
+### 语句
+
+#### 每行一个语句
+
+每个语句后面都有一个换行符。
 
 4.3.2 Semicolons are required
 Every statement must be terminated with a semicolon. Relying on automatic semicolon insertion is forbidden.
