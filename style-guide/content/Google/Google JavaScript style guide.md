@@ -44,6 +44,13 @@
     - [括号](#%e6%8b%ac%e5%8f%b7)
       - [在控制结构中使用括号](#%e5%9c%a8%e6%8e%a7%e5%88%b6%e7%bb%93%e6%9e%84%e4%b8%ad%e4%bd%bf%e7%94%a8%e6%8b%ac%e5%8f%b7)
       - [非空块：K 与 R 风格](#%e9%9d%9e%e7%a9%ba%e5%9d%97k-%e4%b8%8e-r-%e9%a3%8e%e6%a0%bc)
+      - [空代码块：可能比较简洁](#%e7%a9%ba%e4%bb%a3%e7%a0%81%e5%9d%97%e5%8f%af%e8%83%bd%e6%af%94%e8%be%83%e7%ae%80%e6%b4%81)
+    - [块缩进：+2 空格](#%e5%9d%97%e7%bc%a9%e8%bf%9b2-%e7%a9%ba%e6%a0%bc)
+      - [字面量数组：块状结构](#%e5%ad%97%e9%9d%a2%e9%87%8f%e6%95%b0%e7%bb%84%e5%9d%97%e7%8a%b6%e7%bb%93%e6%9e%84)
+      - [字面量对象：块状结构](#%e5%ad%97%e9%9d%a2%e9%87%8f%e5%af%b9%e8%b1%a1%e5%9d%97%e7%8a%b6%e7%bb%93%e6%9e%84)
+      - [字面量类](#%e5%ad%97%e9%9d%a2%e9%87%8f%e7%b1%bb)
+      - [函数表达式](#%e5%87%bd%e6%95%b0%e8%a1%a8%e8%be%be%e5%bc%8f)
+      - [`switch` 声明](#switch-%e5%a3%b0%e6%98%8e)
 
 ## 引言
 
@@ -635,7 +642,7 @@ if (shortCondition()) foo();
 
 #### 非空块：K 与 R 风格
 
-大括号遵循 Kernighan 和 Ritchie 风格（埃及方括号），用于非空块和类似块的结构：
+大括号遵循 *Kernighan* 和 *Ritchie* 风格（埃及方括号），用于非空块和类似块的结构：
 
 - 不要在左括号前换行。
 - 在左括号后面换行。
@@ -662,14 +669,19 @@ class InnerClass {
 }
 ```
 
-4.1.3 Empty blocks: may be concise
-An empty block or block-like construct may be closed immediately after it is opened, with no characters, space, or line break in between (i.e. {}), unless it is a part of a multi-block statement (one that directly contains multiple blocks: if/else or try/catch/finally).
+#### 空代码块：可能比较简洁
 
-Example:
+空的代码块或类似块的结构应该在右括号后立即关闭，代码块中没有字符、空格或换行（例如 `{}`），除非它是多块声明（直接包含多个块的语句：`if/else`, `try/catch/finally`）的一部分。
 
+示例：
+
+```js
 function doNothing() {}
-Disallowed:
+```
 
+不允许：
+
+```js
 if (condition) {
   // …
 } else if (otherCondition) {} else {
@@ -679,12 +691,17 @@ if (condition) {
 try {
   // …
 } catch (e) {}
-4.2 Block indentation: +2 spaces
-Each time a new block or block-like construct is opened, the indent increases by two spaces. When the block ends, the indent returns to the previous indent level. The indent level applies to both code and comments throughout the block. (See the example in 4.1.2 Nonempty blocks: K&R style).
+```
 
-4.2.1 Array literals: optionally block-like
-Any array literal may optionally be formatted as if it were a “block-like construct.” For example, the following are all valid (not an exhaustive list):
+### 块缩进：+2 空格
 
+每当创建一个新的块或类似块的结构时，就增加两个空格的缩进。当块结束时，缩进返回到以前的缩进级别。缩进级别适用于整个块中的代码和注释。（参见 [非空块：K 与 R 风格](#%E9%9D%9E%E7%A9%BA%E5%9D%97%EF%BC%9AK%20%E4%B8%8E%20R%20%E9%A3%8E%E6%A0%BC) 中非空块中的示例）。
+
+#### 字面量数组：块状结构
+
+任何字面量数组都可以随意格式化，就好像它是一个“类似块的结构”。例如，下列各项都是有效的(并非详尽无遗)：
+
+```js
 const a = [
   0,
   1,
@@ -693,16 +710,23 @@ const a = [
 
 const b =
     [0, 1, 2];
+```
+
+```js
 const c = [0, 1, 2];
 
 someMethod(foo, [
   0, 1, 2,
 ], bar);
-Other combinations are allowed, particularly when emphasizing semantic groupings between elements, but should not be used only to reduce the vertical size of larger arrays.
+```
 
-4.2.2 Object literals: optionally block-like
-Any object literal may optionally be formatted as if it were a “block-like construct.” The same examples apply as 4.2.1 Array literals: optionally block-like. For example, the following are all valid (not an exhaustive list):
+允许使用其他组合，特别是在强调元素之间的语义分组时，但不应仅用于减少较大数组的垂直大小。
 
+#### 字面量对象：块状结构
+
+任何字面量对象都可以随意格式化，就好像它是一个“类似块的结构”。同样的例子适用于 [字面量数组：块状结构](#%E5%AD%97%E9%9D%A2%E9%87%8F%E6%95%B0%E7%BB%84%EF%BC%9A%E5%9D%97%E7%8A%B6%E7%BB%93%E6%9E%84)。例如，以下内容都是有效的(不是详尽的列表):
+
+```js
 const a = {
   a: 0,
   b: 1,
@@ -715,11 +739,15 @@ const c = {a: 0, b: 1};
 someMethod(foo, {
   a: 0, b: 1,
 }, bar);
-4.2.3 Class literals
-Class literals (whether declarations or expressions) are indented as blocks. Do not add semicolons after methods, or after the closing brace of a class declaration (statements—such as assignments—that contain class expressions are still terminated with a semicolon). Use the extends keyword, but not the @extends JSDoc annotation unless the class extends a templatized type.
+```
 
-Example:
+#### 字面量类
 
+字面量类（无论是声明还是表达式）块结构需要缩进。不要在方法之后添加分号，或者在类声明的右括号之后添加分号（包含类表达式的语句，比如赋值语句，仍然以分号结尾）。使用 `extends` 关键字，但不要使用 JSDoc `@extends` 注释，除非该类继承了模板类型。
+
+示例：
+
+```js
 class Foo {
   constructor() {
     /** @type {number} */
@@ -732,6 +760,9 @@ class Foo {
   }
 }
 Foo.Empty = class {};
+```
+
+```js
 /** @extends {Foo<string>} */
 foo.Bar = class extends Foo {
   /** @override */
@@ -745,14 +776,17 @@ class Frobnicator {
   /** @param {string} message */
   frobnicate(message) {}
 }
-4.2.4 Function expressions
-When declaring an anonymous function in the list of arguments for a function call, the body of the function is indented two spaces more than the preceding indentation depth.
+```
 
-Example:
+#### 函数表达式
 
+当在函数调用的参数列表中声明一个匿名函数时，函数体缩进比前一个缩进深度多两个空格。
+
+示例：
+
+```js
 prefix.something.reallyLongFunctionName('whatever', (a1, a2) => {
-  // Indent the function body +2 relative to indentation depth
-  // of the 'prefix' statement one line above.
+  // 相比于之前声明行的缩进深度，当前函数体多缩进 2 个空格
   if (a1.equals(a2)) {
     someOtherLongFunctionName(a1);
   } else {
@@ -763,21 +797,24 @@ prefix.something.reallyLongFunctionName('whatever', (a1, a2) => {
 some.reallyLongFunctionCall(arg1, arg2, arg3)
     .thatsWrapped()
     .then((result) => {
-      // Indent the function body +2 relative to the indentation depth
-      // of the '.then()' call.
+      // 相比于调用 `.then()`的缩进深度，当前函数体多缩进 2 个空格
       if (result) {
         result.use();
       }
     });
-4.2.5 Switch statements
-As with any other block, the contents of a switch block are indented +2.
+```
 
-After a switch label, a newline appears, and the indentation level is increased +2, exactly as if a block were being opened. An explicit block may be used if required by lexical scoping. The following switch label returns to the previous indentation level, as if a block had been closed.
+#### `switch` 声明
 
-A blank line is optional between a break and the following case.
+与其他块一样，`switch` 块的内容缩进 +2 空格。
 
-Example:
+在 `switch` 标签之后，插入一个新行，缩进级别增加 +2，创建一个新块。如果词法作用域需要，可以使用明确的块。闭合的 `switch` 标签回到以前的缩进级别，关闭这个块。
 
+可以选择在 `break` 与其后面的语句之间插入空行。
+
+示例：
+
+```js
 switch (animal) {
   case Animal.BANDERSNATCH:
     handleBandersnatch();
@@ -790,6 +827,8 @@ switch (animal) {
   default:
     throw new Error('Unknown animal');
 }
+```
+
 4.3 Statements
 4.3.1 One statement per line
 Each statement is followed by a line-break.
