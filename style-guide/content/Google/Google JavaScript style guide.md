@@ -39,6 +39,11 @@
         - [在 ES 模块中声明闭包模块的 ID](#%e5%9c%a8-es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e5%a3%b0%e6%98%8e%e9%97%ad%e5%8c%85%e6%a8%a1%e5%9d%97%e7%9a%84-id)
     - [`goog.setTestOnly`](#googsettestonly)
     - [`goog.require` 和 `goog.requireType` 声明](#googrequire-%e5%92%8c-googrequiretype-%e5%a3%b0%e6%98%8e)
+    - [文件的实现](#%e6%96%87%e4%bb%b6%e7%9a%84%e5%ae%9e%e7%8e%b0)
+  - [格式化](#%e6%a0%bc%e5%bc%8f%e5%8c%96)
+    - [括号](#%e6%8b%ac%e5%8f%b7)
+      - [在控制结构中使用括号](#%e5%9c%a8%e6%8e%a7%e5%88%b6%e7%bb%93%e6%9e%84%e4%b8%ad%e4%bd%bf%e7%94%a8%e6%8b%ac%e5%8f%b7)
+      - [非空块：K 与 R 风格](#%e9%9d%9e%e7%a9%ba%e5%9d%97k-%e4%b8%8e-r-%e9%a3%8e%e6%a0%bc)
 
 ## 引言
 
@@ -593,38 +598,53 @@ function someFunction(param) {
 }
 ```
 
-3.7 The file’s implementation
-The actual implementation follows after all dependency information is declared (separated by at least one blank line).
+### 文件的实现
 
-This may consist of any module-local declarations (constants, variables, classes, functions, etc), as well as any exported symbols.
+文件的实现在所有的依赖信息之后（至少用一行空行隔开）。
 
-4 Formatting
-Terminology Note: block-like construct refers to the body of a class, function, method, or brace-delimited block of code. Note that, by 5.2 Array literals and 5.3 Object literals, any array or object literal may optionally be treated as if it were a block-like construct.
+这可能包括任何本地模块声明(常量、变量、类、函数等)，以及任何导出的符号。
 
-Tip: Use clang-format. The JavaScript community has invested effort to make sure clang-format does the right thing on JavaScript files. clang-format has integration with several popular editors.
+## 格式化
 
-4.1 Braces
-4.1.1 Braces are used for all control structures
-Braces are required for all control structures (i.e. if, else, for, do, while, as well as any others), even if the body contains only a single statement. The first statement of a non-empty block must begin on its own line.
+TODO: 添加锚点超链接
 
-Disallowed:
+术语注：类级块结构是指类、函数、方法或用括号分隔的代码块的主体。注意，在 [字面量数组]() 和 [字面量对象]() 中，任何数组或对象字面量都可以被选择性地当作类似块的结构。
 
+> 提示：使用 clang-format. JavaScript 社区已经努力确保 clang-format 在 JavaScript 文件上运行良好。多个流行的编辑器集成 clang-format 与。
+
+### 括号
+
+#### 在控制结构中使用括号
+
+所有控制结构（例如：`if`、`else`、`for`、`do`、`while` 以及任何其他结构）都需要大括号，即使主体只包含一条语句。非空块的第一个语句必须从它的行开始。
+
+不允许
+
+```js
 if (someVeryLongCondition())
   doSomething();
 
 for (let i = 0; i < foo.length; i++) bar(foo[i]);
-Exception: A simple if statement that can fit entirely on a single line with no wrapping (and that doesn’t have an else) may be kept on a single line with no braces when it improves readability. This is the only case in which a control structure may omit braces and newlines.
+```
 
+例外：如果一个简单的 `if` 语句完全可以放在一行中，也没有换行(也没有 `else` 语句)，如果能提高可读性，可以放在一行中，而不加括号。这是控件结构可能省略大括号和换行的唯一情况。
+
+```js
 if (shortCondition()) foo();
-4.1.2 Nonempty blocks: K&R style
-Braces follow the Kernighan and Ritchie style (Egyptian brackets) for nonempty blocks and block-like constructs:
+```
 
-No line break before the opening brace.
-Line break after the opening brace.
-Line break before the closing brace.
-Line break after the closing brace if that brace terminates a statement or the body of a function or class statement, or a class method. Specifically, there is no line break after the brace if it is followed by else, catch, while, or a comma, semicolon, or right-parenthesis.
-Example:
+#### 非空块：K 与 R 风格
 
+大括号遵循 Kernighan 和 Ritchie 风格（埃及方括号），用于非空块和类似块的结构：
+
+- 不要在左括号前换行。
+- 在左括号后面换行。
+- 在右括号之前换行。
+- 在终止了语句、函数声明体、类声明或类方法的右括号后面换行。具体的说，如果大括号后面跟着 `else`、`catch`、`while` 或逗号、分号、右括号则不需要换行。
+
+示例：
+
+```js
 class InnerClass {
   constructor() {}
 
@@ -632,7 +652,7 @@ class InnerClass {
   method(foo) {
     if (condition(foo)) {
       try {
-        // Note: this might fail.
+        // 注：这里可能出错
         something();
       } catch (err) {
         recover();
@@ -640,6 +660,8 @@ class InnerClass {
     }
   }
 }
+```
+
 4.1.3 Empty blocks: may be concise
 An empty block or block-like construct may be closed immediately after it is opened, with no characters, space, or line break in between (i.e. {}), unless it is a part of a multi-block statement (one that directly contains multiple blocks: if/else or try/catch/finally).
 
