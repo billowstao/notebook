@@ -56,6 +56,10 @@
       - [必须有分号](#%e5%bf%85%e9%a1%bb%e6%9c%89%e5%88%86%e5%8f%b7)
     - [列限制：80](#%e5%88%97%e9%99%90%e5%88%b680)
     - [换行](#%e6%8d%a2%e8%a1%8c)
+      - [在哪里换行](#%e5%9c%a8%e5%93%aa%e9%87%8c%e6%8d%a2%e8%a1%8c)
+      - [连续行缩进至少 +4 空格](#%e8%bf%9e%e7%bb%ad%e8%a1%8c%e7%bc%a9%e8%bf%9b%e8%87%b3%e5%b0%91-4-%e7%a9%ba%e6%a0%bc)
+    - [空格](#%e7%a9%ba%e6%a0%bc)
+      - [垂直空格](#%e5%9e%82%e7%9b%b4%e7%a9%ba%e6%a0%bc)
 
 ## 引言
 
@@ -306,7 +310,7 @@ TODO: 添加文档锚点超链接
 
 ##### 别名导入
 
-通常，通过命名的 `import`（`import {name}`）导入的符号应保持相同的名称。避免导入模块使用别名（`import {SomeThing as SomeOtherThing}`）。最好通过使用模块导入 `import`（ `import *` ）或重命名导出模块本身来解决名称冲突。
+通常，通过命名的 `import`（`import {name}`）导入的符号应保持相同的名称。避免导入模块使用别名（`import {SomeThing as SomeOtherThing}`）。首选通过使用模块导入 `import`（ `import *` ）或重命名导出模块本身来解决名称冲突。
 
 ```js
 import * as bigAnimals from './biganimals.js';
@@ -575,7 +579,7 @@ goog.require('my.framework.initialization');
 不推荐
 
 ```js
-// 如果需要消除歧义，最好选择使用别名 `PackageClass` 而不是 `SomeClass`，因为它更接近模块名的格式。
+// 如果需要消除歧义，首选使用别名 `PackageClass` 而不是 `SomeClass`，因为它更接近模块名的格式。
 const SomeClass = goog.require('some.package.Class');
 ```
 
@@ -869,47 +873,62 @@ JavaScript 代码的列限制为 80 个字符。除了如下所述，任何超�
 
 > 提示：如果提取方法或局部变量可以解决列溢出问题，则不需要换行。
 
-4.5.1 Where to break
-The prime directive of line-wrapping is: prefer to break at a higher syntactic level.
+#### 在哪里换行
 
-Preferred:
+换行的主要宗旨是：首选在更高的语法层次上换行。
 
+首选的：
+
+```js
 currentEstimate =
     calc(currentEstimate + x * currentEstimate) /
         2.0;
-Discouraged:
+```
 
+不推荐：
+
+```js
 currentEstimate = calc(currentEstimate + x *
     currentEstimate) / 2.0;
-In the preceding example, the syntactic levels from highest to lowest are as follows: assignment, division, function call, parameters, number constant.
+```
 
-Operators are wrapped as follows:
+在前面的示例中，从高到低的语法级别如下：赋值、除法、函数调用、参数、数字常量。
 
-When a line is broken at an operator the break comes after the symbol. (Note that this is not the same practice used in Google style for Java.)
-This does not apply to the dot (.), which is not actually an operator.
-A method or constructor name stays attached to the open parenthesis (() that follows it.
-A comma (,) stays attached to the token that precedes it.
-Note: The primary goal for line wrapping is to have clear code, not necessarily code that fits in the smallest number of lines.
+操作符换行方式如下：
 
-4.5.2 Indent continuation lines at least +4 spaces
-When line-wrapping, each line after the first (each continuation line) is indented at least +4 from the original line, unless it falls under the rules of block indentation.
+1. 在操作符符号后断行。(注意，这与在 Google Java 风格中使用的做法不同。)
+2. 这不适用于点（`.`）, 它实际上不是一个操作符。
+3. 方法或构造函数名称始终附加在它后面的左括号（`(`）上。
+4. 逗号（`,`）保持连接到它前面的标记上。
 
-When there are multiple continuation lines, indentation may be varied beyond +4 as appropriate. In general, continuation lines at a deeper syntactic level are indented by larger multiples of 4, and two lines use the same indentation level if and only if they begin with syntactically parallel elements.
+> 注意：换行的主要目标是拥有清晰的代码，而不一定是让代码适合最小列数。
 
-4.6.3 Horizontal alignment: discouraged addresses the discouraged practice of using a variable number of spaces to align certain tokens with previous lines.
+#### 连续行缩进至少 +4 空格
 
-4.6 Whitespace
-4.6.1 Vertical whitespace
-A single blank line appears:
+换行时，除符合块缩进规则外，第一行（每个延续行）后的每一行至少从原来的行开始缩进 +4。
 
-Between consecutive methods in a class or object literal
-Exception: A blank line between two consecutive properties definitions in an object literal (with no other code between them) is optional. Such blank lines are used as needed to create logical groupings of fields.
-Within method bodies, sparingly to create logical groupings of statements. Blank lines at the start or end of a function body are not allowed.
-Optionally before the first or after the last method in a class or object literal (neither encouraged nor discouraged).
-As required by other sections of this document (e.g. 3.6 goog.require and goog.requireType statements).
-Multiple consecutive blank lines are permitted, but never required (nor encouraged).
+当有多个延续行时，缩进可以适当地超过 +4。通常，更深层语法层次上的延续行被 4 的更大倍数缩进，当且仅当它们以语法上平行的元素开始时，两行使用相同的缩进级别。
+
+TODO: 添加锚点超链接
+
+[水平对齐：不推荐]() 提出了不鼓励使用数量可变的空格将某些标记与前面的行对齐的做法。
+
+### 空格
+
+#### 垂直空格
+
+一个空白行出现在：
+
+1. 类或字面量对象的连续方法之间。
+  a. 例外：对象文字中的两个连续属性定义之间的空行（它们之间没有其他代码）是可选的。这样的空行可根据需要用于创建字段的逻辑分组。
+2. 在方法体中，尽量少地创建语句的逻辑分组。不允许在函数体的开始或结束处空行。
+3. 可选地在类或字面量对象中的第一个方法之前或最后一个方法之后(既不鼓励也不劝阻)。
+4. 按照本文件其他章节的要求（如 [`goog.require` 和 `goog.requireType` 语句](#%60goog.require%60%20%E5%92%8C%20%60goog.requireType%60%20%E8%AF%AD%E5%8F%A5)）。
+
+允许多个连续的空行，但从不要求(也不鼓励)。
 
 4.6.2 Horizontal whitespace
+
 Use of horizontal whitespace depends on location, and falls into three broad categories: leading (at the start of a line), trailing (at the end of a line), and internal. Leading whitespace (i.e., indentation) is addressed elsewhere. Trailing whitespace is forbidden.
 
 Beyond where required by the language or other style rules, and apart from literals, comments, and JSDoc, a single internal ASCII space also appears in the following places only.
