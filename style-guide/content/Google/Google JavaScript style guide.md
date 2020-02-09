@@ -14,7 +14,7 @@
   - [源文件结构](#%e6%ba%90%e6%96%87%e4%bb%b6%e7%bb%93%e6%9e%84)
     - [许可或版权信息（如果有）](#%e8%ae%b8%e5%8f%af%e6%88%96%e7%89%88%e6%9d%83%e4%bf%a1%e6%81%af%e5%a6%82%e6%9e%9c%e6%9c%89)
     - [`@fileoverview` JSDoc（如果存在）](#fileoverview-jsdoc%e5%a6%82%e6%9e%9c%e5%ad%98%e5%9c%a8)
-    - [`goog.module` 声明](#googmodule-%e5%a3%b0%e6%98%8e)
+    - [`goog.module` 语句](#googmodule-%e8%af%ad%e5%8f%a5)
       - [层次结构](#%e5%b1%82%e6%ac%a1%e7%bb%93%e6%9e%84)
       - [`goog.module.declareLegacyNamespace`](#googmoduledeclarelegacynamespace)
       - [导出 `goog.module`](#%e5%af%bc%e5%87%ba-googmodule)
@@ -31,14 +31,14 @@
         - [命名与默认导出](#%e5%91%bd%e5%90%8d%e4%b8%8e%e9%bb%98%e8%ae%a4%e5%af%bc%e5%87%ba)
         - [导出静态容器类和对象](#%e5%af%bc%e5%87%ba%e9%9d%99%e6%80%81%e5%ae%b9%e5%99%a8%e7%b1%bb%e5%92%8c%e5%af%b9%e8%b1%a1)
         - [导出的可变性](#%e5%af%bc%e5%87%ba%e7%9a%84%e5%8f%af%e5%8f%98%e6%80%a7)
-        - [导出源](#%e5%af%bc%e5%87%ba%e6%ba%90)
+        - [`export from`](#export-from)
       - [ES 模块中的循环依赖](#es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e7%9a%84%e5%be%aa%e7%8e%af%e4%be%9d%e8%b5%96)
       - [与闭包互操作](#%e4%b8%8e%e9%97%ad%e5%8c%85%e4%ba%92%e6%93%8d%e4%bd%9c)
         - [引用 `goog`](#%e5%bc%95%e7%94%a8-goog)
         - [ES 模块中的 `goog.require`](#es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e7%9a%84-googrequire)
         - [在 ES 模块中声明闭包模块的 ID](#%e5%9c%a8-es-%e6%a8%a1%e5%9d%97%e4%b8%ad%e5%a3%b0%e6%98%8e%e9%97%ad%e5%8c%85%e6%a8%a1%e5%9d%97%e7%9a%84-id)
     - [`goog.setTestOnly`](#googsettestonly)
-    - [`goog.require` 和 `goog.requireType` 声明](#googrequire-%e5%92%8c-googrequiretype-%e5%a3%b0%e6%98%8e)
+    - [`goog.require` 和 `goog.requireType` 语句](#googrequire-%e5%92%8c-googrequiretype-%e8%af%ad%e5%8f%a5)
     - [文件的实现](#%e6%96%87%e4%bb%b6%e7%9a%84%e5%ae%9e%e7%8e%b0)
   - [格式化](#%e6%a0%bc%e5%bc%8f%e5%8c%96)
     - [括号](#%e6%8b%ac%e5%8f%b7)
@@ -53,6 +53,9 @@
       - [`switch` 语句](#switch-%e8%af%ad%e5%8f%a5)
     - [语句](#%e8%af%ad%e5%8f%a5)
       - [每行一个语句](#%e6%af%8f%e8%a1%8c%e4%b8%80%e4%b8%aa%e8%af%ad%e5%8f%a5)
+      - [必须有分号](#%e5%bf%85%e9%a1%bb%e6%9c%89%e5%88%86%e5%8f%b7)
+    - [列限制：80](#%e5%88%97%e9%99%90%e5%88%b680)
+    - [换行](#%e6%8d%a2%e8%a1%8c)
 
 ## 引言
 
@@ -145,7 +148,7 @@ TODO: 添加锚点超链接
 
 有关格式设置规则，请参见 [7.5 顶级/文件级注释]()。
 
-### `goog.module` 声明
+### `goog.module` 语句
 
 所有 `goog.module` 文件必须单独声明一行 `goog.module`：`goog.module` 声明不得换行，因此是80列限制的例外。
 
@@ -429,7 +432,7 @@ export function setMutateFoo(mutateFoo) {
 }
 ```
 
-##### 导出源
+##### `export from`
 
 导出语句不能行包装，因此是 80 列限制的例外。这适用于所有导出风格。
 
@@ -514,11 +517,11 @@ export class Class {};
 
 在 ES 模块中，`import` 语句之后可以有选择的调用 `goog.setTestOnly()`。
 
-### `goog.require` 和 `goog.requireType` 声明
+### `goog.require` 和 `goog.requireType` 语句
 
-使用 `goog.require` 和 `goog.requireType` 声明进行导入操作。这意味 `goog.require` 可以同时在代码和类型注释中使用，而 `goog.requireType` 只能在类型注释中使用。
+使用 `goog.require` 和 `goog.requireType` 语句进行导入操作。这意味 `goog.require` 可以同时在代码和类型注释中使用，而 `goog.requireType` 只能在类型注释中使用。
 
-`goog.require` 和 `goog.requireType` 声明语句形成一个没有空行的连续代码块。 这个代码块位于 `goog.module` 之后并且与其隔开一行。`goog.require` 或 `goog.requireType` 的所有参数是位于一个单独存放文件中的名称空间。 `goog.require` 和 `goog.requireType` 声明语句不会出现在其他文件的任何地方。
+`goog.require` 和 `goog.requireType` 语句之间是连续无空行的代码块。 这个代码块位于 `goog.module` 之后并且与其隔开一行。`goog.require` 或 `goog.requireType` 的所有参数是位于一个单独存放文件中的名称空间。 `goog.require` 和 `goog.requireType` 语句不会出现在其他文件的任何地方。
 
 每个 `goog.require` 或 `goog.requireType` 被分配给一个常量别名，或者分解为几个常量别名。这些别名是引用类型注释或代码中的依赖项的惟一可访问方式。除了 `goog.require` 与 `goog.requireType` 的参数之外，任何地方都不能使用完全限定的名称空间。
 
@@ -837,28 +840,34 @@ switch (animal) {
 
 每个语句后面都有一个换行符。
 
-4.3.2 Semicolons are required
-Every statement must be terminated with a semicolon. Relying on automatic semicolon insertion is forbidden.
+#### 必须有分号
 
-4.4 Column limit: 80
-JavaScript code has a column limit of 80 characters. Except as noted below, any line that would exceed this limit must be line-wrapped, as explained in 4.5 Line-wrapping.
+每个语句都必须以分号结尾。禁止依赖自动插入分号机制。
 
-Exceptions:
+### 列限制：80
 
-goog.module, goog.require and goog.requireType statements (see 3.3 goog.module statement and 3.6 goog.require and goog.requireType statements).
-ES module import and export from statements (see 3.4.1 Imports and 3.4.2.4 export from).
-Lines where obeying the column limit is not possible or would hinder discoverability. Examples include:
-A long URL which should be clickable in source.
-A shell command intended to be copied-and-pasted.
-A long string literal which may need to be copied or searched for wholly (e.g., a long file path).
-4.5 Line-wrapping
-Terminology Note: Line wrapping is breaking a chunk of code into multiple lines to obey column limit, where the chunk could otherwise legally fit in a single line.
+TODO: 添加锚点跳转
 
-There is no comprehensive, deterministic formula showing exactly how to line-wrap in every situation. Very often there are several valid ways to line-wrap the same piece of code.
+JavaScript 代码的列限制为 80 个字符。除了如下所述，任何超过此限制的行都必须换行，如 [换行]() 中所述。
 
-Note: While the typical reason for line-wrapping is to avoid overflowing the column limit, even code that would in fact fit within the column limit may be line-wrapped at the author's discretion.
+例外：
 
-Tip: Extracting a method or local variable may solve the problem without the need to line-wrap.
+1. `goog.module`, `goog.require` 和 `goog.requireType` 语句（参见 [`goog.module` 语句](#%60goog.module%60%20%E8%AF%AD%E5%8F%A5) 和 [`goog.require` 和 `goog.requireType` 语句](#%60goog.require%60%20%E5%92%8C%20%60goog.requireType%60%20%E8%AF%AD%E5%8F%A5)）
+2. ES 模块的 `import` 和 `export from` 语句 （参见 [导入](#%E5%AF%BC%E5%85%A5) 和 [`export from`](#%60export%20from%60)）。
+3. 可能不遵循列限制的行或者不便于发现。例子包括：
+   - 可以在源代码中点击的一个很长的URL。
+   - 用于复制粘贴的 shell 命令。
+   - 可能需要全部复制或搜索的长字符串文字（例如：长文件路径）。
+
+### 换行
+
+术语标注：*换行*是将不遵循列限制的代码块拆分成多行。
+
+并没有全面的、确定性的准则可以确切地说明在每种情况下如何行换行。通常有几种有效的方法来对同一段代码进行换行。
+
+> 注意：虽然行包装的典型原因是为了避免溢出列限制，但是实际上适合列限制的代码也可以由作者自行决定换行。
+
+> 提示：如果提取方法或局部变量可以解决列溢出问题，则不需要换行。
 
 4.5.1 Where to break
 The prime directive of line-wrapping is: prefer to break at a higher syntactic level.
