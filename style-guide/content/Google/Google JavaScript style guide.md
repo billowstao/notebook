@@ -60,6 +60,7 @@
       - [连续行缩进至少 +4 空格](#%e8%bf%9e%e7%bb%ad%e8%a1%8c%e7%bc%a9%e8%bf%9b%e8%87%b3%e5%b0%91-4-%e7%a9%ba%e6%a0%bc)
     - [空格](#%e7%a9%ba%e6%a0%bc)
       - [垂直空格](#%e5%9e%82%e7%9b%b4%e7%a9%ba%e6%a0%bc)
+      - [水平空格](#%e6%b0%b4%e5%b9%b3%e7%a9%ba%e6%a0%bc)
 
 ## 引言
 
@@ -920,29 +921,35 @@ TODO: 添加锚点超链接
 一个空白行出现在：
 
 1. 类或字面量对象的连续方法之间。
-  a. 例外：对象文字中的两个连续属性定义之间的空行（它们之间没有其他代码）是可选的。这样的空行可根据需要用于创建字段的逻辑分组。
+
+    a. 例外：对象文字中的两个连续属性定义之间的空行（它们之间没有其他代码）是可选的。这样的空行可根据需要用于创建字段的逻辑分组。
+
 2. 在方法体中，尽量少地创建语句的逻辑分组。不允许在函数体的开始或结束处空行。
 3. 可选地在类或字面量对象中的第一个方法之前或最后一个方法之后(既不鼓励也不劝阻)。
 4. 按照本文件其他章节的要求（如 [`goog.require` 和 `goog.requireType` 语句](#%60goog.require%60%20%E5%92%8C%20%60goog.requireType%60%20%E8%AF%AD%E5%8F%A5)）。
 
 允许多个连续的空行，但从不要求(也不鼓励)。
 
-4.6.2 Horizontal whitespace
+#### 水平空格
 
-Use of horizontal whitespace depends on location, and falls into three broad categories: leading (at the start of a line), trailing (at the end of a line), and internal. Leading whitespace (i.e., indentation) is addressed elsewhere. Trailing whitespace is forbidden.
+水平空白的使用取决于位置，分为三大类：前导(在行的开头)、尾随(在行的末尾)和内部。前导空白(即缩进)在其他地方处理。禁止使用尾随空格。
 
-Beyond where required by the language or other style rules, and apart from literals, comments, and JSDoc, a single internal ASCII space also appears in the following places only.
+除了语言或其他样式规则所要求的之外，除了文字、注释和 JSDoc 之外，一个单独的内部 ASCII 空格应该只出现在以下位置。
 
-Separating any reserved word (such as if, for, or catch) except for function and super, from an open parenthesis (() that follows it on that line.
-Separating any reserved word (such as else or catch) from a closing curly brace (}) that precedes it on that line.
-Before any open curly brace ({), with two exceptions:
-Before an object literal that is the first argument of a function or the first element in an array literal (e.g. foo({a: [{c: d}]})).
-In a template expansion, as it is forbidden by the language (e.g. valid: `ab${1 + 2}cd`, invalid: `xy$ {3}z`).
-On both sides of any binary or ternary operator.
-After a comma (,) or semicolon (;). Note that spaces are never allowed before these characters.
-After the colon (:) in an object literal.
-On both sides of the double slash (//) that begins an end-of-line comment. Here, multiple spaces are allowed, but not required.
-After an open-block comment character and on both sides of close characters (e.g. for short-form type declarations, casts, and parameter name comments: this.foo = /** @type {number} */ (bar); or function(/** string */ foo) {; or baz(/* buzz= */ true)).
+1. 将除 `function` 和 `super` 之外的任何保留字(例如`if`、`for` 或 `catch`)与该行后面的花括号(`{`)分隔开。
+2. 将任何保留字(如 `else` 或 `catch`)与该行前的右花括号(`}`)分隔开。
+3. 左花括号(`{`)之前的空格有两个例外：
+
+    a. 字面量对象或字面量函数作为函数的第一个参数(例如：`foo({a: [{c: d}]})`)。
+
+    b. 在模板字符串中，语法禁止出现(例如：有效`ab${1 + 2}cd`，无效:`xy$ {3}z`)。
+
+4. 在任何二元或三元运算符的两边。
+5. 在逗号(`,`)或分号(`;`)之后。注意，在这些字符之前不允许有空格。
+6. 在字面量对象中的冒号(`:`)之后。
+7. 注释的双斜杠(`//`)末尾行的开始允许使用多个空格，但不是必需的。
+8. 在注释开始字符之后和在关闭字符的两边(例如，对于短格式的类型声明、强制类型转换和参数名注释：`this.foo = /** @type {number} */ (bar)` 或 `function(/** string */ foo) {` 或 `or baz(/* buzz= */ true)`)。
+
 4.6.3 Horizontal alignment: discouraged
 Terminology Note: Horizontal alignment is the practice of adding a variable number of additional spaces in your code with the goal of making certain tokens appear directly below certain other tokens on previous lines.
 
