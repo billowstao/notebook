@@ -61,6 +61,8 @@
     - [空格](#%e7%a9%ba%e6%a0%bc)
       - [垂直空格](#%e5%9e%82%e7%9b%b4%e7%a9%ba%e6%a0%bc)
       - [水平空格](#%e6%b0%b4%e5%b9%b3%e7%a9%ba%e6%a0%bc)
+      - [水平对齐：不鼓励](#%e6%b0%b4%e5%b9%b3%e5%af%b9%e9%bd%90%e4%b8%8d%e9%bc%93%e5%8a%b1)
+      - [函数参数](#%e5%87%bd%e6%95%b0%e5%8f%82%e6%95%b0)
 
 ## 引言
 
@@ -950,45 +952,53 @@ TODO: 添加锚点超链接
 7. 注释的双斜杠(`//`)末尾行的开始允许使用多个空格，但不是必需的。
 8. 在注释开始字符之后和在关闭字符的两边(例如，对于短格式的类型声明、强制类型转换和参数名注释：`this.foo = /** @type {number} */ (bar)` 或 `function(/** string */ foo) {` 或 `or baz(/* buzz= */ true)`)。
 
+#### 水平对齐：不鼓励
+
 4.6.3 Horizontal alignment: discouraged
-Terminology Note: Horizontal alignment is the practice of adding a variable number of additional spaces in your code with the goal of making certain tokens appear directly below certain other tokens on previous lines.
 
-This practice is permitted, but it is generally discouraged by Google Style. It is not even required to maintain horizontal alignment in places where it was already used.
+*术语*：水平对齐是在代码中添加可变数量的额外空格的实践，其目标是使某些标记直接出现在前几行上某些其他标记的下面。
 
-Here is an example without alignment, followed by one with alignment. Both are allowed, but the latter is discouraged:
+这种做法是允许的，但谷歌风格通常不鼓励这样做。它甚至不需要在已经使用过的地方保持水平对齐。
 
+下面是一个没有对齐的示例，后面是一个有对齐的示例。两者都是允许的，但后者是不鼓励的:
+
+```js
 {
-  tiny: 42, // this is great
-  longer: 435, // this too
+  tiny: 42, // 这很好
+  longer: 435, // 这同样也很好
 };
 
 {
-  tiny:   42,  // permitted, but future edits
-  longer: 435, // may leave it unaligned
+  tiny:   42,  // 允许，但未来需要编辑
+  longer: 435, // 可能无法对齐
 };
-Tip: Alignment can aid readability, but it creates problems for future maintenance. Consider a future change that needs to touch just one line. This change may leave the formerly-pleasing formatting mangled, and that is allowed. More often it prompts the coder (perhaps you) to adjust whitespace on nearby lines as well, possibly triggering a cascading series of reformattings. That one-line change now has a blast radius. This can at worst result in pointless busywork, but at best it still corrupts version history information, slows down reviewers and exacerbates merge conflicts.
+```
 
-4.6.4 Function arguments
-Prefer to put all function arguments on the same line as the function name. If doing so would exceed the 80-column limit, the arguments must be line-wrapped in a readable way. To save space, you may wrap as close to 80 as possible, or put each argument on its own line to enhance readability. Indentation should be four spaces. Aligning to the parenthesis is allowed, but discouraged. Below are the most common patterns for argument wrapping:
+> 提示：对齐有助于提高可读性，但是会给将来的维护带来问题。未来的一个更改可能只需要修改一行。这种更改可能会使以前令人满意的格式变得混乱，但是这种修改是允许的。更常见的情况是，它还会使编码器提示(可能是您手动修改)调整附近行上的空格，这可能会触发一连串的格式修改。这一行的改变导致一定范围内的影响。在最坏的情况下，这可能导致毫无意义的繁忙工作，但在最好的情况下，它仍然会破坏版本历史信息，减慢评审员的速度，并加剧代码合并冲突。
 
-// Arguments start on a new line, indented four spaces. Preferred when the
-// arguments don't fit on the same line with the function name (or the keyword
-// "function") but fit entirely on the second line. Works with very long
-// function names, survives renaming without reindenting, low on space.
+#### 函数参数
+
+最好将所有函数参数与函数名放在同一行。如果这样做会超过 80 列的限制，则参数必须以可读的方式行换行。为了节省空间，可以将参数包装为尽可能接近 80 列，或者将每个参数放在自己的行上以增强可读性。缩进应该是四个空格。对齐括号是允许的，但不鼓励。下面是最常见的参数换行模式：
+
+```js
+// 参数开始于新行，缩进四个空格。
+// 如果参数与函数名(或关键字"function")不适合放在同一行，首选放在第2行。
+// 如果函数名很长导致空间不足，尝试重命名函数而不进行换行缩进。
 doSomething(
     descriptiveArgumentOne, descriptiveArgumentTwo, descriptiveArgumentThree) {
   // …
 }
 
-// If the argument list is longer, wrap at 80. Uses less vertical space,
-// but violates the rectangle rule and is thus not recommended.
+// 如果参数列表较长，则在80处换行。
+// 可以使用较少的垂直空格，但如果违反了矩形规则则不建议使用。
+
 doSomething(veryDescriptiveArgumentNumberOne, veryDescriptiveArgumentTwo,
     tableModelEventHandlerProxy, artichokeDescriptorAdapterIterator) {
   // …
 }
 
-// Four-space, one argument per line.  Works with long function names,
-// survives renaming, and emphasizes each argument.
+// 四空格，每行一个参数。
+// 使用长函数名，可以重命名并强调每个参数。
 doSomething(
     veryDescriptiveArgumentNumberOne,
     veryDescriptiveArgumentTwo,
@@ -996,6 +1006,8 @@ doSomething(
     artichokeDescriptorAdapterIterator) {
   // …
 }
+```
+
 4.7 Grouping parentheses: recommended
 Optional grouping parentheses are omitted only when the author and reviewer agree that there is no reasonable chance that the code will be misinterpreted without them, nor would they have made the code easier to read. It is not reasonable to assume that every reader has the entire operator precedence table memorized.
 
