@@ -63,6 +63,9 @@
       - [水平空格](#%e6%b0%b4%e5%b9%b3%e7%a9%ba%e6%a0%bc)
       - [水平对齐：不鼓励](#%e6%b0%b4%e5%b9%b3%e5%af%b9%e9%bd%90%e4%b8%8d%e9%bc%93%e5%8a%b1)
       - [函数参数](#%e5%87%bd%e6%95%b0%e5%8f%82%e6%95%b0)
+  - [分组括号：推荐](#%e5%88%86%e7%bb%84%e6%8b%ac%e5%8f%b7%e6%8e%a8%e8%8d%90)
+    - [注释](#%e6%b3%a8%e9%87%8a)
+      - [块注释风格](#%e5%9d%97%e6%b3%a8%e9%87%8a%e9%a3%8e%e6%a0%bc)
 
 ## 引言
 
@@ -1008,18 +1011,23 @@ doSomething(
 }
 ```
 
-4.7 Grouping parentheses: recommended
-Optional grouping parentheses are omitted only when the author and reviewer agree that there is no reasonable chance that the code will be misinterpreted without them, nor would they have made the code easier to read. It is not reasonable to assume that every reader has the entire operator precedence table memorized.
+## 分组括号：推荐
 
-Do not use unnecessary parentheses around the entire expression following delete, typeof, void, return, throw, case, in, of, or yield.
+可选的分组括号只有在作者和审稿人一致认为没有括号，代码不会被误读、也不会使代码更易于阅读的情况下才会被省略。假设每个读者都记住了整个运算符优先表是不合理的。
 
-Parentheses are required for type casts: /** @type {!Foo} */ (foo).
+在 `delete`、`typeof`、`void`、`return`、`throw`、`case`、`in`、`of`、`yield` 后面的整个表达式中不要使用不必要的括号。
 
-4.8 Comments
-This section addresses implementation comments. JSDoc is addressed separately in 7 JSDoc.
+类型类型转换需要圆括号：`/** @type {!Foo} * / (Foo)`。
 
-4.8.1 Block comment style
-Block comments are indented at the same level as the surrounding code. They may be in /* … */ or //-style. For multi-line /* … */ comments, subsequent lines must start with * aligned with the * on the previous line, to make comments obvious with no extra context.
+### 注释
+
+本节讨论实现注释，JSDoc 在 [7 JSDoc](https://google.github.io/styleguide/jsguide.html#jsdoc/)中单独处理。
+
+#### 块注释风格
+
+块级注释被缩进到与周围代码相同的级别。它们可能是 `/*...*/` 或 `//` 风格的。对于多行 `/* ... */` 注释，随后的
+
+Block comments are indented at the same level as the surrounding code. They may be in /* … */ or //- style. For multi-line /* … */ comments, subsequent lines must start with * aligned with the * on the previous line, to make comments obvious with no extra context.
 
 /*
  * This is
