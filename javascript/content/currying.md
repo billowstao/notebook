@@ -52,7 +52,7 @@ alert( curriedSum(1)(2) ); // 3，以偏函数的方式调用
 
 要了解它的好处，我们需要一个实际中的例子。
 
-例如，我们有一个用于格式化和输出信息的日志（logging）函数 `log(date, importance, message)`。在实际项目中，此类函数具有很多有用的功能，例如通过网络发送日志（log），在这儿我们仅使用 alert：
+例如，我们有一个用于格式化和输出信息的日志（logging）函数 `log(date, importance, message)`。在实际项目中，此类函数具有很多有用的功能，例如通过网络发送日志（log），在这儿我们仅使用 `alert`：
 
 ```js
 function log(date, importance, message) {
@@ -100,5 +100,91 @@ debugNow("message"); // [HH:mm] DEBUG message
 
 所以：
 
-柯里化之后，我们没有丢失任何东西：`log` 依然可以被正常调用。
-我们可以轻松地生成偏函数，例如用于生成今天的日志的偏函数。
+1. 柯里化之后，我们没有丢失任何东西：`log` 依然可以被正常调用。
+2. 我们可以轻松地生成偏函数，例如用于生成今天的日志的偏函数。
+
+## 高级柯里化实现
+
+如果你想了解更多细节，下面是用于多参数函数的“高级”柯里化实现，我们也可以把它用于上面的示例。
+
+它非常短：
+
+```js
+function curry(func) {
+
+  return function curried(...args) {
+    if (args.length >= func.length) {
+      return func.apply(this, args);
+    } else {
+      return function(...args2) {
+        return curried.apply(this, args.concat(args2));
+      }
+    }
+  };
+
+}
+```
+
+用例：
+
+```js
+function sum(a, b, c) {
+  return a + b + c;
+}
+
+let curriedSum = curry(sum);
+
+alert( curriedSum(1, 2, 3) ); // 6，仍然可以被正常调用
+alert( curriedSum(1)(2,3) ); // 6，对第一个参数的柯里化
+alert( curriedSum(1)(2)(3) ); // 6，全柯里化
+```
+
+新的 `curry` 可能看上去有点复杂，但是它很容易理解。
+
+`curry(func)` 调用的结果是如下所示的包装器 `curried`：
+
+```js
+// func 是要转换的函数
+function curried(...args) {
+  if (args.length >= func.length) { // (1)
+    return func.apply(this, args);
+  } else {
+    return function pass(...args2) { // (2)
+      return curried.apply(this, args.concat(args2));
+    }
+  }
+};
+```
+
+当我们运行它时，这里有两个 `if` 执行分支：
+
+1. 现在调用：如果传入的 `args` 长度与原始函数所定义的（`func.length`）相同或者更长，那么只需要将调用传递给它即可。
+2. 获取一个偏函数：否则，`func` 还没有被调用。取而代之的是，返回另一个包装器 `pass`，它将重新应用 `curried`，将之前传入的参数与新的参数一起传入。然后，在一个新的调用中，再次，我们将获得一个新的偏函数（如果参数不足的话），或者最终的结果。
+
+例如，让我们看看 `sum(a, b, c)` 这个例子。它有三个参数，所以 `sum.length = 3`。
+
+对于调用 `curried(1)(2)(3)`：
+
+1. 第一个调用 `curried(1)` 将 `1` 保存在词法环境中，然后返回一个包装器 `pass`。
+2. 包装器 `pass` 被调用，参数为 `(2)`：它会获取之前的参数 `(1)`，将它与得到的 `(2)` 连在一起，并一起调用 `curried(1, 2)`。由于参数数量仍小于 3，`curry` 函数依然会返回 `pass`。
+3. 包装器 `pass` 再次被调用，参数为 `(3)`，在接下来的调用中，`pass(3)` 会获取之前的参数 `(1, 2)` 并将 `3` 与之合并，执行调用 `curried(1, 2, 3)` — 最终有 3 个参数，它们被传入最原始的函数中。
+
+如果这还不够清楚，那你可以把函数调用顺序在你的脑海中或者在纸上过一遍。
+
+> **只允许确定参数长度的函数**
+>
+> 柯里化要求函数具有固定数量的参数。
+>
+> 使用 rest 参数的函数，例如 `f(...args)`，不能以这种方式进行柯里化。
+
+> **比柯里化多一点**
+>
+> 根据定义，柯里化应该将 `sum(a, b, c)` 转换为 sum(a)(b)(c)。
+>
+> 但是，如前所述，JavaScript 中大多数的柯里化实现都是高级版的：它们使得函数可以被多参数变体调用。
+
+## 总结
+
+柯里化 是一种转换，将 `f(a,b,c)` 转换为可以被以 `f(a)(b)(c)` 的形式进行调用。JavaScript 实现通常都保持该函数可以被正常调用，并且如果参数数量不足，则返回偏函数。
+
+柯里化让我们能够更容易地获取偏函数。就像我们在日志记录示例中看到的那样，普通函数 `log(date, importance, message)` 在被柯里化之后，当我们调用它的时候传入一个参数（如 `log(date)`）或两个参数（`log(date, importance)`）时，它会返回偏函数。
