@@ -66,6 +66,7 @@
   - [分组括号：推荐](#%e5%88%86%e7%bb%84%e6%8b%ac%e5%8f%b7%e6%8e%a8%e8%8d%90)
     - [注释](#%e6%b3%a8%e9%87%8a)
       - [块注释风格](#%e5%9d%97%e6%b3%a8%e9%87%8a%e9%a3%8e%e6%a0%bc)
+      - [参数名注释](#%e5%8f%82%e6%95%b0%e5%90%8d%e6%b3%a8%e9%87%8a)
 
 ## 引言
 
@@ -1021,14 +1022,14 @@ doSomething(
 
 ### 注释
 
-本节讨论实现注释，JSDoc 在 [7 JSDoc](https://google.github.io/styleguide/jsguide.html#jsdoc/)中单独处理。
+// TODO: 添加锚点超链接
+本节讨论实现注释，JSDoc 在 [7 JSDoc](#)中单独处理。
 
 #### 块注释风格
 
-块级注释被缩进到与周围代码相同的级别。它们可能是 `/*...*/` 或 `//` 风格的。对于多行 `/* ... */` 注释，随后的
+块注释被缩进到与周围代码相同的级别。它们可能是 `/* ... */` 或 `//` 风格的。对于多行 `/*...*/` 注释，后面的行必须以与前一行的 `*` 对齐的 `*` 开始，这样注释就很明显，没有额外的上下文。
 
-Block comments are indented at the same level as the surrounding code. They may be in /* … */ or //- style. For multi-line /* … */ comments, subsequent lines must start with * aligned with the * on the previous line, to make comments obvious with no extra context.
-
+```js
 /*
  * This is
  * okay.
@@ -1038,17 +1039,26 @@ Block comments are indented at the same level as the surrounding code. They may 
 // is this.
 
 /* This is fine, too. */
-Comments are not enclosed in boxes drawn with asterisks or other characters.
+```
 
-Do not use JSDoc (/** … */) for implementation comments.
+注释不包括在带有星号或其他字符的框中。
 
-4.8.2 Parameter Name Comments
-“Parameter name” comments should be used whenever the value and method name do not sufficiently convey the meaning, and refactoring the method to be clearer is infeasible . Their preferred format is before the value with =:
+不要使用 JSDoc (`/** ... */`) 实现注释。
 
+#### 参数名注释
+
+当值和方法名不能充分表达其含义，并且重构方法以使其更清晰也是不可行时，应该使用"参数名"注释。他们的首选格式是在值之前使用 `=`:
+
+```js
 someFunction(obviousParam, /* shouldRender= */ true, /* name= */ 'hello');
-For consistency with surrounding code you may put them after the value without =:
+```
 
+为了与周围的代码保持一致，在它们后面可以不添加`=`:
+
+```js
 someFunction(obviousParam, true /* shouldRender */, 'hello' /* name */);
+```
+
 5 Language features
 JavaScript includes many dubious (and even dangerous) features. This section delineates which features may or may not be used, and any additional constraints on their use.
 
