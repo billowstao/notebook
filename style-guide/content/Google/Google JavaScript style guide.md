@@ -67,6 +67,12 @@
     - [注释](#%e6%b3%a8%e9%87%8a)
       - [块注释风格](#%e5%9d%97%e6%b3%a8%e9%87%8a%e9%a3%8e%e6%a0%bc)
       - [参数名注释](#%e5%8f%82%e6%95%b0%e5%90%8d%e6%b3%a8%e9%87%8a)
+  - [语言特性](#%e8%af%ad%e8%a8%80%e7%89%b9%e6%80%a7)
+    - [本地变量声明](#%e6%9c%ac%e5%9c%b0%e5%8f%98%e9%87%8f%e5%a3%b0%e6%98%8e)
+      - [使用 `const` 或 `let`](#%e4%bd%bf%e7%94%a8-const-%e6%88%96-let)
+      - [每次声明一个变量](#%e6%af%8f%e6%ac%a1%e5%a3%b0%e6%98%8e%e4%b8%80%e4%b8%aa%e5%8f%98%e9%87%8f)
+      - [在需要时声明，尽可能的初始化](#%e5%9c%a8%e9%9c%80%e8%a6%81%e6%97%b6%e5%a3%b0%e6%98%8e%e5%b0%bd%e5%8f%af%e8%83%bd%e7%9a%84%e5%88%9d%e5%a7%8b%e5%8c%96)
+      - [根据需要声明类型](#%e6%a0%b9%e6%8d%ae%e9%9c%80%e8%a6%81%e5%a3%b0%e6%98%8e%e7%b1%bb%e5%9e%8b)
 
 ## 引言
 
@@ -1059,24 +1065,31 @@ someFunction(obviousParam, /* shouldRender= */ true, /* name= */ 'hello');
 someFunction(obviousParam, true /* shouldRender */, 'hello' /* name */);
 ```
 
-5 Language features
-JavaScript includes many dubious (and even dangerous) features. This section delineates which features may or may not be used, and any additional constraints on their use.
+## 语言特性
 
-5.1 Local variable declarations
-5.1.1 Use const and let
-Declare all local variables with either const or let. Use const by default, unless a variable needs to be reassigned. The var keyword must not be used.
+JavaScript 包含许多可疑 (甚至危险) 的特性。本节描述哪些功能可以使用，哪些不可以使用，以及对它们的使用的附加限制。
 
-5.1.2 One variable per declaration
-Every local variable declaration declares only one variable: declarations such as let a = 1, b = 2; are not used.
+### 本地变量声明
 
-5.1.3 Declared when needed, initialized as soon as possible
-Local variables are not habitually declared at the start of their containing block or block-like construct. Instead, local variables are declared close to the point they are first used (within reason), to minimize their scope.
+#### 使用 `const` 或 `let`
 
-5.1.4 Declare types as needed
-JSDoc type annotations may be added either on the line above the declaration, or else inline before the variable name if no other JSDoc is present.
+使用 `const` 或 `let` 声明所有局部变量。默认情况下使用 `const`，除非需要重新赋值变量。不能使用 `var` 关键字。
 
-Example:
+#### 每次声明一个变量
 
+每个局部变量声明只声明一个变量：如 `let a = 1, b = 2;` 的声明是不允许的。
+
+#### 在需要时声明，尽可能的初始化
+
+局部变量通常不会在其包含块或块状结构开始处声明。相反，局部变量被声明在它们第一次使用的地方附近 (在合理范围内)，以最小化它们的作用域。
+
+#### 根据需要声明类型
+
+如果不存在其他的 JSDoc，可以在声明变量的上一行添加 JSDoc 类型注释，或者在变量名之前使用内联注释。
+
+示例：
+
+```js
 const /** !Array<number> */ data = [];
 
 /**
@@ -1084,11 +1097,16 @@ const /** !Array<number> */ data = [];
  * @type {!Array<number>}
  */
 const data = [];
-Mixing inline and JSDoc styles is not allowed: the compiler will only process the first JsDoc and the inline annotations will be lost.
+```
 
+不允许混合使用内联和 JSDoc 样式：编译器将只处理第一个 JSDoc，内联注释将丢失。
+
+```js
 /** Some description. */
 const /** !Array<number> */ data = [];
-Tip: There are many cases where the compiler can infer a templatized type but not its parameters. This is particularly the case when the initializing literal or constructor call does not include any values of the template parameter type (e.g., empty arrays, objects, Maps, or Sets), or if the variable is modified in a closure. Local variable type annotations are particularly helpful in these cases since otherwise the compiler will infer the template parameter as unknown.
+```
+
+> 提示：在很多情况下，编译器可以推断出模板化的类型，但不能推断出它的参数。尤其是在初始化字面量类型或构造函数调用不包含模板参数类型的任何值 (例如，Arrays、Objects、Map 或 Sets)，或者变量在闭包中被修改时。局部变量类型注释在这些情况下特别有用，因为否则编译器将推断模板参数为未知。
 
 5.2 Array literals
 5.2.1 Use trailing commas
