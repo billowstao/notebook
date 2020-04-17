@@ -73,6 +73,12 @@
       - [每次声明一个变量](#%e6%af%8f%e6%ac%a1%e5%a3%b0%e6%98%8e%e4%b8%80%e4%b8%aa%e5%8f%98%e9%87%8f)
       - [在需要时声明，尽可能的初始化](#%e5%9c%a8%e9%9c%80%e8%a6%81%e6%97%b6%e5%a3%b0%e6%98%8e%e5%b0%bd%e5%8f%af%e8%83%bd%e7%9a%84%e5%88%9d%e5%a7%8b%e5%8c%96)
       - [根据需要声明类型](#%e6%a0%b9%e6%8d%ae%e9%9c%80%e8%a6%81%e5%a3%b0%e6%98%8e%e7%b1%bb%e5%9e%8b)
+    - [字面量数组](#%e5%ad%97%e9%9d%a2%e9%87%8f%e6%95%b0%e7%bb%84)
+      - [使用尾随逗号](#%e4%bd%bf%e7%94%a8%e5%b0%be%e9%9a%8f%e9%80%97%e5%8f%b7)
+      - [不使用可变的 `Array` 构造函数](#%e4%b8%8d%e4%bd%bf%e7%94%a8%e5%8f%af%e5%8f%98%e7%9a%84-array-%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0)
+      - [非数值的属性](#%e9%9d%9e%e6%95%b0%e5%80%bc%e7%9a%84%e5%b1%9e%e6%80%a7)
+      - [解构](#%e8%a7%a3%e6%9e%84)
+      - [展开运算符](#%e5%b1%95%e5%bc%80%e8%bf%90%e7%ae%97%e7%ac%a6)
 
 ## 引言
 
@@ -1108,59 +1114,87 @@ const /** !Array<number> */ data = [];
 
 > 提示：在很多情况下，编译器可以推断出模板化的类型，但不能推断出它的参数。尤其是在初始化字面量类型或构造函数调用不包含模板参数类型的任何值 (例如，Arrays、Objects、Map 或 Sets)，或者变量在闭包中被修改时。局部变量类型注释在这些情况下特别有用，因为否则编译器将推断模板参数为未知。
 
-5.2 Array literals
-5.2.1 Use trailing commas
-Include a trailing comma whenever there is a line break between the final element and the closing bracket.
+### 字面量数组
 
-Example:
+#### 使用尾随逗号
 
+当最后一个元素和结束括号之间有一个换行符时，在后面加上逗号。
+
+示例：
+
+```js
 const values = [
   'first value',
   'second value',
 ];
-5.2.2 Do not use the variadic Array constructor
-The constructor is error-prone if arguments are added or removed. Use a literal instead.
+```
 
-Disallowed:
+#### 不使用可变的 `Array` 构造函数
 
+如果添加或者删除参数，构造函数很容易出错。使用字面量来替代。
+
+不允许：
+
+```js
 const a1 = new Array(x1, x2, x3);
 const a2 = new Array(x1, x2);
 const a3 = new Array(x1);
 const a4 = new Array();
-This works as expected except for the third case: if x1 is a whole number then a3 is an array of size x1 where all elements are undefined. If x1 is any other number, then an exception will be thrown, and if it is anything else then it will be a single-element array.
+```
 
-Instead, write
+除了上面的第三种情况与预期一致之外：如果 `x1` 是个整数，那么 `a3` 就是一个大小为 `x1` 的数组，其中所有的元素都是 `undefined`。如果 `x1` 是任何其他数字将抛出一个异常， `a3` 将是一个单元素数组。
 
+相反的，写成这样
+
+```js
 const a1 = [x1, x2, x3];
 const a2 = [x1, x2];
 const a3 = [x1];
 const a4 = [];
-Explicitly allocating an array of a given length using new Array(length) is allowed when appropriate.
+```
 
-5.2.3 Non-numeric properties
-Do not define or use non-numeric properties on an array (other than length). Use a Map (or Object) instead.
+在适当的时候，允许使用 `new Array(length)` 显式地分配给定长度的数组。
 
-5.2.4 Destructuring
-Array literals may be used on the left-hand side of an assignment to perform destructuring (such as when unpacking multiple values from a single array or iterable). A final rest element may be included (with no space between the ... and the variable name). Elements should be omitted if they are unused.
+#### 非数值的属性
 
+不要在数组上定义或使用非数值属性(长度除外)。使用 `Map` (或 `Object`)代替。
+
+#### 解构
+
+可以在赋值的左侧使用数组字面量来执行析构(例如从单个数组或可迭代变量中拆包多个值时)。可以在最后包含一个"rest"  元素(在 `...`和变量名之间没有空格)。省略不使用的元素。
+
+```js
 const [a, b, c, ...rest] = generateResults();
 let [, b,, d] = someArray;
-Destructuring may also be used for function parameters (note that a parameter name is required but ignored). Always specify [] as the default value if a destructured array parameter is optional, and provide default values on the left hand side:
+```
 
+也可以对函数参数使用解构(注意需要保留忽略的参数名)。如果解构数组参数是可选的，则始终指定默认值为 `[]`
+，并且在左侧提供默认值。
+
+```js
 /** @param {!Array<number>=} param1 */
 function optionalDestructuring([a = 4, b = 2] = []) { … };
-Disallowed:
+```
 
+不允许：
+
+```js
 function badDestructuring([a, b] = [4, 2]) { … };
-Tip: For (un)packing multiple values into a function’s parameter or return, prefer object destructuring to array destructuring when possible, as it allows naming the individual elements and specifying a different type for each.
+```
 
-5.2.5 Spread operator
-Array literals may include the spread operator (...) to flatten elements out of one or more other iterables. The spread operator should be used instead of more awkward constructs with Array.prototype. There is no space after the ....
+> 提示: 对于将多个值打包(拆包)到函数的参数或返回中，尽可能选择对象解构而不是数组解构，因为它允许命名单个元素并为每个元素指定不同的类型。
 
-Example:
+#### 展开运算符
 
+数组字面量可以包含展开运算符(`...`)来将一个或多个嵌套元素扁平化。应该使用展开运算符而不是更加笨拙的 `Array.prototype` 构造方法。`...` 后面没有空格。
+
+示例：
+
+```js
 [...foo]   // preferred over Array.prototype.slice.call(foo)
 [...foo, ...bar]   // preferred over foo.concat(bar)
+```
+
 5.3 Object literals
 5.3.1 Use trailing commas
 Include a trailing comma whenever there is a line break between the final property and the closing brace.
