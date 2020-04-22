@@ -79,6 +79,15 @@
       - [非数值的属性](#%e9%9d%9e%e6%95%b0%e5%80%bc%e7%9a%84%e5%b1%9e%e6%80%a7)
       - [解构](#%e8%a7%a3%e6%9e%84)
       - [展开运算符](#%e5%b1%95%e5%bc%80%e8%bf%90%e7%ae%97%e7%ac%a6)
+    - [对象字面量](#%e5%af%b9%e8%b1%a1%e5%ad%97%e9%9d%a2%e9%87%8f)
+      - [使用尾逗号](#%e4%bd%bf%e7%94%a8%e5%b0%be%e9%80%97%e5%8f%b7)
+      - [不要使用对象构造函数](#%e4%b8%8d%e8%a6%81%e4%bd%bf%e7%94%a8%e5%af%b9%e8%b1%a1%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0)
+      - [不要混合使用引号和无引号键](#%e4%b8%8d%e8%a6%81%e6%b7%b7%e5%90%88%e4%bd%bf%e7%94%a8%e5%bc%95%e5%8f%b7%e5%92%8c%e6%97%a0%e5%bc%95%e5%8f%b7%e9%94%ae)
+      - [计算的属性名称](#%e8%ae%a1%e7%ae%97%e7%9a%84%e5%b1%9e%e6%80%a7%e5%90%8d%e7%a7%b0)
+      - [方法简写](#%e6%96%b9%e6%b3%95%e7%ae%80%e5%86%99)
+      - [属性简写](#%e5%b1%9e%e6%80%a7%e7%ae%80%e5%86%99)
+      - [解构](#%e8%a7%a3%e6%9e%84-1)
+      - [枚举](#%e6%9e%9a%e4%b8%be)
 
 ## 引言
 
@@ -177,7 +186,7 @@ TODO: 添加锚点超链接
 
 `goog.module` 定义名称空间。它是程序包名称（一个标识符，反映了代码所在的目录结构的片段）同时（可选）它定义的主类/枚举/接口连接到后面。
 
-示例
+例：
 
 ```js
 goog.module('search.urlHistory.UrlHistoryService');
@@ -200,7 +209,7 @@ goog.module('foo.bar.baz');
 
 单个 `goog.module` 语句后可以选择调用 `goog.module.declareLegacyNamespace();`。尽可能避免调用 `goog.module.declareLegacyNamespace()`。
 
-示例
+例：
 
 ```js
 goog.module('my.test.helpers');
@@ -214,7 +223,7 @@ goog.setTestOnly();
 
 使用 `exports` 对象导出类、枚举、函数、常量和其他符号。导出的符号可以直接在导出对象上定义，也可以在本地声明并单独导出。符号只有在用于模块外部时才会被导出。非导出模块本地符号不会声明为`@private`，它们的名称也不会以下划线结尾。对于导出和模块本地符号没有规定的顺序。
 
-示例
+例：
 
 ```js
 const /** !Array<number> */ exportedArray = [1, 2, 3];
@@ -566,7 +575,7 @@ TODO: 添加锚点超链接
 
 如果一个很长的别名或模块名会导致一行超过 80 列的限制，一定不要换行。`require` 行是 80 列限制的例外。
 
-示例
+例：
 
 ```js
 // 标准别名格式
@@ -677,7 +686,7 @@ if (shortCondition()) foo();
 - 在右括号之前换行。
 - 在终止语句、函数或类结构，类申明的右括号后面换行。具体的说，如果大括号后面跟着 `else`、`catch`、`while` 或逗号、分号、右括号则不需要换行。
 
-示例：
+例：
 
 ```js
 class InnerClass {
@@ -701,7 +710,7 @@ class InnerClass {
 
 空的代码块或类似块的结构应该在右括号后立即关闭，代码块中没有字符、空格或换行（例如 `{}`），除非它是多块语句（直接包含多个块的语句：`if/else`, `try/catch/finally`）的一部分。
 
-示例：
+例：
 
 ```js
 function doNothing() {}
@@ -773,7 +782,7 @@ someMethod(foo, {
 
 字面量类（无论是声明还是表达式）块结构需要缩进。不要在方法之后添加分号，或者在类声明的右括号之后添加分号（包含类表达式的语句，比如赋值语句，仍然以分号结尾）。使用 `extends` 关键字，但不要使用 JSDoc `@extends` 注释，除非该类继承了模板类型。
 
-示例：
+例：
 
 ```js
 class Foo {
@@ -810,7 +819,7 @@ class Frobnicator {
 
 当在函数调用的参数列表中声明一个匿名函数时，函数体缩进比前一个缩进深度多两个空格。
 
-示例：
+例：
 
 ```js
 prefix.something.reallyLongFunctionName('whatever', (a1, a2) => {
@@ -840,7 +849,7 @@ some.reallyLongFunctionCall(arg1, arg2, arg3)
 
 可以选择在 `break` 与其后面的语句之间插入空行。
 
-示例：
+例：
 
 ```js
 switch (animal) {
@@ -1093,7 +1102,7 @@ JavaScript 包含许多可疑 (甚至危险) 的特性。本节描述哪些功�
 
 如果不存在其他的 JSDoc，可以在声明变量的上一行添加 JSDoc 类型注释，或者在变量名之前使用内联注释。
 
-示例：
+例：
 
 ```js
 const /** !Array<number> */ data = [];
@@ -1120,7 +1129,7 @@ const /** !Array<number> */ data = [];
 
 当最后一个元素和结束括号之间有一个换行符时，在后面加上逗号。
 
-示例：
+例：
 
 ```js
 const values = [
@@ -1188,63 +1197,82 @@ function badDestructuring([a, b] = [4, 2]) { … };
 
 数组字面量可以包含展开运算符(`...`)来将一个或多个嵌套元素扁平化。应该使用展开运算符而不是更加笨拙的 `Array.prototype` 构造方法。`...` 后面没有空格。
 
-示例：
+例：
 
 ```js
 [...foo]   // preferred over Array.prototype.slice.call(foo)
 [...foo, ...bar]   // preferred over foo.concat(bar)
 ```
 
-5.3 Object literals
-5.3.1 Use trailing commas
-Include a trailing comma whenever there is a line break between the final property and the closing brace.
+### 对象字面量
 
-5.3.2 Do not use the Object constructor
-While Object does not have the same problems as Array, it is still disallowed for consistency. Use an object literal ({} or {a: 0, b: 1, c: 2}) instead.
+#### 使用尾逗号
 
-5.3.3 Do not mix quoted and unquoted keys
-Object literals may represent either structs (with unquoted keys and/or symbols) or dicts (with quoted and/or computed keys). Do not mix these key types in a single object literal.
+如果在最后一个属性和右括号之间有换行符，请在结尾加上逗号。
 
-Disallowed:
+#### 不要使用对象构造函数
 
+虽然对象不具有数组类似的问题，但同样不允许使用构造函数。使用字面量对象( `{}` 或 `{a: 0, b: 1, c: 2}`) 代替。
+
+#### 不要混合使用引号和无引号键
+
+对象字面量可以表示结构(使用无引号的键和/或`symbols`)或词典(使用引用的和/或计算的键)。不要在单个对象文字中混合这些键类型。
+
+不允许：
+
+```js
 {
   width: 42, // struct-style unquoted key
   'maxWidth': 43, // dict-style quoted key
 }
-This also extends to passing the property name to functions, like hasOwnProperty. In particular, doing so will break in compiled code because the compiler cannot rename/obfuscate the string literal.
+```
 
-Disallowed:
+这还扩展到将属性名称传递给函数，例如`hasOwnProperty`。特别是这样做会破坏编译后的代码，因为编译器无法重命名/混淆字符串文字。
 
+不允许：
+
+```js
 /** @type {{width: number, maxWidth: (number|undefined)}} */
 const o = {width: 42};
 if (o.hasOwnProperty('maxWidth')) {
   ...
 }
-This is best implemented as:
+```
 
+最好的实现方式：
+
+```js
 /** @type {{width: number, maxWidth: (number|undefined)}} */
 const o = {width: 42};
 if (o.maxWidth != null) {
   ...
 }
-5.3.4 Computed property names
-Computed property names (e.g., {['key' + foo()]: 42}) are allowed, and are considered dict-style (quoted) keys (i.e., must not be mixed with non-quoted keys) unless the computed property is a symbol (e.g., [Symbol.iterator]). Enum values may also be used for computed keys, but should not be mixed with non-enum keys in the same literal.
+```
 
-5.3.5 Method shorthand
-Methods can be defined on object literals using the method shorthand ({method() {… }}) in place of a colon immediately followed by a function or arrow function literal.
+#### 计算的属性名称
 
-Example:
+允许计算属性名(例如 `{['key' + foo()]: 42}`)，并且被视为字典(引号)键(即不得与非引号的键混用)，除非计算的属性是符号（例如，`[Symbol.iterator]`）。枚举值也可以用于计算键，但不应在同一个字符串中混用枚举建与非枚举建。
 
+#### 方法简写
+
+字面量对象中可以使用方法简写(`{method() {… }`)以代替紧跟在函数或者箭头函数表达式后面的冒号。
+
+例：
+
+```js
 return {
   stuff: 'candy',
   method() {
     return this.stuff;  // Returns 'candy'
   },
 };
-Note that this in a method shorthand or function refers to the object literal itself whereas this in an arrow function refers to the scope outside the object literal.
+```
 
-Example:
+请注意，`this`在方法简写或者函数声明中指向字面量对象本身，而箭头函数中`this`指向字面量对象之外的作用域。
 
+例：
+
+```js
 class {
   getObjectLiteral() {
     this.stuff = 'fruit';
@@ -1254,11 +1282,15 @@ class {
     };
   }
 }
-5.3.6 Shorthand properties
-Shorthand properties are allowed on object literals.
+```
 
-Example:
+#### 属性简写
 
+允许在字面量对象上使用属性简写。
+
+例：
+
+```js
 const foo = 1;
 const bar = 2;
 const obj = {
@@ -1267,13 +1299,17 @@ const obj = {
   method() { return this.foo + this.bar; },
 };
 assertEquals(3, obj.method());
-5.3.7 Destructuring
-Object destructuring patterns may be used on the left-hand side of an assignment to perform destructuring and unpack multiple values from a single object.
+```
 
-Destructured objects may also be used as function parameters, but should be kept as simple as possible: a single level of unquoted shorthand properties. Deeper levels of nesting and computed properties may not be used in parameter destructuring. Specify any default values in the left-hand-side of the destructured parameter ({str = 'some default'} = {}, rather than {str} = {str: 'some default'}), and if a destructured object is itself optional, it must default to {}. The JSDoc for the destructured parameter may be given any name (the name is unused but is required by the compiler).
+#### 解构
 
-Example:
+对象解构模式可以用于赋值语句的左侧，从一个对象中解包多个值。
 
+被解构的对象可以用作函数的参数，但是应该尽可能的保持简单：单层未引用的简写属性。深层次的嵌套和计算属性不能用于参数解构。在解构参数的左边为其指定任何默认值（`{str = 'some default'} = {}`，而不是`{str} = {str: 'some default'}`），如果解构对象本身是可选参数，那么应该指定默认值为`{}`。解构参数的 JsDOC 可以被赋予任何名称（名称应该是未使用的，但是编译器需要的）。
+
+例：
+
+```js
 /**
  * @param {string} ordinary
  * @param {{num: (number|undefined), str: (string|undefined)}=} param1
@@ -1281,8 +1317,11 @@ Example:
  *     str: A string to do stuff to.
  */
 function destructured(ordinary, {num, str = 'some default'} = {})
-Disallowed:
+```
 
+不允许：
+
+```js
 /** @param {{x: {num: (number|undefined), str: (string|undefined)}}} param1 */
 function nestedTooDeeply({x: {num, str}}) {};
 /** @param {{num: (number|undefined), str: (string|undefined)}=} param1 */
@@ -1291,11 +1330,15 @@ function nonShorthandProperty({num: a, str: b} = {}) {};
 function computedKey({a, b, [a + b]: c}) {};
 /** @param {{a: number, b: string}=} param1 */
 function nontrivialDefault({a, b} = {a: 2, b: 4}) {};
-Destructuring may also be used for goog.require statements, and in this case must not be wrapped: the entire statement occupies one line, regardless of how long it is (see 3.6 goog.require and goog.requireType statements).
+```
 
-5.3.8 Enums
-Enumerations are defined by adding the @enum annotation to an object literal. Additional properties may not be added to an enum after it is defined. Enums must be constant, and all enum values must be deeply immutable.
+解构也可以用于 `goog.require` 语句，在这种情况下不能换行：整个语句独占一行，不管语句有多么长（参考[`goog.require` 和 `goog.requireType` 语句](#%60goog.require%60%20%E5%92%8C%20%60goog.requireType%60%20%E8%AF%AD%E5%8F%A5)）。
 
+#### 枚举
+
+枚举是通过向对象字面量添加 `@enum` 注释来定义的。在枚举定义之后，不能向它添加其他属性。枚举必须是常量，并且所有枚举值必须是完全不可变的。
+
+```js
 /**
  * Supported temperature scales.
  * @enum {string}
@@ -1315,6 +1358,8 @@ const Option = {
   /** The second among two options. */
   SECOND_OPTION: 2,
 };
+```
+
 5.4 Classes
 5.4.1 Constructors
 Constructors are optional. Subclass constructors must call super() before setting any fields or otherwise accessing this. Interfaces should declare non-method properties in the constructor.
