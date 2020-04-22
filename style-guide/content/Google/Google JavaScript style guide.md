@@ -88,6 +88,9 @@
       - [属性简写](#%e5%b1%9e%e6%80%a7%e7%ae%80%e5%86%99)
       - [解构](#%e8%a7%a3%e6%9e%84-1)
       - [枚举](#%e6%9e%9a%e4%b8%be)
+    - [类](#%e7%b1%bb)
+      - [构造函数](#%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0)
+      - [字段](#%e5%ad%97%e6%ae%b5)
 
 ## 引言
 
@@ -1360,15 +1363,19 @@ const Option = {
 };
 ```
 
-5.4 Classes
-5.4.1 Constructors
-Constructors are optional. Subclass constructors must call super() before setting any fields or otherwise accessing this. Interfaces should declare non-method properties in the constructor.
+### 类
 
-5.4.2 Fields
-Set all of a concrete object’s fields (i.e. all properties other than methods) in the constructor. Annotate fields that are never reassigned with @const (these need not be deeply immutable). Annotate non-public fields with the proper visibility annotation (@private, @protected, @package), and end all @private fields' names with an underscore. Fields are never set on a concrete class' prototype.
+#### 构造函数
 
-Example:
+构造函数是可选的。子类构造函数必须调用最先调用`super()`，在设置任何字段或以其他方式访问`this`之前。接口应该在构造函数中声明非方法属性。
 
+#### 字段
+
+在构造函数中设置所有实例对象的字段（即方法以外的所有属性）。使用`@const`注释从不重新赋值的字段 （这些字段不必完全不可变）。使用合适的注释来注释非公有字段（`@private`，`@protected`，`@package`），并且所有`@private`字段的名称使用下划线。不要将字段定义在具体类的`prototype`上。
+
+例：
+
+```js
 class Foo {
   constructor() {
     /** @private @const {!Bar} */
@@ -1378,7 +1385,9 @@ class Foo {
     this.baz = computeBaz();
   }
 }
-Tip: Properties should never be added to or removed from an instance after the constructor is finished, since it significantly hinders VMs’ ability to optimize. If necessary, fields that are initialized later should be explicitly set to undefined in the constructor to prevent later shape changes. Adding @struct to an object will check that undeclared properties are not added/accessed. Classes have this added by default.
+```
+
+> 提示：构造函数完成后，切勿将属性添加到实例或从实例中删除实例，因为这会严重阻碍虚拟机的优化能力。如有必要，应在构造函数中将稍后初始化的字段显式设置为`undefined`，以防止以后类型更改。添加`@struct`到对象将检查未添加/访问的未声明属性。类在默认情况下已添加。
 
 5.4.3 Computed properties
 Computed properties may only be used in classes when the property is a symbol. Dict-style properties (that is, quoted or computed non-symbol keys, as defined in 5.3.3 Do not mix quoted and unquoted keys) are not allowed. A [Symbol.iterator] method should be defined for any classes that are logically iterable. Beyond this, Symbol should be used sparingly.
