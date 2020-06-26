@@ -6,6 +6,8 @@
 
 # 目录
 
+- [bash-handbook-zh-CN ![CC 4.0](#bash-handbook-zh-cn-cc-40)
+- [目录](#目录)
 - [前言](#前言)
 - [Shells与模式](#shells与模式)
   - [交互模式](#交互模式)
@@ -42,8 +44,9 @@
   - [`select`循环](#select循环)
   - [循环控制](#循环控制)
 - [函数](#函数)
-- [Debugging](#debugging)
+  - [Debugging](#debugging)
 - [后记](#后记)
+- [想了解更多？](#想了解更多)
 - [其它资源](#其它资源)
 - [License](#license)
 
@@ -920,5 +923,3 @@ echo "xtrace is turned off again"
 
 [cc-url]: http://creativecommons.org/licenses/by/4.0/
 [cc-image]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg?style=flat-square
-
-# [译者手记](./translator-notes.md)
