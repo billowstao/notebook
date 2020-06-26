@@ -80,8 +80,8 @@ Vim 是从 vi 发展出来的一个文本编辑器。代码补完、编译及错
 
 经典版
 
-![经典版](./resource/vi-vim-cheat-sheet.gif)
+![经典版](./resource/vi-vim-cheat-sheet.png)
 
 简体中文版
 
-![简体中文版](./resource/vi-vim-cheat-sheet-sch.gif)
+![简体中文版](./resource/vi-vim-cheat-sheet-sch.png)
