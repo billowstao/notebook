@@ -9,3 +9,5 @@
 ## Linux
 
 ### [bash handbook](./linux/bash-handbook.md)
+
+### [vim](./linux/vim.md)
