@@ -68,20 +68,20 @@ Vim 是从 vi 发展出来的一个文本编辑器。代码补完、编译及错
 在底线命令模式中，基本的命令有（已经省略了冒号）：
 
 `q` 退出程序
-`w` 保存文件ß
+`w` 保存文件
 
 按`ESC`键可随时退出底线命令模式。
 
 简单的说，我们可以将这三个模式想成底下的图表来表示：
 
-<img alt="vim 工作模式" src="./resource/vim-vi-work-mode.png">
+![vim 工作模式](./resource/vim-vi-work-mode.png)
 
 ## vim 键盘图
 
 经典版
 
-<img alt="经典版" src="./resource/vi-vim-cheat-sheet.png">
+![经典版](./resource/vi-vim-cheat-sheet.png)
 
 简体中文版
 
-<img alt="简体中文版" src="./resource/vi-vim-cheat-sheet-sch.png">
+![简体中文版](./resource/vi-vim-cheat-sheet-sch.png)
