@@ -74,14 +74,10 @@ Vim 是从 vi 发展出来的一个文本编辑器。代码补完、编译及错
 
 简单的说，我们可以将这三个模式想成底下的图表来表示：
 
-![vim 工作模式](./resource/vim-vi-work-mode.png)
+![a basic vim cheat sheet](./resource/a-basic-vim-chear-sheet.png)
 
 ## vim 键盘图
 
-经典版
+Vim Cheat Sheet：[https://vim.rtorr.com](https://vim.rtorr.com)
 
-![经典版](./resource/vi-vim-cheat-sheet.png)
-
-简体中文版
-
-![简体中文版](./resource/vi-vim-cheat-sheet-sch.png)
+![vim cheat sheet](./resource/vim-cheat-sheet.png)
