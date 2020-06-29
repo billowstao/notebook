@@ -1389,10 +1389,11 @@ class Foo {
 
 > 提示：构造函数完成后，切勿将属性添加到实例或从实例中删除实例，因为这会严重阻碍虚拟机的优化能力。如有必要，应在构造函数中将稍后初始化的字段显式设置为`undefined`，以防止以后类型更改。添加`@struct`到对象将检查未添加/访问的未声明属性。类在默认情况下已添加。
 
-5.4.3 Computed properties
-Computed properties may only be used in classes when the property is a symbol. Dict-style properties (that is, quoted or computed non-symbol keys, as defined in 5.3.3 Do not mix quoted and unquoted keys) are not allowed. A [Symbol.iterator] method should be defined for any classes that are logically iterable. Beyond this, Symbol should be used sparingly.
+#### 计算的属性
 
-Tip: be careful of using any other built-in symbols (e.g., Symbol.isConcatSpreadable) as they are not polyfilled by the compiler and will therefore not work in older browsers.
+计算属性只能使用在类属性是`symbol`的情况下。不允许在字典风格的属性上使用（即，带引号或计算的非`symbol`键，参照[不要混合使用引号和无引号键](#不要混合使用引号和无引号键)）。`[Symbol.iterator]`方法应该定义为类的逻辑可迭代的。除此之外，`Symbol` 应该谨慎使用。
+
+> 提示：请小心使用`symbols`的其他内置属性（例如：`Symbol.isConcatSpreadable`）因为它们不会被编译器自动的 polyfill，因此在较旧的浏览器中将无法使用。
 
 5.4.4 Static methods
 Where it does not interfere with readability, prefer module-local functions over private static methods.
