@@ -4,6 +4,10 @@
 
 ### [JavaScript](./javascript/javascript-catalogue.md)
 
+### React
+
+#### [Advantage of React](./react/advantage-of-react.md)
+
 ## Linux
 
 ### [bash handbook](./linux/bash-handbook.md)
