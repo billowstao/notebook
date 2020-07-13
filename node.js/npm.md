@@ -9,6 +9,10 @@
       - [About package formats](#about-package-formats)
       - [npm package git URL formats](#npm-package-git-url-formats)
       - [About modules](#about-modules)
+  - [Creating a package.json file](#creating-a-packagejson-file)
+    - [About semantic versioning](#about-semantic-versioning)
+      - [Incrementing semantic versions in published packages](#incrementing-semantic-versions-in-published-packages)
+      - [Using semantic versioning to specify update types your package can accept](#using-semantic-versioning-to-specify-update-types-your-package-can-accept)
 
 ## [About npm](https://docs.npmjs.com/about-npm/)
 
@@ -93,3 +97,28 @@ var req = require('request')
 ```
 
 we might say that “The variable `req` refers to the `request` module”.
+
+## [Creating a package.json file](https://docs.npmjs.com/creating-a-package-json-file)
+
+### About semantic versioning
+
+#### Incrementing semantic versions in published packages
+
+To help developers who rely on your code, we recommend starting your package version at 1.0.0 and incrementing as follows:
+
+| Code status                               | Stage         | Rule                                                               | Example version |
+| ----------------------------------------- | ------------- | ------------------------------------------------------------------ | --------------- |
+| First release                             | New product   | Start with 1.0.0                                                   | 1.0.0           |
+| Backward compatible bug fixes             | Patch release | Increment the third digit                                          | 1.0.1           |
+| Backward compatible new features          | Minor release | Increment the middle digit and reset last digit to zero            | 1.1.0           |
+| Changes that break backward compatibility | Major release | Increment the first digit and reset middle and last digits to zero | 2.0.0           |
+
+#### Using semantic versioning to specify update types your package can accept
+
+You can specify which update types your package can accept from dependencies in your package’s `package.json` file.
+
+For example, to specify acceptable version ranges up to 1.0.4, use the following syntax:
+
+- Patch releases: `1.0` or `1.0.x` or `~1.0.4`
+- Minor releases: `1` or `1.x` or `^1.0.4`
+- Major releases: `*` or `x`
