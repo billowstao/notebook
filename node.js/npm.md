@@ -23,6 +23,7 @@
     - [Using npm packages in your projects](#using-npm-packages-in-your-projects)
       - [Using unscoped packages in your projects](#using-unscoped-packages-in-your-projects)
       - [Using scoped packages in your projects](#using-scoped-packages-in-your-projects)
+    - [Uninstalling packages and dependencies](#uninstalling-packages-and-dependencies)
 
 ## [About npm](https://docs.npmjs.com/about-npm/)
 
@@ -197,3 +198,5 @@ When requiring a scoped package in the index.js file of your Node.js `module`, y
 ```js
 var projectName = require("@scope/package-name")
 ```
+
+### [Uninstalling packages and dependencies](https://docs.npmjs.com/uninstalling-packages-and-dependencies)
