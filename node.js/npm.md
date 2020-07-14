@@ -16,6 +16,13 @@
   - [Specifying dependencies and devDependencies in a package.json file](#specifying-dependencies-and-devdependencies-in-a-packagejson-file)
     - [Adding dependencies to a package.json file](#adding-dependencies-to-a-packagejson-file)
       - [Adding dependencies to a package.json file from the command line](#adding-dependencies-to-a-packagejson-file-from-the-command-line)
+  - [Getting packages from the registry](#getting-packages-from-the-registry)
+    - [Searching for and choosing packages to download](#searching-for-and-choosing-packages-to-download)
+    - [Downloading and installing packages locally](#downloading-and-installing-packages-locally)
+    - [Updating packages downloaded from the registry](#updating-packages-downloaded-from-the-registry)
+    - [Using npm packages in your projects](#using-npm-packages-in-your-projects)
+      - [Using unscoped packages in your projects](#using-unscoped-packages-in-your-projects)
+      - [Using scoped packages in your projects](#using-scoped-packages-in-your-projects)
 
 ## [About npm](https://docs.npmjs.com/about-npm/)
 
@@ -147,4 +154,46 @@ To add an entry to the "`devDependencies`" attribute of a `package.json` file, o
 
 ```bash
 npm install <package-name> --save-dev
+```
+
+## Getting packages from the registry
+
+### [Searching for and choosing packages to download](https://docs.npmjs.com/searching-for-and-choosing-packages-to-download)
+
+### [Downloading and installing packages locally](https://docs.npmjs.com/downloading-and-installing-packages-locally)
+
+### [Updating packages downloaded from the registry](https://docs.npmjs.com/updating-packages-downloaded-from-the-registry)
+
+### [Using npm packages in your projects](https://docs.npmjs.com/using-npm-packages-in-your-projects)
+
+#### Using unscoped packages in your projects
+
+Node.js `module`
+
+If you are creating a Node.js module, you can use a package in your module by passing it as an argument to the `require` function.
+
+Example: using lodash in a Node.js `module`
+
+For example, to use the lodash package in a Node.js module, in the root directory of the module, create a file named `index.js` with the following contents:
+
+```js
+// index.js
+var lodash = require('lodash');
+
+var output = lodash.without([1, 2, 3], 1);
+console.log(output);
+```
+
+Run the code using `node index.js`. It should output `[2, 3]`.
+
+#### Using scoped packages in your projects
+
+To use a scoped package, simply include the scope wherever you use the package name.
+
+Node.js `module`
+
+When requiring a scoped package in the index.js file of your Node.js `module`, you must reference the scope in addition to the package name:
+
+```js
+var projectName = require("@scope/package-name")
 ```
