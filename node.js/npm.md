@@ -13,6 +13,9 @@
     - [About semantic versioning](#about-semantic-versioning)
       - [Incrementing semantic versions in published packages](#incrementing-semantic-versions-in-published-packages)
       - [Using semantic versioning to specify update types your package can accept](#using-semantic-versioning-to-specify-update-types-your-package-can-accept)
+  - [Specifying dependencies and devDependencies in a package.json file](#specifying-dependencies-and-devdependencies-in-a-packagejson-file)
+    - [Adding dependencies to a package.json file](#adding-dependencies-to-a-packagejson-file)
+      - [Adding dependencies to a package.json file from the command line](#adding-dependencies-to-a-packagejson-file-from-the-command-line)
 
 ## [About npm](https://docs.npmjs.com/about-npm/)
 
@@ -122,3 +125,26 @@ For example, to specify acceptable version ranges up to 1.0.4, use the following
 - Patch releases: `1.0` or `1.0.x` or `~1.0.4`
 - Minor releases: `1` or `1.x` or `^1.0.4`
 - Major releases: `*` or `x`
+
+## [Specifying dependencies and devDependencies in a package.json file](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file)
+
+- "`dependencies`": Packages required by your application in production.
+- "`devDependencies`": Packages that are only needed for local development and testing.
+
+### Adding dependencies to a package.json file
+
+#### Adding dependencies to a package.json file from the command line
+
+To add dependencies and devDependencies to a `package.json` file from the command line, you can install them in the root directory of your package using the `--save-prod` flag for dependencies (the default behavior of `npm install`) or the `--save-dev` flag for devDependencies.
+
+To add an entry to the "`dependencies`" attribute of a `package.json` file, on the command line, run the following command:
+
+```bash
+npm install <package-name> [--save-prod]
+```
+
+To add an entry to the "`devDependencies`" attribute of a `package.json` file, on the command line, run the following command:
+
+```bash
+npm install <package-name> --save-dev
+```
