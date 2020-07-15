@@ -28,6 +28,7 @@
     - [npm-package-locks](#npm-package-locks)
     - [npm-install](#npm-install)
       - [Algorithm](#algorithm)
+      - [Limitations of npm’s Install Algorithm](#limitations-of-npms-install-algorithm)
 
 ## [About npm](https://docs.npmjs.com/about-npm/)
 
@@ -299,3 +300,17 @@ A
 ```
 
 Because B’s D@1 will be installed in the top level, C now has to install D@2 privately for itself. This algorithm is deterministic, but different trees may be produced if two dependencies are requested for installation in a different order.
+
+#### Limitations of npm’s Install Algorithm
+
+npm will refuse to install any package with an identical name to the current package. This can be overridden with the `--force` flag, but in most cases can simply be addressed by changing the local package name.
+
+There are some very rare and pathological edge-cases where a cycle can cause npm to try to install a never-ending tree of packages. Here is the simplest case:
+
+```text
+A -> B -> A' -> B' -> A -> B -> A' -> B' -> A -> ...
+```
+
+where `A` is some version of a package, and `A`' is a different version of the same package. Because `B` depends on a different version of `A` than the one that is already in the tree, it must install a separate copy. The same is true of `A`', which must install `B`'. Because `B`' depends on the original version of `A`, which has been overridden, the cycle falls into infinite regress.
+
+To avoid this situation, npm flat-out refuses to install any `name@version` that is already present anywhere in the tree of package folder ancestors. A more correct, but more complex, solution would be to symlink the existing version into the new location. If this ever affects a real use-case, it will be investigated.
