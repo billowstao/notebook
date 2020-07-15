@@ -24,6 +24,8 @@
       - [Using unscoped packages in your projects](#using-unscoped-packages-in-your-projects)
       - [Using scoped packages in your projects](#using-scoped-packages-in-your-projects)
     - [Uninstalling packages and dependencies](#uninstalling-packages-and-dependencies)
+  - [CLI documentation](#cli-documentation)
+    - [npm-package-locks](#npm-package-locks)
 
 ## [About npm](https://docs.npmjs.com/about-npm/)
 
@@ -200,3 +202,17 @@ var projectName = require("@scope/package-name")
 ```
 
 ### [Uninstalling packages and dependencies](https://docs.npmjs.com/uninstalling-packages-and-dependencies)
+
+## CLI documentation
+
+### [npm-package-locks](https://docs.npmjs.com/configuring-npm/package-locks)
+
+Conceptually, the “input” to `npm install` is a `package.json`, while its “output” is a fully-formed `node_modules` tree: a representation of the dependencies you declared. In an ideal world, npm would work like a pure function: the same `package.json` should produce the exact same `node_modules` tree, any time. In some cases, this is indeed true. But in many others, npm is unable to do this. There are multiple reasons for this:
+
+- different versions of npm (or other package managers) may have been used to install a package, each using slightly different installation algorithms.
+
+- a new version of a direct semver-range package may have been published since the last time your packages were installed, and thus a newer version will be used.
+
+- A dependency of one of your dependencies may have published a new version, which will update even if you used pinned dependency specifiers (1.2.3 instead of ^1.2.3)
+
+- The registry you installed from is no longer available, or allows mutation of versions (unlike the primary npm registry), and a different version of a package exists under the same version number now.
