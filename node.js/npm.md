@@ -216,3 +216,12 @@ Conceptually, the “input” to `npm install` is a `package.json`, while its �
 - A dependency of one of your dependencies may have published a new version, which will update even if you used pinned dependency specifiers (1.2.3 instead of ^1.2.3)
 
 - The registry you installed from is no longer available, or allows mutation of versions (unlike the primary npm registry), and a different version of a package exists under the same version number now.
+
+To prevent this potential issue, npm uses `package-lock.json` or, if present, `npm-shrinkwrap.json`. These files are called package locks, or lockfiles.
+
+This file describes an exact, and more importantly reproducible `node_modules` tree. Once it’s present, any future installation will base its work off this file, instead of recalculating dependency versions off package.json.
+
+The presence of a package lock changes the installation behavior such that:
+
+1. The module tree described by the package lock is reproduced. This means reproducing the structure described in the file, using the specific files referenced in “resolved” if available, falling back to normal package resolution using “version” if one isn’t.
+2. The tree is walked and any missing dependencies are installed in the usual fashion.
