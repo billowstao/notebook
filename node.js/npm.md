@@ -26,6 +26,8 @@
     - [Uninstalling packages and dependencies](#uninstalling-packages-and-dependencies)
   - [CLI documentation](#cli-documentation)
     - [npm-package-locks](#npm-package-locks)
+    - [npm-install](#npm-install)
+      - [Algorithm](#algorithm)
 
 ## [About npm](https://docs.npmjs.com/about-npm/)
 
@@ -225,3 +227,75 @@ The presence of a package lock changes the installation behavior such that:
 
 1. The module tree described by the package lock is reproduced. This means reproducing the structure described in the file, using the specific files referenced in “resolved” if available, falling back to normal package resolution using “version” if one isn’t.
 2. The tree is walked and any missing dependencies are installed in the usual fashion.
+
+### [npm-install](https://docs.npmjs.com/cli-commands/install.html)
+
+Install a package
+
+Description
+
+This command installs a package, and any packages that it depends on. If the package has a package-lock or shrinkwrap file, the installation of dependencies will be driven by that, with an `npm-shrinkwrap.json` taking precedence if both files exist. See `package-lock.json` and `npm shrinkwrap`.
+
+A package is:
+
+- a) a folder containing a program described by a `package.json` file
+- b) a gzipped tarball containing (a)
+- c) a url that resolves to (b)
+- d) a `<name>@<version>` that is published on the registry (see `registry`) with (c)
+- e) a `<name>@<tag>` (see `npm dist-tag`) that points to (d)
+- f) a `<name>` that has a “latest” tag satisfying (e)
+- g) a `<git remote url>` that resolves to (a)
+
+`npm install` saves any specified packages into `dependencies` by default. Additionally, you can control where and how they get saved with some additional flags:
+
+- `-P`, `--save-prod`: Package will appear in your `dependencies`. This is the default unless `-D` or `-O` are present.
+- `-D`, `--save-dev`: Package will appear in your `devDependencies`.
+- `-O`, `--save-optional`: Package will appear in your `optionalDependencies`.
+- `--no-save`: Prevents saving to `dependencies`.
+
+When using any of the above options to save dependencies to your package.json, there are two additional, optional flags:
+
+- `-E`, `--save-exact`: Saved dependencies will be configured with an exact version rather than using npm’s default semver range operator.
+- `-B`, `--save-bundle`: Saved dependencies will also be added to your `bundleDependencies` list.
+
+Further, if you have an `npm-shrinkwrap.json` or `package-lock.json` then it will be updated as well.
+
+#### Algorithm
+
+To install a package, npm uses the following algorithm:
+
+```text
+load the existing node_modules tree from disk
+clone the tree
+fetch the package.json and assorted metadata and add it to the clone
+walk the clone and add any missing dependencies
+  dependencies will be added as close to the top as is possible
+  without breaking any other modules
+compare the original tree with the cloned tree and make a list of
+actions to take to convert one to the other
+execute all of the actions, deepest first
+  kinds of actions are install, update, remove and move
+```
+
+For this `package{dep}` structure: `A{B,C}`, `B{C}`, `C{D}`, this algorithm produces:
+
+```text
+A
++-- B
++-- C
++-- D
+```
+
+That is, the dependency from B to C is satisfied by the fact that A already caused C to be installed at a higher level. D is still installed at the top level because nothing conflicts with it.
+
+For `A{B,C}`, `B{C,D@1}`, `C{D@2}`, this algorithm produces:
+
+```text
+A
++-- B
++-- C
+   `-- D@2
++-- D@1
+```
+
+Because B’s D@1 will be installed in the top level, C now has to install D@2 privately for itself. This algorithm is deterministic, but different trees may be produced if two dependencies are requested for installation in a different order.
