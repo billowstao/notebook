@@ -17,6 +17,8 @@
 
 ### [LocalStorage, sessionStorage](./content/localStorage-sessionStorage.md)
 
+### [IndexedDB](./content/indexedDB.md)
+
 ## 异常处理
 
 ### [错误处理](./content/exception-handling.md)
