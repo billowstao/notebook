@@ -1,4 +1,4 @@
-# `LocalStorage`, `sessionStorage`
+# `localStorage`, `sessionStorage`
 
 Web 存储对象 `localStorage` 和 `sessionStorage` 允许我们在浏览器上保存键/值对。
 
@@ -46,3 +46,54 @@ alert( localStorage.getItem('test') ); // 1
 
 在所有同源的窗口之间，`localStorage` 数据可以共享。因此，如果我们在一个窗口中设置了数据，则在另一个窗口中也可以看到数据变化。
 
+## 类对象形式访问
+
+我们还可以像使用一个普通对象那样，读取/设置键，像这样：
+
+```js
+// 设置 key
+localStorage.test = 2;
+
+// 获取 key
+alert( localStorage.test ); // 2
+
+// 删除 key
+delete localStorage.test;
+```
+
+这是历史原因造成的，并且大多数情况下都可行，但通常不建议这样做，因为：
+
+1. 如果键是由用户生成的，那么它可以是任何内容，例如 `length` 或 `toString`，也可以是 `localStorage` 的另一种内建方法。在这种情况下，`getItem`/`setItem` 可以正常工作，而类对象访问的方式则会失败：
+
+    ```js
+    let key = 'length';
+    localStorage[key] = 5; // Error，无法对 length 进行赋值
+    ```
+
+2. 有一个 storage 事件，在我们更改数据时会触发。但以类对象方式访问时，不会触发该事件。我们将在本章的后面看到。
+
+## 遍历键
+
+正如我们所看到的，这些方法提供了“按照键获取/设置/删除”的功能。但我们如何获取所有保存的值或键呢？
+
+不幸的是，存储对象是不可迭代的。
+
+一种方法是像遍历数组那样遍历它们：
+
+```js
+for(let i = 0; i < localStorage.length; i++) {
+  let key = localStorage.key(i);
+  alert(`${key}: ${localStorage.getItem(key)}`);
+}
+```
+
+另一个方式是使用 `for key in localStorage` 循环，就像处理常规对象一样。
+
+它会遍历所有的键，但也会输出一些我们不需要的内建字段。
+
+```js
+// 不好的尝试
+for(let key in localStorage) {
+  alert(key); // 显示 getItem，setItem 和其他内建的东西
+}
+``
