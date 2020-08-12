@@ -13,6 +13,10 @@
   - [函数式编程](#%e5%87%bd%e6%95%b0%e5%bc%8f%e7%bc%96%e7%a8%8b)
     - [柯里化（Currying）](#%e6%9f%af%e9%87%8c%e5%8c%96currying)
 
+## 数据存储
+
+### [LocalStorage, sessionStorage](./content/localStorage-sessionStorage.md)
+
 ## 异常处理
 
 ### [错误处理](./content/exception-handling.md)
