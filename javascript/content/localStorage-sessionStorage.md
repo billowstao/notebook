@@ -96,4 +96,152 @@ for(let i = 0; i < localStorage.length; i++) {
 for(let key in localStorage) {
   alert(key); // 显示 getItem，setItem 和其他内建的东西
 }
-``
+```
+
+……因此，我们需要使用 `hasOwnProperty` 检查来过滤掉原型中的字段：
+
+```js
+for(let key in localStorage) {
+  if (!localStorage.hasOwnProperty(key)) {
+    continue; // 跳过像 "setItem"，"getItem" 等这样的键
+  }
+  alert(`${key}: ${localStorage.getItem(key)}`);
+}
+```
+
+……或者，使用 `Object.keys` 获取只属于“自己”的键，然后如果需要，可以遍历它们：
+
+```js
+let keys = Object.keys(localStorage);
+for(let key of keys) {
+  alert(`${key}: ${localStorage.getItem(key)}`);
+}
+```
+
+后者有效，因为 `Object.keys` 只返回属于对象的键，会忽略原型上的。
+
+## 仅字符串
+
+请注意，键和值都必须是字符串。
+
+如果是任何其他类型，例数字或对象，它会被自动转换为字符串。
+
+```js
+sessionStorage.user = {name: "John"};
+alert(sessionStorage.user); // [object Object]
+```
+
+我们可以使用 `JSON` 来存储对象：
+
+```js
+sessionStorage.user = JSON.stringify({name: "John"});
+
+// sometime later
+let user = JSON.parse( sessionStorage.user );
+alert( user.name ); // John
+```
+
+也可以对整个存储对象进行字符串化处理，例如出于调试目的：
+
+```js
+// 为 JSON.stringify 增加了格式设置选项，以使对象看起来更美观
+alert( JSON.stringify(localStorage, null, 2) );
+```
+
+## sessionStorage
+
+`sessionStorage` 对象的使用频率比 `localStorage` 对象低得多。
+
+属性和方法是相同的，但是它有更多的限制：
+
+- `sessionStorage` 的数据只存在于当前浏览器标签页。
+  - 具有相同页面的另一个标签页中将会有不同的存储。
+  - 但是，它在同一标签页下的 iframe 之间是共享的（假如它们来自相同的源）。
+- 数据在页面刷新后仍然保留，但在关闭/重新打开浏览器标签页后不会被保留。
+
+让我们看看它的运行效果。
+
+运行此代码……
+
+```js
+sessionStorage.setItem('test', 1);
+```
+
+……然后刷新页面。这时你仍然可以获取到数据：
+
+```js
+alert( sessionStorage.getItem('test') ); // after refresh: 1
+```
+
+……但是，如果你在另一个新的标签页中打开此页面，然后在新页面中再次运行上面这行代码，则会得到 `null`，表示“未找到数据”。
+
+这是因为 `sessionStorage` 不仅绑定到源，还绑定在同一浏览器标签页。因此，`sessionStorage` 很少被使用。
+
+## `Storage` 事件
+
+当 `localStorage` 或 `sessionStorage` 中的数据更新后，`storage` 事件就会触发，它具有以下属性：
+
+- `key` —— 发生更改的数据的 `key`（如果调用的是 `.clear()` 方法，则为 `null`）。
+- `oldValue` —— 旧值（如果是新增数据，则为 `null`）。
+- `newValue` —— 新值（如果是删除数据，则为 `null`）。
+- `url` —— 发生数据更新的文档的 `url`。
+- `storageArea` —— 发生数据更新的 `localStorage` 或 `sessionStorage` 对象。
+
+重要的是：该事件会在所有可访问到存储对象的 `window` 对象上触发，导致当前数据改变的 `window` 对象除外。
+
+我们来详细解释一下。
+
+想象一下，你有两个窗口，它们具有相同的页面。所以 `localStorage` 在它们之间是共享的。
+
+你可以想在浏览器的两个窗口中打开此页面来测试下面的代码。
+
+如果两个窗口都在监听 `window.onstorage` 事件，那么每个窗口都会对另一个窗口中发生的更新作出反应。
+
+```js
+// 在其他文档对同一存储进行更新时触发
+window.onstorage = event => { // 等同于 window.addEventListener('storage', () => {
+  if (event.key != 'now') return;
+  alert(event.key + ':' + event.newValue + " at " + event.url);
+};
+
+localStorage.setItem('now', Date.now());
+```
+
+请注意，该事件还包含：`event.url` —— 发生数据更新的文档的 url。
+
+并且，`event.storageArea` 包含存储对象 —— `sessionStorage` 和 `localStorage` 具有相同的事件，所以 `event.storageArea` 引用了被修改的对象。我们可能会想设置一些东西，以“响应”更改。
+
+这允许同源的不同窗口交换消息。
+
+现代浏览器还支持 Broadcast channel API，这是用于同源窗口之间通信的特殊 API，它的功能更全，但被支持的情况不好。有一些库基于 `localStorage` 来 polyfill 该 API，使其可以用在任何地方。
+
+## 总结
+
+Web 存储对象 `localStorage` 和 `sessionStorage` 允许我们在浏览器中保存键/值对。
+
+- `key` 和 `value` 都必须为字符串。
+- 存储大小限制为 5MB+，具体取决于浏览器。
+- 它们不会过期。
+- 数据绑定到源（域/端口/协议）。
+
+| `localStorage`                         | `sessionStorage`                                         |
+| ------------------------------------ | ------------------------------------------------------ |
+| 在同源的所有标签页和窗口之间共享数据 | 在当前浏览器标签页中可见，包括同源的 `iframe`          |
+| 浏览器重启后数据仍然保留             | 页面刷新后数据仍然保留（但标签页关闭后数据则不再保留） |
+
+API：
+
+- `setItem(key, value)` —— 存储键/值对。
+- `getItem(key)` —— 按照键获取值。
+- `removeItem(key)` —— 删除键及其对应的值。
+- `clear()` —— 删除所有数据。
+- `key(index)` —— 获取该索引下的键名。
+- `length` —— 存储的内容的长度。
+- 使用 `Object.keys` 来获取所有的键。
+- 我们将键作为对象属性来访问，在这种情况下，不会触发 storage 事件。
+
+Storage 事件：
+
+- 在调用 `setItem`，`removeItem`，`clear` 方法后触发。
+- 包含有关操作的所有数据（`key`/`oldValue`/`newValue`），文档 `url` 和存储对象 `storageArea`。
+- 在所有可访问到存储对象的 `window` 对象上触发，导致当前数据改变的 `window` 对象除外（对于 `sessionStorage` 是在当前标签页下，对于 `localStorage` 是在全局，即所有同源的窗口）。
