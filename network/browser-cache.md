@@ -87,3 +87,30 @@
   - `public`：表示缓存的版本可以被代理服务器或者其他中间服务器识别
   - `private`：表示只有用户自己的浏览器能够进行缓存，公共的代理服务器不允许缓存
 - `Expires`：HTTP 1.0 的特性，标识该资源过期的时间点，它是一个绝对值。格林威治时间（Greenwich Mean Time, GMT），即在这个时间点之后，缓存的资源过期；优先级：`Cache-Control` 优先级高于 `Expire`，为了兼容，通常两个头部同时设置；浏览器默认行为：其实就算 Response Header 中没有设置 `Cache-Control` 和 `Expire`，浏览器仍然会缓存某些资源，这是浏览器的默认行为：其实就算 Response Header 中没有设置 `Cache-Control` 和 `Expires`，浏览器仍然会缓存某些资源，这是浏览器的默认行为，是为了提升性能进行的优化，没有浏览器的行为可能不一致，有些浏览器甚至没有这样的优化。
+
+`Last-Modified` 与 `ETag`
+
+- `Lat-Modified`(Response Header) 与 `If-Modified-Since`(Request Header) 是一对报文头，属于 HTTP 1.0
+
+  `If-Modified-Since` 是一个请求首部字段，并且智能在 GET 或 HEAD 请求中。`Last-Modified` 是一个响应首部字段，包含服务器认定的资源作出修改的日期及时间。当带着 `If-Modified-Since` 头访问服务器请求资源时，服务器会检查 `Last-Modified`，如果 `Last-Modified` 的时间早于或等于 `If-Modified-Since` 则会返回一个不带响应体的 304 响应，否则将重新返回资源。
+
+  ![Http Header - Last-Modified, If-Modified-Since](./resource/http-header-last-modifiedpng.png)
+
+- `ETag` 与 `If-None-Match` 是一对报头文，属于 HTTP 1.1
+
+  `ETag` 是一个响应首部字段，它是根据实体内容生成的一段 hash 字符串，标识资源的状态，由服务端产生。`If-None-Match` 是一个条件表达式的请求首部。如果请求资源时在请求首部加上这个字段，值为之前服务器返回的资源上的 `ETag`，且当前仅当服务器上没有任何资源的 `ETag` 属性值与这个首部中列出的时候，服务器才会返回带有所请求的 200 响应，否则服务器返回不带实体的 304 响应。
+
+  ![ETag](./resource/ETag.png)
+
+- `ETag` 能解决什么问题？
+
+  - `Last-Modified` 标注的最后修改只能精确到秒级，如果某些文件在 1 秒中以内，被修改多次的话，它将不能准确的标注文件的新鲜度；
+  - 某些文件的也许会周期性的更改，但是它的内容并不会改变（仅仅改变修改时间），但 `Last-Modified` 却改变了，导致文件没发使用缓存；
+  - 有可能存在服务器没有准确获取文件修改时间，或者与代理服务器时间不一致等情形。
+
+- 优先级：`ETag` 优先级比 `Last-Modified` 高，同时存在会以 `ETag` 为准。
+
+![ETag, Last-Modified](./resource/ETag_Last-Modified.png)
+
+## 缓存位置
+
