@@ -92,7 +92,7 @@
 
 - `Lat-Modified`(Response Header) 与 `If-Modified-Since`(Request Header) 是一对报文头，属于 HTTP 1.0
 
-  `If-Modified-Since` 是一个请求首部字段，并且智能在 GET 或 HEAD 请求中。`Last-Modified` 是一个响应首部字段，包含服务器认定的资源作出修改的日期及时间。当带着 `If-Modified-Since` 头访问服务器请求资源时，服务器会检查 `Last-Modified`，如果 `Last-Modified` 的时间早于或等于 `If-Modified-Since` 则会返回一个不带响应体的 304 响应，否则将重新返回资源。
+  `If-Modified-Since` 是一个请求首部字段，并且只能在 GET 或 HEAD 请求中。`Last-Modified` 是一个响应首部字段，包含服务器认定的资源作出修改的日期及时间。当带着 `If-Modified-Since` 头访问服务器请求资源时，服务器会检查 `Last-Modified`，如果 `Last-Modified` 的时间早于或等于 `If-Modified-Since` 则会返回一个不带响应体的 304 响应，否则将重新返回资源。
 
   ![Http Header - Last-Modified, If-Modified-Since](./resource/http-header-last-modifiedpng.png)
 
@@ -114,3 +114,66 @@
 
 ## 缓存位置
 
+浏览器可以在内存、硬盘中开辟一个空间用于保存请求资源副本。我们经常在 DevTools Network 里看到 Memory Cache (内存缓存) 和 Disk Cache (硬盘缓存)，指的就是缓存所在的位置。请求一个资源时，会按照优先级 (Service -> Memory Cache -> Disk Cache -> Push Cache ) 依次查询缓存，如果命中则使用缓存，否则发起请求。这里先介绍 Memory Cache 和 Disk Cache。
+
+200 - from memory cache
+
+表示不妨问服务器，直接从内存中读取缓存。因为缓存的资源保存在内存中，所以读取速度较快，但是关闭进程后，缓存资源也会随之销毁，一般来说，系统不会给内存较大的容量，因此内存缓存一般用于存储较小文件。同时内存缓存在有时效性的场景下也很有用（比如浏览器的隐私模式）。
+
+200 - from disk cache
+
+表示不妨问服务器，直接从硬盘中读取缓存。与内存相比，硬盘的读取速度相对较慢，但硬盘缓存的持续时间更长，关闭进程之后，缓存的资源仍然存在。由于硬盘的容量较大，因此一般用于存储大文件。
+
+下图可清晰看出差别：
+
+![200 from disk cache](./resource/200-from-disk-cache.png)
+
+CDN Cache
+
+以腾讯 CDN 为例：`X-Cache-Lookup: Hit From MemCache` 表示命中 CDN 节点的内存；`X-Cache-Lookup: Hit From Disktank` 表示命中 CND 节点的硬盘；`X-Cache-Lookup: Hit From Upstream` 表示没有命中 CDN。
+
+![CND Cache](./resource/CDN-cache.png)
+
+整体流程
+
+![Whole Process](./resource/whole-process.png)
+
+从上图能感受到整个流程，比如常见的两种刷新场景
+
+- 当 F5 刷新网页时，跳过强缓存，但是会检查协商缓存；
+- 当 Ctrl + F5 强制刷新页面时，直接从服务器加载，跳过强缓存和协商缓存；
+
+## 其他 Web 缓存策略
+
+### `IndexDB`
+
+`IndexDB` 就是浏览器提供的本地数据库，能够在客户端存储数量可观的结构化数据，并且在这些数据上使用索引进行高性能检索的 API。
+
+异步 API 方法调用后会立即返回，而不会阻塞调用线程。要异步访问数据库，要调用 `window` 对象 `IndexedDB` 属性的 `open` 方法。该方法返回一个 `IDBRequest` 对象（`IDBOpenDBRequest`）；异步操作通过在 `IDBRequest` 对象上触发事件来和调用程序进行通信。
+
+常用异步 API 如下
+
+![IndexDB API](./resource/IndexDB-API.png)
+
+### `Service Worker`
+
+`ServiceWorker` 从 2014 年提出的草案到现在已经发展很成熟了，基于 `Service Worker` 做离线缓存，让用户能够进行离线体验，消息推送体验，离线缓存能力涉及到 `Cache` 和 `CacheStorage` 的概念，篇幅有限，不展开了。
+
+### `LocalStorage`
+
+`localStorage` 属性允许你访问一个 `Document` 源 (`origin`) 的对象 `Storage` 用于存储当前源的数据，除非用户人为清除 (调用 `localStorage` api 或则清除浏览器数据)， 否则存储在 `localStorage` 的数据将被长期保留。
+
+### `SessionStorage`
+
+`SessionStorage` 属性允许你访问一个 `SessionStorage` 对象，用于存储当前会话的数据，存储在 `SessionStorage` 里面的数据在页面会话结束时会被清除。页面会话在浏览器打开期间一直保持，并且重新加载或恢复页面仍会保持原来的页面会话。
+
+## 定义最优缓存策略
+
+- 使用一致的网址：如果您在不同的网址上提供相同的内容，将会多次获取和存储该内容。注意：URL 区分大小写！
+- 确定中继缓存可以缓存哪些资源：对所有用户的响应完全相同的资源很适合由 CDN 或其他中继缓存进行缓存；
+- 确定每个资源的最优缓存周期：不同的资源可能有不同的更新要求。审查并确定每个资源适合的 `max-age`；
+- 确定网站的最佳缓存层级：对 HTML 文档组合使用包含内容特征码的资源网址以及短时间或 `no-cache` 的生命周期，可以控制客户端获取更新的速度；
+- 更新最小化：有些资源的更新比其他资源频繁。如果资源的特定部分（例如 JS 函数或一组 CSS 样式）会经常更新，应考虑将其代码作为单独的文件提供。这样，每次获取更新时，剩余内容（例如不会频繁更新的库代码）可以从缓存中获取，确保下载的内容量最少；
+- 确保服务器配置或移除 `ETag`：因为 `Etag` 跟服务器配置有关，每台服务器的 `Etag` 都是不同的；
+- 善用 HTML5 的缓存机制：合理设计启用 `LocalStorage`、`SessionStorage`、`IndexDB`、`ServiceWorker` 等存储，会给页面性能带来明显提升；
+- 结合 Native 的强大存储能力：善于利用客户端能力，定制合适的缓存机制，打造极致体验。
