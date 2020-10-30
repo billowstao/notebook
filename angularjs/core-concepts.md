@@ -1,5 +1,10 @@
 # Core Concepts
 
+- [Core Concepts](#core-concepts)
+  - [Templates](#templates)
+  - [Application Structure](#application-structure)
+  - [Other Features](#other-features)
+
 ## Templates
 
 In AngularJS applications, you move the job of filling page templates with data from the server to the client. The result is a system better structured for dynamic page updates. Below are the core features you'll use.
