@@ -6,6 +6,9 @@
   - [Context](#context)
   - [Forgiving](#forgiving)
   - [No Control Flow Statements](#no-control-flow-statements)
+  - [No function declarations or RegExp creation with literal notation](#no-function-declarations-or-regexp-creation-with-literal-notation)
+  - [`$event`](#event)
+  - [One-time binding](#one-time-binding)
 
 AngularJS expressions are JavaScript-like code snippets that are mainly placed in interpolation bindings such as `<span title="{{ attrBinding }}">{{ textBinding }}</span>`, but also used directly in directive attributes such as `ng-click="functionExpression()"`.
 
@@ -121,11 +124,83 @@ Similarly, invoking a function `a.b.c()` on `undefined` or `null` simply returns
 
 Apart from the ternary operator (`a ? b : c`), you cannot write a control flow statement in an expression. The reason behind this is core to the AngularJS philosophy that application logic should be in controllers, not the views. If you need a real conditional, loop, or to throw from a view expression, delegate to a JavaScript method instead.
 
+## No function declarations or RegExp creation with literal notation
 
+You can't declare functions or create regular expressions from within AngularJS expressions. This is to avoid complex model transformation logic inside templates. Such logic is better placed in a controller or in a dedicated filter where it can be tested properly.
 
-No function declarations or RegExp creation with literal notation
-$event
-One-time binding
+## `$event`
+
+Directives like `ngClick` and `ngFocus` expose a `$event` object within the scope of that expression. The object is an instance of a jQuery Event Object when jQuery is present or a similar jqLite object.
+
+`index.html`
+
+```html
+<div ng-controller="EventController">
+  <button ng-click="clickMe($event)">Event</button>
+  <p><code>$event</code>: <pre> {{$event | json}}</pre></p>
+  <p><code>clickEvent</code>: <pre>{{clickEvent | json}}</pre></p>
+</div>
+```
+
+`script.js`
+
+```js
+angular.module('eventExampleApp', []).
+controller('EventController', ['$scope', function($scope) {
+  /*
+   * expose the event object to the scope
+   */
+  $scope.clickMe = function(clickEvent) {
+    $scope.clickEvent = simpleKeys(clickEvent);
+    console.log(clickEvent);
+  };
+
+  /*
+   * return a copy of an object with only non-object keys
+   * we need this to avoid circular references
+   */
+  function simpleKeys(original) {
+    return Object.keys(original).reduce(function(obj, key) {
+      obj[key] = typeof original[key] === 'object' ? '{ ... }' : original[key];
+      return obj;
+    }, {});
+  }
+}]);
+```
+
+Note in the example above how we can pass in `$event` to `clickMe`, but how it does not show up in `{{$event}}`. This is because `$event` is outside the scope of that binding.
+
+## One-time binding
+
+An expression that starts with `::` is considered a one-time expression. One-time expressions will stop recalculating once they are stable, which happens after the first digest if the expression result is a non-undefined value (see value stabilization algorithm below).
+
+`index.html`
+
+```html
+<div ng-controller="EventController">
+  <button ng-click="clickMe($event)">Click Me</button>
+  <p id="one-time-binding-example">One time binding: {{::name}}</p>
+  <p id="normal-binding-example">Normal binding: {{name}}</p>
+</div>
+```
+
+`script.js`
+
+```js
+angular.module('oneTimeBindingExampleApp', []).
+controller('EventController', ['$scope', function($scope) {
+  var counter = 0;
+  var names = ['Igor', 'Misko', 'Chirayu', 'Lucas'];
+  /*
+   * expose the event object to the scope
+   */
+  $scope.clickMe = function(clickEvent) {
+    $scope.name = names[counter % names.length];
+    counter++;
+  };
+}]);
+```
+
 Reasons for using one-time binding
 Value stabilization algorithm
 Special case for object literals
