@@ -2,6 +2,7 @@
 
 - [AngularJS Expressions](#angularjs-expressions)
   - [AngularJS Expressions vs. JavaScript Expressions](#angularjs-expressions-vs-javascript-expressions)
+  - [Example](#example)
 
 AngularJS expressions are JavaScript-like code snippets that are mainly placed in interpolation bindings such as `<span title="{{ attrBinding }}">{{ textBinding }}</span>`, but also used directly in directive attributes such as `ng-click="functionExpression()"`.
 
@@ -25,7 +26,51 @@ AngularJS expressions are like JavaScript expressions with the following differe
 - **No Object Creation With New Operator:** You cannot use `new` operator in an AngularJS expression.
 - **No Bitwise, Comma, And Void Operators:** You cannot use `Bitwise`, `,` or `void` operators in an AngularJS expression.
 
-Example
+## Example
+
+`index.html`
+
+```html
+<span>
+  1+2={{1+2}}
+</span>
+```
+
+You can try evaluating different expressions here:
+
+`index.html`
+
+```html
+<div ng-controller="ExampleController" class="expressions">
+  Expression:
+  <input type='text' ng-model="expr" size="80"/>
+  <button ng-click="addExp(expr)">Evaluate</button>
+  <ul>
+   <li ng-repeat="expr in exprs track by $index">
+     [ <a href="" ng-click="removeExp($index)">X</a> ]
+     <code>{{expr}}</code> => <span ng-bind="$parent.$eval(expr)"></span>
+    </li>
+  </ul>
+</div>
+```
+
+`script.js`
+
+```js
+angular.module('expressionExample', [])
+.controller('ExampleController', ['$scope', function($scope) {
+  var exprs = $scope.exprs = [];
+  $scope.expr = '3*10|currency';
+  $scope.addExp = function(expr) {
+    exprs.push(expr);
+  };
+
+  $scope.removeExp = function(index) {
+    exprs.splice(index, 1);
+  };
+}]);
+```
+
 Context
 Forgiving
 No Control Flow Statements
