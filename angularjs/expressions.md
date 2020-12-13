@@ -5,6 +5,7 @@
   - [Example](#example)
   - [Context](#context)
   - [Forgiving](#forgiving)
+  - [No Control Flow Statements](#no-control-flow-statements)
 
 AngularJS expressions are JavaScript-like code snippets that are mainly placed in interpolation bindings such as `<span title="{{ attrBinding }}">{{ textBinding }}</span>`, but also used directly in directive attributes such as `ng-click="functionExpression()"`.
 
@@ -116,7 +117,12 @@ It makes more sense to show nothing than to throw an exception if a is `undefine
 
 Similarly, invoking a function `a.b.c()` on `undefined` or `null` simply returns `undefined`.
 
-No Control Flow Statements
+## No Control Flow Statements
+
+Apart from the ternary operator (`a ? b : c`), you cannot write a control flow statement in an expression. The reason behind this is core to the AngularJS philosophy that application logic should be in controllers, not the views. If you need a real conditional, loop, or to throw from a view expression, delegate to a JavaScript method instead.
+
+
+
 No function declarations or RegExp creation with literal notation
 $event
 One-time binding
