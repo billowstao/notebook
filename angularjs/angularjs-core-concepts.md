@@ -9,8 +9,8 @@
 
 In AngularJS applications, you move the job of filling page templates with data from the server to the client. The result is a system better structured for dynamic page updates. Below are the core features you'll use.
 
-- [Data binding](./data-binding.md)
-- [Expressions](./expressions.md)
+- [Data binding](./angularjs-expressions.md)
+- [Expressions](./angularjs-expressions.md)
 - Interpolation
 - Directives
 - Views and routes (see the example)
