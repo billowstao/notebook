@@ -9,6 +9,10 @@
   - [No function declarations or RegExp creation with literal notation](#no-function-declarations-or-regexp-creation-with-literal-notation)
   - [`$event`](#event)
   - [One-time binding](#one-time-binding)
+  - [Reasons for using one-time binding](#reasons-for-using-one-time-binding)
+  - [Value stabilization algorithm](#value-stabilization-algorithm)
+  - [Special case for object literals](#special-case-for-object-literals)
+  - [How to benefit from one-time binding](#how-to-benefit-from-one-time-binding)
 
 AngularJS expressions are JavaScript-like code snippets that are mainly placed in interpolation bindings such as `<span title="{{ attrBinding }}">{{ textBinding }}</span>`, but also used directly in directive attributes such as `ng-click="functionExpression()"`.
 
@@ -201,7 +205,55 @@ controller('EventController', ['$scope', function($scope) {
 }]);
 ```
 
-Reasons for using one-time binding
-Value stabilization algorithm
-Special case for object literals
-How to benefit from one-time binding
+## Reasons for using one-time binding
+
+The main purpose of one-time binding expression is to provide a way to create a binding that gets deregistered and frees up resources once the binding is stabilized. Reducing the number of expressions being watched makes the digest loop faster and allows more information to be displayed at the same time.
+
+## Value stabilization algorithm
+
+One-time binding expressions will retain the value of the expression at the end of the digest cycle as long as that value is not `undefined`. If the value of the expression is set within the digest loop and later, within the same digest loop, it is set to `undefined`, then the expression is not `fulfilled` and will remain watched.
+
+1. Given an expression that starts with `::`, when a digest loop is entered and expression is dirty-checked, store the value as V
+2. If V is not `undefined`, mark the result of the expression as stable and schedule a task to deregister the watch for this expression when we exit the digest loop
+3. Process the digest loop as normal
+4. When digest loop is done and all the values have settled, process the queue of watch deregistration tasks. For each watch to be deregistered, check if it still evaluates to a value that is not `undefined`. If that's the case, deregister the watch. Otherwise, keep dirty-checking the watch in the future digest loops by following the same algorithm starting from step 1
+
+## Special case for object literals
+
+Unlike simple values, object-literals are watched until every key is defined. See [http://www.bennadel.com/blog/2760-one-time-data-bindings-for-object-literal-expressions-in-angularjs-1-3.htm](http://www.bennadel.com/blog/2760-one-time-data-bindings-for-object-literal-expressions-in-angularjs-1-3.htm)
+
+## How to benefit from one-time binding
+
+If the expression will not change once set, it is a candidate for one-time binding. Here are three example cases.
+
+When interpolating text or attributes:
+
+```html
+<div name="attr: {{::color}}">text: {{::name | uppercase}}</div>
+```
+
+When using a directive with bidirectional binding and parameters that will not change:
+
+```js
+someModule.directive('someDirective', function() {
+  return {
+    scope: {
+      name: '=',
+      color: '@'
+    },
+    template: '{{name}}: {{color}}'
+  };
+});
+```
+
+```html
+<div some-directive name="::myName" color="My color is {{::myColor}}"></div>
+```
+
+When using a directive that takes an expression:
+
+```html
+<ul>
+  <li ng-repeat="item in ::items | orderBy:'name'">{{item.name}};</li>
+</ul>
+```
