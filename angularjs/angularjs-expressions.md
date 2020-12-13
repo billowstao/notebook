@@ -1,6 +1,6 @@
-# AngularJS Expressions
+# AngularJS - Expressions
 
-- [AngularJS Expressions](#angularjs-expressions)
+- [AngularJS - Expressions](#angularjs---expressions)
   - [AngularJS Expressions vs. JavaScript Expressions](#angularjs-expressions-vs-javascript-expressions)
   - [Example](#example)
   - [Context](#context)
