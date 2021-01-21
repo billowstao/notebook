@@ -5,6 +5,7 @@
   - [Creating and configuring a Component](#creating-and-configuring-a-component)
   - [Comparison between Directive definition and Component definition](#comparison-between-directive-definition-and-component-definition)
   - [Component-based application architecture](#component-based-application-architecture)
+  - [Intercomponent Communication](#intercomponent-communication)
 
 ## Creating and configuring a Components
 
@@ -148,3 +149,9 @@ As already mentioned, the component helper makes it easier to structure your app
 By implementing these methods, your component can hook into its lifecycle.
 
 An application is a tree of components: Ideally, the whole application should be a tree of components that implement clearly defined inputs and outputs, and minimize two-way data binding. That way, it's easier to predict when data changes and what the state of a component is.
+
+## Intercomponent Communication
+
+Directives can require the controllers of other directives to enable communication between each other. This can be achieved in a component by providing an object mapping for the require property. The object keys specify the property names under which the required controllers (object values) will be bound to the requiring component's controller.
+
+> Note that the required controllers will not be available during the instantiation of the controller, but they are guaranteed to be available just before the `$onInit` method is executed!
