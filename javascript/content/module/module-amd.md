@@ -15,6 +15,7 @@
   - [全局变量](#全局变量)
   - [使用注意](#使用注意)
   - [与 CommonJS 的关系](#与-commonjs-的关系)
+  - [参考](#参考)
 
 异步模块定义规范（AMD）制定了定义模块的规则，这样模块和模块的依赖可以被异步加载。这和浏览器的异步加载模块的环境刚好适应（浏览器同步加载模块会导致性能、可用性、调试和跨域访问等问题）。
 
@@ -170,3 +171,7 @@ define(function (require, exports, module) {
 一个关于本 API 的 wiki 开始在 CommonJS wiki 中创建了，作为中转的格式，模块中转。但是为了包含模块定义接口，随着时间而不断改变。在 CommonJS 列表中关于推荐本 API 作为模块定义API尚未达成一致。本 API 被转移到它自己的 wiki 和讨论组中。
 
 AMD 可以作为 CommonJS 模块一个中转的版本只要 CommonJS 没有被用来同步的 `require` 调用。使用同步 `require` 调用的 CommonJS 代码可以被转换为使用回调风格的AMD模块加载器。
+
+## 参考
+
+- AMD(The Asynchronous Module Definition): [https://github.com/amdjs/amdjs-api/wiki/AMD](https://github.com/amdjs/amdjs-api/wiki/AMD)
