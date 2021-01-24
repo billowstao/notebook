@@ -62,3 +62,9 @@ define(id?, dependencies?, factory)
 如果 `factory` 函数返回一个值（对象，函数或任何强制为 `true` 的值），则该值应被指定为模块的导出值。
 
 ##### 简化 CommonJS 包装
+
+如果忽略了 `dependencies` 参数，模块加载器可能会选择以 `require` 语句的形式扫描 `factory` 函数来寻找依赖项(字面上就是 `require('module-id')`)。第一个参数必须按照字面意思命名为 `require` 才能正常工作。
+
+在某些情况下，模块加载器可能会因为代码大小的限制或缺少对 `toString` 函数支持而选择不扫描依赖项（总所周知，Opera Mobile）缺少对 `toString` 函数的支持）。
+
+如果 `dependencies` 参数存在，模块加载器不应该扫描 `factory` 函数中的依赖项。
