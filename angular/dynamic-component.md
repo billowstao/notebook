@@ -5,6 +5,8 @@
   - [指令](#指令)
   - [加载组件](#加载组件)
   - [解析组件](#解析组件)
+  - [公共的 `AdComponent` 接口](#公共的-adcomponent-接口)
+  - [最终的广告栏](#最终的广告栏)
 
 > 译注：本页讲的是一个用于显示广告的范例，而部分广告拦截器插件，比如 Chrome 的 AdGuard，可能会破坏其工作逻辑，因此，请在本页关闭那些插件。
 
@@ -125,7 +127,7 @@ export class AdBannerComponent implements OnInit, OnDestroy {
 >
 > `loadComponent()` 方法使用某种算法选择了一个广告。
 >
->（译注：循环选取算法）首先，它把 `currentAdIndex` 递增一，然后用它除以 `AdItem` 数组长度的余数作为新的 `currentAdIndex` 的值， 最后用这个值来从数组中选取一个 `adItem`。
+> （译注：循环选取算法）首先，它把 `currentAdIndex` 递增一，然后用它除以 `AdItem` 数组长度的余数作为新的 `currentAdIndex` 的值， 最后用这个值来从数组中选取一个 `adItem`。
 
 在 `loadComponent()` 选取了一个广告之后，它使用 `ComponentFactoryResolver` 来为每个具体的组件解析出一个 `ComponentFactory`。 然后 `ComponentFactory` 会为每一个组件创建一个实例。
 
@@ -136,3 +138,68 @@ export class AdBannerComponent implements OnInit, OnDestroy {
 要把这个组件添加到模板中，你可以调用 `ViewContainerRef` 的 `createComponent()`。
 
 `createComponent()` 方法返回一个引用，指向这个刚刚加载的组件。 使用这个引用就可以与该组件进行交互，比如设置它的属性或调用它的方法。
+
+## 公共的 `AdComponent` 接口
+
+在广告条中，所有组件都实现了一个公共接口 `AdComponent`，它定义了一个标准化的 API，来把数据传给组件。
+
+下面就是两个范例组件及其 `AdComponent` 接口：
+
+`hero-job-ad.component.ts`
+
+```ts
+import { Component, Input } from "@angular/core";
+
+import { AdComponent } from "./ad.component";
+
+@Component({
+  template: `
+    <div class="job-ad">
+      <h4>{{ data.headline }}</h4>
+
+      {{ data.body }}
+    </div>
+  `,
+})
+export class HeroJobAdComponent implements AdComponent {
+  @Input() data: any;
+}
+```
+
+`hero-profile.component.ts`
+
+```ts
+import { Component, Input } from "@angular/core";
+
+import { AdComponent } from "./ad.component";
+
+@Component({
+  template: `
+    <div class="hero-profile">
+      <h3>Featured Hero Profile</h3>
+      <h4>{{ data.name }}</h4>
+
+      <p>{{ data.bio }}</p>
+
+      <strong>Hire this hero today!</strong>
+    </div>
+  `,
+})
+export class HeroProfileComponent implements AdComponent {
+  @Input() data: any;
+}
+```
+
+`ad.component.ts`
+
+```ts
+export interface AdComponent {
+  data: any;
+}
+```
+
+## 最终的广告栏
+
+最终的广告栏是这样的：
+
+![广告栏效果](./resource/ads-example.gif)
