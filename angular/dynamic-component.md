@@ -57,11 +57,11 @@ export class AdDirective {
 
 ```ts
 template: `
-            <div class="ad-banner-example">
-              <h3>Advertisements</h3>
-              <ng-template adHost></ng-template>
-            </div>
-          `;
+<div class="ad-banner-example">
+  <h3>Advertisements</h3>
+  <ng-template adHost></ng-template>
+</div>
+`;
 ```
 
 `<ng-template>` 元素是动态加载组件的最佳选择，因为它不会渲染任何额外的输出。
@@ -100,16 +100,14 @@ export class AdBannerComponent implements OnInit, OnDestroy {
     this.currentAdIndex = (this.currentAdIndex + 1) % this.ads.length;
     const adItem = this.ads[this.currentAdIndex];
 
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      adItem.component
-    );
+    const componentFactory =
+      this.componentFactoryResolver.resolveComponentFactory(adItem.component);
 
     const viewContainerRef = this.adHost.viewContainerRef;
     viewContainerRef.clear();
 
-    const componentRef = viewContainerRef.createComponent<AdComponent>(
-      componentFactory
-    );
+    const componentRef =
+      viewContainerRef.createComponent<AdComponent>(componentFactory);
     componentRef.instance.data = adItem.data;
   }
 
