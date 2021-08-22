@@ -28,7 +28,7 @@
 
 ### AngularJS
 
-#### [Core Concepts](./angularjs/core-concepts.md)
+#### [Core Concepts](./angularjs/angularjs-core-concepts.md)
 
 ## 网络
 
