@@ -35,7 +35,7 @@
 
 ## 操作符分类
 
-操作符有着不同的用途，它们可作如下分类：创建、转换、过滤、链接、多播、错误处理、工具，等等。在下面的列表中，你可以按分类组织好的所有操作符。
+操作符有着不同的用途，它们可作如下分类：创建、转换、过滤、连接、多播、错误处理、工具，等等。在下面的列表中，你可以按分类组织好的所有操作符。
 
 ### 创建操作符
 
@@ -59,13 +59,14 @@
 
 这些是可观察对象的创建操作符，它们也具有连接功能 —— 发出多个源可观察对象的值。
 
-- combineLatest
-- concat
-- forkJoin
-- merge
-- partition
-- race
-- zip
+- [combineLatest](https://rxjs.dev/api/index/function/combineLatest): 连接多个 Observable，并且发出所有输入 Observable 的最近值的结合数组
+- [concat](https://rxjs.dev/api/index/function/concat): 连接不同的 Observable 流(按照 Observable 输入的先后顺序连接)，然后依次发出连接后的每个值
+- [forkJoin](https://rxjs.dev/api/index/function/forkJoin): 按照输入顺序连接不同的 Observable，等待所有输入 Observable 都成功后按照输入顺序发出数组包裹的结果(当且仅当所有输入 Observable 都**成功返回值**后才返回相应的结果数组)
+- ~~[merge](https://rxjs.dev/api/index/function/merge): RxJS v8 将要移除。~~使用 `mergeWith` 替代
+- [mergeWith](https://rxjs.dev/api/operators/mergeWith): 按照输入 Observable 的各自顺序合并所有值为一个新的 Observable
+- [partition](https://rxjs.dev/api/index/function/partition): 按照条件拆分 1 个 Observable 为 2 个 Observable，满足条件的值加入第 1 个返回的 Observable，不满足条件的值加入第 2 个返回的 Observable
+- [race](https://rxjs.dev/api/index/function/race): 竞赛，输入多个 Observable, 发出最先触发的 Observable
+- [zip](https://rxjs.dev/api/index/function/zip): 组合(打包)多个 Observable，依次发出每个 Observable 值的组合(数组包裹输出的所有输入值；当输入的 Observable 长度不一致，仅输出长度一致的共同部分)
 
 ### 转换操作符
 
