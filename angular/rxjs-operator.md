@@ -57,7 +57,7 @@
 
 ### 连接创建操作符
 
-这些是可观察对象的创建操作符，它们也具有连接功能 —— 发出多个源可观察对象的值。
+这些是 Observable 的创建操作符，它们也具有连接功能 —— 发出多个源 Observable 的值。
 
 - [combineLatest](https://rxjs.dev/api/index/function/combineLatest): 连接多个 Observable，并且发出所有输入 Observable 的最近值的结合数组
 - [concat](https://rxjs.dev/api/index/function/concat): 连接不同的 Observable 流(按照 Observable 输入的先后顺序连接)，然后依次发出连接后的每个值
@@ -70,34 +70,35 @@
 
 ### 转换操作符
 
-- buffer
-- bufferCount
-- bufferTime
-- bufferToggle
-- bufferWhen
-- concatMap
-- concatMapTo
-- exhaust
-- exhaustMap
-- expand
-- groupBy
-- map
-- mapTo
-- mergeMap
-- mergeMapTo
-- mergeScan
-- pairwise
-- partition
-- pluck
-- scan
-- switchScan
-- switchMap
-- switchMapTo
-- window
-- windowCount
-- windowTime
-- windowToggle
-- windowWhen
+- [buffer](https://rxjs.dev/api/operators/buffer): 缓冲源 Observable，直到输入 Observable 发出
+- [bufferCount](https://rxjs.dev/api/operators/bufferCount): 缓冲源 Observable，直到限定数量的源发出
+- [bufferTime](https://rxjs.dev/api/operators/bufferTime): 缓冲源 Observable，直到限定的时间间隔
+- [bufferToggle](https://rxjs.dev/api/operators/bufferToggle): 从触发 `openings` 到触发 `closingSelector` 缓冲源 Observable，并发出缓冲的源 Observable
+- [bufferWhen](https://rxjs.dev/api/operators/bufferWhen): 缓冲源 Observable，直到输入 Observable 触发
+- [concatMap](https://rxjs.dev/api/operators/concatMap): 将每个源值映射到一个 Observable 中，并在输出的 Observable 中合并，以序列化的方式等待每个源值都完成，然后再合并下一个(先 `map` 再 `concat`，源 Observable 的值保留)
+- [concatMapTo](https://rxjs.dev/api/operators/concatMapTo): 将每个源值映射到同一个 Observable 上，并在输出的 Observable 上以序列化的方式合并多次(源 Observable 的值被丢弃)
+- ~~[exhaust](https://rxjs.dev/api/operators/exhaust): 将在 RxJS v8 中移除。~~重命名为 `exhaustAll`
+- [exhaustAll](https://rxjs.dev/api/operators/exhaustAll): 将一个高阶 Observable 转换为一阶 Observable ，当源内部的前一个 Observable 未完成时丢弃当前的 Observable
+- [exhaustMap](https://rxjs.dev/api/operators/exhaustMap): 将每个源值映射到一个 Observable 中，只有当之前映射的 Observable 完成时，才会合并到输出的 Observable 中
+- [expand](https://rxjs.dev/api/operators/expand): 递归的将每个值映射到一个被合并到输出 Observable 中的 Observable 中
+- [groupBy](https://rxjs.dev/api/operators/groupBy): 将一阶的源 Observable 通过 `keySelector` 分组成高阶的 Observable 并输出
+- [map](https://rxjs.dev/api/operators/map): 将给定的映射函数应用到由源 Observable 发出的每个值上，并将结果值作为 Observable 发出
+- [mapTo](https://rxjs.dev/api/operators/mapTo): 每当源 Observable 发出一个值时，就在输出 Observable 上发出给定的常量值
+- [mergeMap](https://rxjs.dev/api/operators/mergeMap): 将每个源值映射到一个 Observable 中，并合并到输出的 Observable 中
+- [mergeMapTo](https://rxjs.dev/api/operators/mergeMapTo): 将每个源值映射到同一个 Observable 中，并在输出 Observable 中多次合并
+- [mergeScan](https://rxjs.dev/api/operators/mergeScan): 在源 Observable 上应用累加器函数，累加器函数本身返回一个 Observable，然后每个返回的中间 Observable 合并到输出 Observable 中
+- [pairwise](https://rxjs.dev/api/operators/pairwise): 将一对对连续的发出组合在一起，并将它们作为两个数组发出
+- [partition](https://rxjs.dev/api/operators/partition): 按照条件拆分 1 个 Observable 为 2 个 Observable，满足条件的值加入第 1 个返回的 Observable，不满足条件的值加入第 2 个返回的 Observable
+- ~~[pluck](https://rxjs.dev/api/operators/pluck): 将在 RxJS v8 中移除。~~使用 `map` 替代
+- [scan](https://rxjs.dev/api/operators/scan): 用于封装和管理状态。在初始状态建立后，对于来自源的每个值应用累加器(或 `reducer` 函数) -- 通过 `seed` 值(第二个参数)或来自源的第 1 个值
+- [switchScan](https://rxjs.dev/api/operators/switchScan): 在源 Observable 上应用累加器函数，累加器函数本身返回一个 Observable，只从最新返回的 Observable 发出值(重叠发出的源 Observable 的值会被最新的值替代)
+- [switchMap](https://rxjs.dev/api/operators/switchMap): 将每个源值都映射到一个 Observable，它只从最新映射的 Observable 发出
+- [switchMapTo](https://rxjs.dev/api/operators/switchMapTo): 将每个源值都映射到同一个 Observable，这个 Observable 中使用 `switchMap` 多次扁平化
+- [window](https://rxjs.dev/api/operators/window): 当 `windowBoundaries` 发出时，分支出源 Observable 的值作为一个被嵌套的 Observable
+- [windowCount](https://rxjs.dev/api/operators/windowCount): 分支出源 Observable 的值作为一个嵌套的 Observable，每个嵌套的 Observable 最多发出 `windowSize` 次数的值
+- [windowTime](https://rxjs.dev/api/operators/windowTime): 定时将源 Observable 的值分支出来，作为一个嵌套的 Observable
+- [windowToggle](https://rxjs.dev/api/operators/windowToggle): 分支出源 Observable 的值作为一个嵌套的 Observable，从 `openings` 发出开始，到 `closingSelector` 发出结束
+- [windowWhen](https://rxjs.dev/api/operators/windowWhen): 分支出源 Observable 的值作为一个嵌套的 Observable，使用用来关闭 Observable 的工厂函数来决定何时启动一个新的窗口
 
 ### 过滤操作符
 
