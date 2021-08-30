@@ -7,21 +7,21 @@
 ![RxJS 操作符（RxJS operators）](./resource/rxjs-operators-logo.png)
 
 - [RxJS 操作符概览(RxJS Operators Overview)](#rxjs-操作符概览rxjs-operators-overview)
-  - [Marble diagrams(弹珠图)](#marble-diagrams弹珠图)
-  - [操作符分类](#操作符分类)
-    - [创建操作符](#创建操作符)
-    - [连接创建操作符](#连接创建操作符)
-    - [转换操作符](#转换操作符)
-    - [过滤操作符](#过滤操作符)
-    - [连接操作符](#连接操作符)
-    - [多播操作符](#多播操作符)
-    - [错误处理操作符](#错误处理操作符)
-    - [工具操作符](#工具操作符)
-    - [条件和布尔操作符](#条件和布尔操作符)
-    - [数学和集合运算符](#数学和集合运算符)
-    - [参考](#参考)
+  - [弹珠图(Marble Diagrams)](#弹珠图marble-diagrams)
+  - [操作符分类(Category Of Operators)](#操作符分类category-of-operators)
+    - [创建操作符(Creation Operators)](#创建操作符creation-operators)
+    - [连接创建操作符(Join Creation Operators)](#连接创建操作符join-creation-operators)
+    - [转换操作符(Transformation Operators)](#转换操作符transformation-operators)
+    - [过滤操作符(Filtering Operators)](#过滤操作符filtering-operators)
+    - [连接操作符(Join Operators, 高阶 Observable 操作符)](#连接操作符join-operators-高阶-observable-操作符)
+    - [多播操作符(Multicasting Operators)](#多播操作符multicasting-operators)
+    - [错误处理操作符(Error Handing Operators)](#错误处理操作符error-handing-operators)
+    - [工具操作符(Utility Operators)](#工具操作符utility-operators)
+    - [条件和布尔操作符(Conditional And Boolean Operators)](#条件和布尔操作符conditional-and-boolean-operators)
+    - [数学和集合运算符(Mathematical and Aggregate Operators)](#数学和集合运算符mathematical-and-aggregate-operators)
+    - [参考(Reference)](#参考reference)
 
-## Marble diagrams(弹珠图)
+## 弹珠图(Marble Diagrams)
 
 要解释操作符是如何工作的，文字描述通常是不足以描述清楚的。许多操作符都是跟时间相关的，它们可能会以不同的方式延迟(delay)、取样(sample)、节流(throttle)或去抖动(debounce)。图表通常是更适合的工具。弹珠图是操作符运行方式的视觉表示，其中包含输入 Observable(s) (输入可能是多个 Observable)、操作符及其参数和输出 Observable 。
 
@@ -33,11 +33,11 @@
 
 在整个文档站中，我们广泛地使用弹珠图来解释操作符的工作方式。它们在其他环境中也可能非常有用，例如在白板上，甚至在我们的单元测试中(如 ASCII 图)。
 
-## 操作符分类
+## 操作符分类(Category Of Operators)
 
 操作符有着不同的用途，它们可作如下分类：创建、转换、过滤、连接、多播、错误处理、工具，等等。在下面的列表中，你可以按分类组织好的所有操作符。
 
-### 创建操作符
+### 创建操作符(Creation Operators)
 
 - [ajax](https://rxjs.dev/api/ajax/ajax): 创建 ajax 的 Observable。
 - [bindCallback](https://rxjs.dev/api/index/function/bindCallback): 将回调函数转换为 Observable。
@@ -55,7 +55,7 @@
 - [timer](https://rxjs.dev/api/index/function/timer): 延时定时器
 - [iif](https://rxjs.dev/api/index/function/iif): 相当于三元表达式 (断言 ? true : false) 的 Observable
 
-### 连接创建操作符
+### 连接创建操作符(Join Creation Operators)
 
 这些是 Observable 的创建操作符，它们也具有连接功能 —— 发出多个源 Observable 的值。
 
@@ -68,7 +68,7 @@
 - [race](https://rxjs.dev/api/index/function/race): 竞赛，输入多个 Observable, 发出最先触发的 Observable
 - [zip](https://rxjs.dev/api/index/function/zip): 组合(打包)多个 Observable，依次发出每个 Observable 值的组合(数组包裹输出的所有输入值；当输入的 Observable 长度不一致，仅输出长度一致的共同部分)
 
-### 转换操作符
+### 转换操作符(Transformation Operators)
 
 - [buffer](https://rxjs.dev/api/operators/buffer): 缓冲源 Observable，直到输入 Observable 发出
 - [bufferCount](https://rxjs.dev/api/operators/bufferCount): 缓冲源 Observable，直到限定数量的源发出
@@ -100,7 +100,7 @@
 - [windowToggle](https://rxjs.dev/api/operators/windowToggle): 分支出源 Observable 的值作为一个嵌套的 Observable，从 `openings` 发出开始，到 `closingSelector` 发出结束
 - [windowWhen](https://rxjs.dev/api/operators/windowWhen): 分支出源 Observable 的值作为一个嵌套的 Observable，使用用来关闭 Observable 的工厂函数来决定何时启动一个新的窗口
 
-### 过滤操作符
+### 过滤操作符(Filtering Operators)
 
 - audit
 - auditTime
@@ -128,7 +128,7 @@
 - throttle
 - throttleTime
 
-### 连接操作符
+### 连接操作符(Join Operators, 高阶 Observable 操作符)
 
 还请参阅上面的[链接创建操作符](#连接创建操作符)
 
@@ -140,7 +140,7 @@
 - startWith
 - withLatestFrom
 
-### 多播操作符
+### 多播操作符(Multicasting Operators)
 
 - multicast
 - publish
@@ -149,13 +149,13 @@
 - publishReplay
 - share
 
-### 错误处理操作符
+### 错误处理操作符(Error Handing Operators)
 
 - catchError
 - retry
 - retryWhen
 
-### 工具操作符
+### 工具操作符(Utility Operators)
 
 - tap
 - delay
@@ -170,7 +170,7 @@
 - timeoutWith
 - toArray
 
-### 条件和布尔操作符
+### 条件和布尔操作符(Conditional And Boolean Operators)
 
 - defaultIfEmpty
 - every
@@ -178,11 +178,11 @@
 - findIndex
 - isEmpty
 
-### 数学和集合运算符
+### 数学和集合运算符(Mathematical and Aggregate Operators)
 
 - count
 - max
 - min
 - reduce
 
-### 参考
+### 参考(Reference)
