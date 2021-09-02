@@ -102,31 +102,31 @@
 
 ### 过滤操作符(Filtering Operators)
 
-- audit
-- auditTime
-- debounce
-- debounceTime
-- distinct
-- distinctUntilChanged
-- distinctUntilKeyChanged
-- elementAt
-- filter
-- first
-- ignoreElements
-- last
-- sample
-- sampleTime
-- single
-- skip
-- skipLast
-- skipUntil
-- skipWhile
-- take
-- takeLast
-- takeUntil
-- takeWhile
-- throttle
-- throttleTime
+- [audit](https://rxjs.dev/api/operators/audit): 在一段时间内忽略由另一个 Observable 决定的源值，然后从源 Observable 发出最近的值(发出静默时间窗口内的最后一个值)，然后重复这个过程
+- [auditTime](https://rxjs.dev/api/operators/auditTime): 忽略 `duration` 毫秒的源值，然后从源 Observable 发出最近的值，然后重复这个过程
+- [debounce](https://rxjs.dev/api/operators/debounce): 只有由一个由另一个 Observable 决定的特定时间跨度过去而没有另一个 Observable 发出时，才会从源 Observable 发出值
+- [debounceTime](https://rxjs.dev/api/operators/debounceTime): 只有在一个特定的时间跨度过去之后，没有其他源发出，才会从 Observable 发出
+- [distinct](https://rxjs.dev/api/operators/distinct): 返回一个 Observable，它会发出源 Observable 所发出的所有与之前(发出)的项不同的项
+- [distinctUntilChanged](https://rxjs.dev/api/operators/distinctUntilChanged): 返回一个 Observable，使用 `comparator` 判断当前项与其他项是否不同而发出
+- [distinctUntilKeyChanged](https://rxjs.dev/api/operators/distinctUntilKeyChanged): 返回一个 Observable，该 Observable 发出源 Observable 发出的所有与前一项不同的项，并使用提供的键(`key`)访问属性来检查两个项是否不同
+- [elementAt](https://rxjs.dev/api/operators/elementAt): 在源 Observable 的一系列发出中，在指定的索引处发出单个值
+- [filter](https://rxjs.dev/api/operators/filter): 发出源 Observable 满足特定条件的值
+- [first](https://rxjs.dev/api/operators/first): 只发出由源 Observable 发出的第一个值(或满足某些条件的第一个值)
+- [ignoreElements](https://rxjs.dev/api/operators/ignoreElements): 忽略由源 Observable 发出的所有项，只传递 `complete` 或 `error` 的调用
+- [last](https://rxjs.dev/api/operators/last): 返回一个只触发源 Observable 所触发的最后一项的 Observable(可以选择使用一个断言函数作为参数，在这种情况下，生成的 Observable 不会从源 Observable 中发出最后一项，而是从源 Observable 中发出满足断言的最后一项)。
+- [sample](https://rxjs.dev/api/operators/sample): 当另一个 Observable 发出时，发出源 Observable 中最近发出的值(采样)
+- [sampleTime](https://rxjs.dev/api/operators/sampleTime): 在周期的时间间隔内从源 Observable 发出最近发出的值
+- [single](https://rxjs.dev/api/operators/single): 返回一个 Observable，它判断源 Observable 是否只发出一个与断言匹配的值。如果没有提供断言，那么它将判断 Observable 是否只发出一个值
+- [skip](https://rxjs.dev/api/operators/skip): 返回一个 Observable，它跳过源 Observable 发出的 `count` 数量项
+- [skipLast](https://rxjs.dev/api/operators/skipLast): 返回源 Observable 跳过完成前 `skipCount` 数量项
+- [skipUntil](https://rxjs.dev/api/operators/skipUntil): 发出源 Observable 发出的值，知道 `notifier` Observable 发出一个值
+- [skipWhile](https://rxjs.dev/api/operators/skipWhile): 返回一个 Observable，只要指定的条件为 `true`，它就跳过发出源 Observable 的项，一旦条件变成 `false`，它就会发出源 Observable 的项
+- [take](https://rxjs.dev/api/operators/take): 只发出源 Observable 发出的前 `count` 数量个值
+- [takeLast](https://rxjs.dev/api/operators/takeLast): 只发出源 Observable 发出的最后 `count` 个值
+- [takeUntil](https://rxjs.dev/api/operators/takeUntil): 发出源 Observable 发出的值，直到 `notifier` Observable 发出一个值
+- [takeWhile](https://rxjs.dev/api/operators/takeWhile): 发出源 Observable 发出的值，只要每个值满足给定的 `predicate`，然后在这个 `predicate` 不满足时完成
+- [throttle](https://rxjs.dev/api/operators/throttle): 从源 Observable 发出一个值，然后在由另一个 Observable 决定的持续时间内忽略后续的源值，然后重复这个过程
+- [throttleTime](https://rxjs.dev/api/operators/throttleTime): 从源 Observable 中发出一个值，然后在持续时间(毫秒)内忽略后续的源值，然后重复这个过程
 
 ### 连接操作符(Join Operators, 高阶 Observable 操作符)
 
