@@ -1,7 +1,8 @@
 # RxJS 操作符概览(RxJS Operators Overview)
 
-> 作者: billowstao
->
+作者: billowstao
+版权: <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+
 > RxJS 的操作符太丰富了，总结这一篇 RxJS 的操作符便于快速查询。🤠
 
 ![RxJS 操作符（RxJS operators）](./resource/rxjs-operators-logo.png)
