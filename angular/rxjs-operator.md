@@ -130,15 +130,15 @@
 
 ### 连接操作符(Join Operators, 高阶 Observable 操作符)
 
-还请参阅上面的[链接创建操作符](#连接创建操作符)
+还请参阅上面的[连接创建操作符(Join Creation Operators)](#连接创建操作符join-creation-operators)
 
-- combineLatestAll
-- concatAll
-- exhaustAll
-- mergeAll
-- switchAll
-- startWith
-- withLatestFrom
+- [combineLatestAll](https://rxjs.dev/api/operators/combineLatestAll): 当 Observable 的 Observable 完成时，通过应用 `combineLatest` 将 Observable 的 Observable 扁平化
+- [concatAll](https://rxjs.dev/api/operators/concatAll): 将一个高阶 Observable 转换为一阶 Observable，通过内部 Observable 的顺序连接
+- [exhaustAll](https://rxjs.dev/api/operators/exhaustAll): 将一个高阶 Observable 转换为一阶 Observable，方法是在之前的内部 Observable 尚未完成时，删除当前的内部 Observable
+- [mergeAll](https://rxjs.dev/api/operators/mergeAll): 将一个高阶 Observable 转换为一阶 Observable，该 Observable 并发地提供了内部 Observable 所发出的所有值
+- [switchAll](https://rxjs.dev/api/operators/switchAll): 将高阶 Observable 转换为一阶 Observable，只从最近的 Observable 序列产生值
+- [startWith](https://rxjs.dev/api/operators/startWith): 返回一个 Observable，该 Observable 在进行订阅时将同步发送提供给该操作符的所有值，然后订阅源并将其所有值镜像发送给订阅者
+- [withLatestFrom](https://rxjs.dev/api/operators/withLatestFrom): 将源 Observable 与其他 Observable 组合起来创建一个 Observable，其值仅在源发出时根据每个 Observable 的最新值计算
 
 ### 多播操作符(Multicasting Operators)
 
