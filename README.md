@@ -4,7 +4,6 @@
   - [前端](#前端)
     - [JavaScript](#javascript)
     - [React](#react)
-      - [Advantage of React](#advantage-of-react)
     - [Angular](#angular)
     - [AngularJS](#angularjs)
       - [Core Concepts](#core-concepts)
@@ -21,8 +20,6 @@
 ### [JavaScript](./javascript/javascript-catalogue.md)
 
 ### React
-
-#### [Advantage of React](./react/advantage-of-react.md)
 
 ### [Angular](./angular/angular.md)
 
