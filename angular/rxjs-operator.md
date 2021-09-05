@@ -152,9 +152,9 @@
 
 ### 错误处理操作符(Error Handing Operators)
 
-- catchError
-- retry
-- retryWhen
+- [catchError](https://rxjs.dev/api/operators/catchError): 通过返回一个新的 Observable 或抛出一个错误来捕获待处理的 Observable 上的错误
+- [retry](https://rxjs.dev/api/operators/retry): 当 Observable 出现错误，在一段时间后重新返回源 Observable 镜像的 Observable
+- [retryWhen](https://rxjs.dev/api/operators/retryWhen): 当 Observable 出现错误返回一个镜像 Observable。如果源 Observable 调用了 `error`，这个方法将从 `notifier` 调用 `error`，这个方法将从 `notifier` 发出导致这个错误的 `Throwable`。如果那个可观察对象调用 `complete` 或 `error`，那么这个方法就会在子订阅上调用 `complete` 或 `error`。否则该方法将重新订阅源 Observable
 
 ### 工具操作符(Utility Operators)
 
