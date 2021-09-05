@@ -142,12 +142,13 @@
 
 ### 多播操作符(Multicasting Operators)
 
-- multicast
-- publish
-- publishBehavior
-- publishLast
-- publishReplay
-- share
+- ~~[multicast](https://rxjs.dev/api/operators/multicast): 将在 RxJS v8 中移除。~~使用 [connectable](https://rxjs.dev/api/index/function/connectable) Observable, `connect` 操作符或 `share` 操作符替代
+- [connect](https://rxjs.dev/api/operators/connect): 通过在函数中对源进行多播来创建一个 Observable，该函数允许开发人员在连接之前定义多播的用法
+- [share](https://rxjs.dev/api/operators/share): 返回一个新的 Observable，它可以多播(共享)原来的 Observable。只要至少有一个订阅者，这个 Observable 就会被订阅并发出数据。当所有的订阅者都取消订阅时，它将取消对源 Observable 的订阅。因为 Observable 是多播的，所以流是 `hot`(这是 `multicast(() => new Subject()), refCount().` 的别名)
+- ~~[publish](https://rxjs.dev/api/operators/publish): 将要在 RxJS v8 中移除。~~使用 `connectable`, `connect` 或 `share` 替代
+- ~~[publishBehavior](https://rxjs.dev/api/operators/publishBehavior): 要在 RxJS v8 中移除。~~使用 `BehaviorSubject` 替代
+- ~~[publishLast](https://rxjs.dev/api/operators/publishLast): 要在 RxJS v8 中移除。~~使用 `AsyncSubject` 替代
+- ~~[publishReplay](https://rxjs.dev/api/operators/publishReplay): 要在 RxJS v8 中移除。~~使用 `connectable`, `connect` 或 `share` 替代
 
 ### 错误处理操作符(Error Handing Operators)
 
