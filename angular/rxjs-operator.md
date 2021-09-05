@@ -173,17 +173,19 @@
 
 ### 条件和布尔操作符(Conditional And Boolean Operators)
 
-- defaultIfEmpty
-- every
-- find
-- findIndex
-- isEmpty
+- [defaultIfEmpty](https://rxjs.dev/api/operators/defaultIfEmpty): 如果源 Observable 完成时没有发出任何一个值，则发出一个给定的值，否则镜像源 Observable
+- [every](https://rxjs.dev/api/operators/every): 返回一个 Observable，它发出是否(布尔值)源的每一项都满足指定的表达式
+- [find](https://rxjs.dev/api/operators/find): 只发出源 Observable 满足条件的第一个值
+- [findIndex](https://rxjs.dev/api/operators/findIndex): 只发出源 Observable 满足条件的第一个值的索引值
+- [isEmpty](https://rxjs.dev/api/operators/isEmpty): 如果输入 Observable 发出了任何值，则发出 `false`，如果输入 Observable 完成时没有发出任何值，则发出 `true`
 
 ### 数学和集合运算符(Mathematical and Aggregate Operators)
 
-- count
-- max
-- min
-- reduce
+- [count](https://rxjs.dev/api/operators/count): 统计源的发出次数，并在源完成时发出该次数
+- [max](https://rxjs.dev/api/operators/max): `max` 操作符对一个 Observable 进行操作，它会发出数字(或者提供可以进行元素比较的函数)，当源 Observable 完成时，它会发出一个元素: 最大的值
+- [min](https://rxjs.dev/api/operators/min): `min` 操作符对一个 Observable 进行操作，它会发出数字(或者提供可以进行元素比较的函数)，当源 Observable 完成时，它会发出一个元素: 最小的值
+- [reduce](https://rxjs.dev/api/operators/reduce): 在源 Observable 上应用一个累加器函数，并在源完成时返回累加的结果，可选给定一个 `seed` (初始值)
 
 ### 参考(Reference)
+
+RxJS Operators: [https://rxjs.dev/guide/operators](https://rxjs.dev/guide/operators)
