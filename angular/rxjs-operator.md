@@ -158,18 +158,18 @@
 
 ### 工具操作符(Utility Operators)
 
-- tap
-- delay
-- delayWhen
-- dematerialize
-- materialize
-- observeOn
-- subscribeOn
-- timeInterval
-- timestamp
-- timeout
-- timeoutWith
-- toArray
+- [tap](https://rxjs.dev/api/operators/tap): 用于执行来自源 Observable 发出的副作用
+- [delay](https://rxjs.dev/api/operators/delay): 将源 Observable 延迟到给定的 `timeout` 或日期
+- [delayWhen](https://rxjs.dev/api/operators/delayWhen): 在一个由另一个 Observable 的发出所决定的给定时间跨度内延迟源 Observable 的发出
+- [dematerialize](https://rxjs.dev/api/operators/dematerialize): 将 [`ObservableNotification`](https://rxjs.dev/api/index/type-alias/ObservableNotification) 类型的 Observable 转换为它们表示的数据并发出
+- [materialize](https://rxjs.dev/api/operators/materialize): 使用 [`Notification`](https://rxjs.dev/api/index/class/Notification) 对象标记原始类型，将来自源 Observable 的所有通知转换为 `next` 发出
+- [observeOn](https://rxjs.dev/api/operators/observeOn): 用指定的 `scheduler` 重新发出源 Observable 中的所有通知
+- [subscribeOn](https://rxjs.dev/api/operators/subscribeOn): 在指定的 `SchedulerLike` 上异步订阅这个 Observable 的 Observable
+- [timeInterval](https://rxjs.dev/api/operators/timeInterval): 发出一个对象，该对象包含当前值以及在发出当前值和前一个值之间经过的时间，该时间是通过使用 `scheduler` 的 `now()` 方法获取每次发出的当前时间，然后计算时间差。`scheduler` 默认是 `asyncScheduler`，默认情况下，`interval` 默认为毫秒
+- [timestamp](https://rxjs.dev/api/operators/timestamp): 将时间戳附加到由 Observable 发出的每个项上，以指示它是何时发出的
+- [timeout](https://rxjs.dev/api/operators/timeout): 如果 Observable 在给定时间间隔内没有发出一个值，则会出现错误
+- [timeoutWith](https://rxjs.dev/api/operators/timeoutWith): 在由另一个 Observable 触发的时间间隔内，如果当前源 Observable 没有发出一个值，则会出现错误
+- [toArray](https://rxjs.dev/api/operators/toArray): 收集源发出的所有数据，并在源完成时将它们作为数组发出
 
 ### 条件和布尔操作符(Conditional And Boolean Operators)
 
