@@ -20,10 +20,23 @@ NgRx 具有如下的功能
 
 NgRx 还有许多实现各种功能的库，这里不一一列举，比较常用的库是 `@ngrx/store`, `@ngrx/component-store`, `@ngrx/effects`, `@ngrx/entity`, `@ngrx/router-store`, `@ngrx/store-devtools`，本文将使用这几种库作为示例。
 
+> 在使用 NgRx 之前，建议掌握 [RxJS](https://rxjs.dev/) 的基本使用方法、理解其原理。
+
 ### NgRx 全局状态管理
 
-### NgRx 本地状态管理
+全局状态管理使用 NgRx Store 管理。
 
-更多关于 NgRx 的技术文档可以访问 [NgRx 官网](https://www.ngrx.dev)
+下图展示了 NgRx 应用程序全局状态的总体流程。
+
+![State Management Lifecycle](./resource/state-management-lifecycle.png)
+
+- Action(动作) 描述了由组件和服务发出的独特事件；
+- State(状态) 更改由称为 `reducers` 的纯函数处理，该函数根据当前状态和最新动作来计算新状态；
+- Selector(选择器)是用于选择、派生和组合状态的纯函数；
+- 状态是通过 Store 来访问的，Store 是状态和动作的观察者。
+
+更多关于全局状态管理的原理和使用方法可以参照官方文档: [@ngrx/store](https://ngrx.io/guide/store)
+
+### NgRx 本地状态管理
 
 ## 安装
