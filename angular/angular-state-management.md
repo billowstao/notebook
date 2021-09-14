@@ -5,7 +5,9 @@
 - [Angular 状态管理 - NgRx 最佳实践](#angular-状态管理---ngrx-最佳实践)
   - [NgRx 简介](#ngrx-简介)
     - [NgRx 全局状态管理](#ngrx-全局状态管理)
-    - [NgRx 本地状态管理](#ngrx-本地状态管理)
+    - [本地状态管理](#本地状态管理)
+    - [状态归属](#状态归属)
+    - [文件结构](#文件结构)
   - [安装](#安装)
 
 ## NgRx 简介
@@ -37,7 +39,7 @@ NgRx 还有许多实现各种功能的库，这里不一一列举，比较常用
 
 更多关于全局状态管理的原理和使用方法可以参照官方文档: [@ngrx/store](https://ngrx.io/guide/store)
 
-### NgRx 本地状态管理
+### 本地状态管理
 
 本地状态管理使用 `ComponentStore`，`ComponentStore` 是一个独立的库，用于管理 本地/组件 状态。它的原理和 RxJS 实现的具有 `Subject` 的 `Service` 很类似。
 
@@ -60,5 +62,23 @@ NgRx 还有许多实现各种功能的库，这里不一一列举，比较常用
 - 本地 UI 状态：组件本身的状态。例如 Toggle Component 的 `isEnabled` 切换状态。
 
 还有更多类型的状态，但在状态管理上下文中，这些是最重要的。
+
+### 状态归属
+
+全局存储处理 **单个** 不可变对象，该对象包含整个应用程序中的所有共享状态。有多个 **reducer**，每一个负责一个**特定** 部分的状态。
+
+每个 `ComponentStore` 完全负责它自己的状态。可能有**许多**不同的 `ComponentStores`，但每一个都应该存储自己不同的状态。
+
+![State ownership](./resource/state-structure.png)
+
+### 文件结构
+
+`ComponentStore` 专注于状态的一小部分，因此不仅应该包含状态本身，还应该包含如何更改它的 "指令"。所有的 `updaters` 和 `effects` 应该是 `ComponentStore` 的一部分，负责特定的状态。
+
+这会降低 `ComponentStore` 的可扩展性 - 如果在单个类中有太多的 `updaters` 和 `effects`，那么它很快将会变得不可读。
+
+共享 `selector` 也应该是 `ComponentStore` 的一部分，但是下游组件可能有它们特定于组件的细节，比如聚合它们的 "视图模型" 所需要的所有信息。在这种情况下，创建 `ComponentStore<object>` 是可以接受的，它将不管理状态，只包含许多选择器。
+
+![File Structure](./resource/file-structure.png)
 
 ## 安装
