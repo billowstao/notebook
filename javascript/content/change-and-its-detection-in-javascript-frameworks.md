@@ -37,3 +37,15 @@ With this approach, there wasn't really any state to manage in the front-end. Ea
 While this was a very simple approach from a front-end perspective, it was also very slow. Not only did each interaction mean a full re-rendering of the UI, it was also a remote re-rendering, with a full roundtrip to a faraway data center.
 
 Most of us don't do this in our apps anymore. We may render the initial state of our app server-side but then switch to managing things in the front-end (which is what [isomorphic JavaScript](https://en.wikipedia.org/wiki/Isomorphic_JavaScript) is largely about). There are people that are still succeeding with [more sophisticated versions of this pattern](https://signalvnoise.com/posts/3112-how-basecamp-next-got-to-be-so-damn-fast-without-using-much-client-side-ui) though.
+
+## First-gen JS: Manual Re-rendering
+
+> "I have no idea what I should re-render. You figure it out."
+
+The first generations of JavaScript frameworks, like [Backbone.js](https://backbonejs.org/), [Ext JS](https://www.sencha.com/products/extjs/), and [Dojo](https://dojotoolkit.org/), introduced for the first time an actual data model in the browser, instead of just having some light-weight scripting on top of the DOM. That also meant that for the first time you had changing state in the browser. The contents of the data model could change, and then you had to get those changes reflected in the user interface.
+
+While these frameworks gave you the architecture for separating your UI code from your models, they still left the synchronization between the two up to you. You can get some sort of events when changes occur, but it is your responsibility to figure out what to re-render and how to go about it.
+
+![First-gen JS: Manual re-rendering](./resource/onchange-manual.svg)
+
+The performance considerations of this model are also left largely to you as an application developer. Since you control what gets updated and when, you can tweak it pretty much as you'd like. It often becomes a balancing act between the simplicity of re-rendering large sections of the page, and the performance of re-rendering just the bits that need updating.
