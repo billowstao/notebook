@@ -19,6 +19,7 @@
   - [模块化](#模块化)
     - [AMD(Asynchronous Module Definition)](#amdasynchronous-module-definition)
     - [`require`](#require)
+  - [Change And Its Detection In JavaScript Frameworks](#change-and-its-detection-in-javascript-frameworks)
 
 ## 数据存储
 
@@ -55,3 +56,5 @@
 ### [AMD(Asynchronous Module Definition)](./content/module/module-amd.md)
 
 ### [`require`](./content/require.md)
+
+## [Change And Its Detection In JavaScript Frameworks](./content/change-and-its-detection-in-javascript-frameworks.md)

@@ -82,3 +82,17 @@ NgRx 还有许多实现各种功能的库，这里不一一列举，比较常用
 ![File Structure](./resource/file-structure.png)
 
 ## 安装
+
+```bash
+pnpm add @ngrx/{store,effects,entity,component-store,component,router-store,store-devtools}
+```
+
+上面的脚本使用 pnpm 安装了以下 NgRx package
+
+`@ngrx/store`: 全局状态管理
+`@ngrx/effects`: 状态管理副作用模型
+`@ngrx/entity`: 用于管理记录集合(数组)的实体状态适配器
+`@ngrx/component-store`: 本地(组件)状态管理
+`@ngrx/component`: 用于启动 Zoneless 的应用程序
+`@ngrx/router-store`: 绑定路由到全局状态
+`@ngrx/store-devtools`: 全局状态管理的开发者工具
