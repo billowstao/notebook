@@ -64,4 +64,24 @@ This makes for a pretty efficient update mechanism: Though setting all the bindi
 
 The big tradeoff of this approach is that Ember must always be aware of changes that occur in the data model. That means you need to have your data in special objects that inherit from Ember's APIs, and that you need to change your data using special setter methods. You can't say `foo.x = 42`. You have to say `foo.set('x', 42)`, and so on.
 
-In the future this may be helped somewhat by the arrival of [Proxies in ECMAScript 6](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). It lets Ember decorate regular objects with its binding code, so that all the code that interacts with those objects doesn't necessarily need to adhere to the setter conventions.
+In the future this may be helped somewhat by the arrival of [Proxy in ECMAScript 6](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). It lets Ember decorate regular objects with its binding code, so that all the code that interacts with those objects doesn't necessarily need to adhere to the setter conventions.
+
+# AngularJS: Dirty Checking
+
+> "I have no idea what changed, so I'll just check everything that may need updating."
+
+Like Ember, Angular also aims to solve the problem of having to manually re-render when things have changed. However, it approaches the problem from a different angle.
+
+When you refer to your data in an Angular template, for example in an expression like `{{foo.x}}`, Angular not only renders that data but also creates a watcher for that particular value. After that, whenever anything happens in your app, Angular checks if the value in that watcher has changed from the last time. If it has, it re-renders the value in the UI. The process of running these watchers is called dirty checking.
+
+![AngularJS Dirty Checking](./resource/onchange-watch.svg)
+
+The great benefit of this style of change detection is that now you can use anything in your data models. Angular puts no restrictions on that - it doesn't care. There are no base objects to extend and no APIs to implement.
+
+The downside is that as the data model now doesn't have any built-in probes that would tell the framework about changes, the framework doesn't have any insight into if and where it may have occurred. That means the model needs to be inspected for changes externally, and that is exactly what Angular does: All watchers are run every time anything happens. Click handlers, HTTP response processors, and timeouts all trigger a digest, which is the process responsible for running watchers.
+
+Running all watchers all the time sounds like a performance nightmare, but it can be surprisingly fast. This is mostly because there's usually no DOM access happening until a change is actually detected, and pure JavaScript reference equality checks are cheap. But when you get into very large UIs, or need to render very often, additional performance optimization trickery may be required.
+
+Like Ember, Angular will also benefit from upcoming standards: In particular, the [Proxy in ECMAScript 6](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) will be a good fit for Angular, as it gives you a native API for watching an object's properties for changes. It will not cover all the cases that Angular needs to support though, as Angular's watchers can do much more than just observe simple object attributes.
+
+The upcoming Angular 2 will also bring some interesting updates on the change detection front, as has been described recently in [an article by Victor Savkin](http://victorsavkin.com/post/110170125256/change-detection-in-angular-2). Update 7.3.2015: Also see [Victor's ng-conf](https://www.youtube.com/watch?v=jvKGQSFQf10) talk about the subject.
