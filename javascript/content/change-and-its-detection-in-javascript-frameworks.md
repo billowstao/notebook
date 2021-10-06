@@ -49,3 +49,19 @@ While these frameworks gave you the architecture for separating your UI code fro
 ![First-gen JS: Manual re-rendering](./resource/onchange-manual.svg)
 
 The performance considerations of this model are also left largely to you as an application developer. Since you control what gets updated and when, you can tweak it pretty much as you'd like. It often becomes a balancing act between the simplicity of re-rendering large sections of the page, and the performance of re-rendering just the bits that need updating.
+
+## Ember.js: Data Binding
+
+> "I know exactly what changed and what should be re-rendered because I control your models and views."
+
+Having to manually figure out re-rendering when app state changes is one of the major sources of incidental complexity in first-gen JavaScript apps. A number of frameworks aim to eliminate that particular problem. [Ember.js](https://emberjs.com/) is one of them.
+
+Ember, just like Backbone, sends out events from the data model when changes occur. The difference is that with Ember, there's also something the framework provides for the receiving end of the event. You can [bind](https://guides.emberjs.com/release/components/template-lifecycle-dom-and-modifiers/) the UI to the data model, which means that there is a listener for update events attached to the UI. That listener knows what updates to make when it receives an event.
+
+![Ember.js data binding](./resource/onchange-kvo.svg)
+
+This makes for a pretty efficient update mechanism: Though setting all the bindings up takes a bit of work initially, after that the effort needed to keep things in sync is minimal. When something changes, only the parts of the app that actually need to do something will activate.
+
+The big tradeoff of this approach is that Ember must always be aware of changes that occur in the data model. That means you need to have your data in special objects that inherit from Ember's APIs, and that you need to change your data using special setter methods. You can't say `foo.x = 42`. You have to say `foo.set('x', 42)`, and so on.
+
+In the future this may be helped somewhat by the arrival of [Proxies in ECMAScript 6](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). It lets Ember decorate regular objects with its binding code, so that all the code that interacts with those objects doesn't necessarily need to adhere to the setter conventions.
