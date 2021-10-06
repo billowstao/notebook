@@ -107,3 +107,45 @@ Then, when a change occurs, a new virtual DOM is created from scratch. That new 
 ![React Virtual DOM - Change](./resource/onchange-vdom-change.svg)
 
 So the big benefit of React, or at least one of them, is that you don't need to track change. You just re-render the whole UI every time and whatever changed will be in the new result. The virtual DOM diffing approach lets you do that while still minimizing the amount of expensive DOM operations.
+
+Om: Immutable Data Structure
+
+> "I know exactly what didn't change."
+
+While React's virtual DOM approach is pretty fast, it can still become a bottleneck when your UI is big or when you want to render very often (say, up to [60 times per second](http://jankfree.org/)).
+
+The problem is that there's really no way around rendering the whole (virtual) DOM each time, unless you reintroduce some control into the way you let changes happen in the data model, like Ember does.
+
+One approach to controlling changes is to favor [immutable, persistent data structures](https://en.wikipedia.org/wiki/Persistent_data_structure). They seem to be a particularly good fit with React's virtual DOM approach, as has been shown by [David Nolen's work](http://swannodette.github.io/2013/12/17/the-future-of-javascript-mvcs/) on the [Fulcro](https://github.com/fulcrologic/fulcro) library, built on React and [ClojureScript](https://clojurescript.org/).
+
+The thing about immutable data structures is that, as the name implies, you can never mutate one, but only produce new versions of it. If you want to change an object's attribute, you'll need to make a new object with the new attribute, since you can't change the existing one. Because of [the way persistent data structures work](https://hypirion.com/musings/understanding-persistent-vector-pt-1), this is actually much more efficient than it sounds.
+
+What this means in terms of change detection is that when a React component's state consists of immutable data only, there's an escape hatch: When you're re-rendering a component, and the component's state still points to the same data structure as the last time you rendered it, you can skip re-rendering. You can just use the previous virtual DOM for that component and the whole component tree stemming from it. There's no need to dig in further, since nothing could possibly have changed in the state.
+
+![React: Immutable](./resource/onchange-immutable.svg)
+
+Just like Ember, libraries like Om do not let you use any old JavaScript object graphs in your data. You have to build your model from immutable data structures from the ground up to reap the benefits. I would argue that the difference is this time you don't do it just to make the framework happy. You do it because it's simply a nicer approach to managing application state. The main benefit of using immutable data structures is not to gain rendering performance, but to simplify your application architecture.
+
+While Om and ClojureScript have been instrumental in combining React and immutable data structures, they're not the only game in town. It is perfectly possible to just use plain React and a library like Facebook's [Immutable-js](https://immutable-js.com/). Lee Byron, the author of that library, gave a wonderful introduction to the topic in the recent React.js Conf:
+
+[React.js Conf 2015 - Immutable Data and React](https://youtu.be/I7IdS-PbEgI)
+
+I would also recommend watching Rich Hickey's [Persistent Data Structures And Managed References](http://www.infoq.com/presentations/Value-Identity-State-Rich-Hickey) for an introduction to this approach for state management.
+
+I myself have been waxing poetic about immutable data for a while now, though I definitely didn't foresee its arrival in frontend UI architectures. It seems to be happening in full force though, and people in the Angular team are also [working on adding support for them](http://victorsavkin.com/post/110170125256/change-detection-in-angular-2).
+
+## Summary
+
+Change detection is a central problem in UI development, and JavaScript frameworks attempt to solve it in various ways.
+
+EmberJS detects changes when they occur, because it controls your data model API and can emit events when you call it.
+
+Angular.js detects changes after the fact, by re-running all the data bindings you've registered in your UI to see if their values have changed.
+
+Plain React detects changes by re-rendering your whole UI into a virtual DOM and then comparing it to the old version. Whatever changed, gets patched to the real DOM.
+
+React with immutable data structures enhances plain React by allowing a component tree to be quickly marked as unchanged, because mutations within component state are not allowed. This isn't done primarily for performance reasons, however, but because of the positive impact it has on your app architecture in general.
+
+## Reference
+
+[Change And Its Detection In JavaScript Frameworks](https://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html)
