@@ -85,3 +85,25 @@ Running all watchers all the time sounds like a performance nightmare, but it ca
 Like Ember, Angular will also benefit from upcoming standards: In particular, the [Proxy in ECMAScript 6](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) will be a good fit for Angular, as it gives you a native API for watching an object's properties for changes. It will not cover all the cases that Angular needs to support though, as Angular's watchers can do much more than just observe simple object attributes.
 
 The upcoming Angular 2 will also bring some interesting updates on the change detection front, as has been described recently in [an article by Victor Savkin](http://victorsavkin.com/post/110170125256/change-detection-in-angular-2). Update 7.3.2015: Also see [Victor's ng-conf](https://www.youtube.com/watch?v=jvKGQSFQf10) talk about the subject.
+
+## React: Virtual DOM
+
+> "I have no idea what changed so I'll just re-render everything and see what's different now."
+
+React has many interesting features, but the most interesting of them in terms of our discussion is the virtual DOM.
+
+React, like Angular, does not enforce a data model API on you and lets you use whatever objects and data structures you see fit. How does it, then, solve the problem of keeping the UI up to date in the presence of change?
+
+What React does is effectively take us back to the good old server-side rendering days, when we simply didn't care about state changes: It renders the whole UI from scratch every time there may have been a change somewhere in it. This can simplify UI code significantly. You (mostly) don't care about maintaining state in React components. Just like with server-side rendering, you render once and you're done. When a changed component is needed, it's just rendered again. There's no difference between the initial rendering of a component and updating it for changed data.
+
+This sounds immensely inefficient, and it would be if that was the end of the story. However, the re-rendering React does is of a special kind.
+
+When a React UI is rendered, it is first rendered into a virtual DOM, which is not an actual DOM object graph, but a light-weight, pure JavaScript data structure of plain objects and arrays that represents a real DOM object graph. A separate process then takes that virtual DOM structure and creates the corresponding real DOM elements that are shown on the screen.
+
+![React Virtual DOM - Initial](./resource/onchange-vdom-initial.svg)
+
+Then, when a change occurs, a new virtual DOM is created from scratch. That new virtual DOM will reflect the new state of the data model. React now has two virtual DOM data structures at hand: The new one and the old one. It then runs a diffing algorithm on the two virtual DOMs, to get the set of changes between them. Those changes, and only those changes, are applied to the real DOM: This element was added, this attribute's value changed, etc.
+
+![React Virtual DOM - Change](./resource/onchange-vdom-change.svg)
+
+So the big benefit of React, or at least one of them, is that you don't need to track change. You just re-render the whole UI every time and whatever changed will be in the new result. The virtual DOM diffing approach lets you do that while still minimizing the amount of expensive DOM operations.
