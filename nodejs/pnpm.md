@@ -109,7 +109,7 @@ pnpm 意为 performant npm, 官网地址: [http://pnpm.io](http://pnpm.io)
 1. 如果你用到了某依赖项的不同版本，那么只会将有差异的文件添加到仓库。例如，如果某个包有 100 个文件，而它的新版本只改变了其中 1 个文件。那么 pnpm update 时只会向存储中心额外添加 1 个新文件，而不会因为仅仅一个文件的改变复制整新版本包的内容。
 2. 所有文件都会存储在硬盘上的某一位置。当软件包被被安装时，包里的文件会硬链接到这一位置，而不会占用额外的磁盘空间。这允许你跨项目地共享同一版本的依赖。
 
-因此，您在磁盘上节省了大量空间，这与项目和依赖项的数量成正比，并且安装速度要快得多！
+因此，你在磁盘上节省了大量空间，这与项目和依赖项的数量成正比，并且安装速度要快得多！
 
 ### 这是如何做到的？
 
@@ -121,40 +121,102 @@ pnpm 意为 performant npm, 官网地址: [http://pnpm.io](http://pnpm.io)
 
 与 npm@3 不同的是，pnpm 试图解决 npm@2 所存在的问题，而不是扁平化依赖树。在由 pnpm 创建的 `node_modules` 文件夹中，所有的包都有自己的依赖组在一起，但是目录树不会像 npm@2 那样深。pnpm 使所有依赖关系保持扁平，但使用符号链接将它们组合在一起。
 
+pnpm 的 `node_modules` 布局使用符号链接来创建依赖项的嵌套结构。
+
+`node_modules` 中每个包的每个文件都是来自内容可寻址存储的硬链接。假设你安装了依赖于 `bar@1.0.0` 的 `foo@1.0.0`。 pnpm 会将两个包硬链接到 `node_modules` 如下所示：
+
 ```bash
 # -> - 符号连接 (或者是 Windows 上的 Junction)
 
 node_modules
-├─ foo -> .registry.npmjs.org/foo/1.0.0/node_modules/foo
-└─ .registry.npmjs.org
-   ├─ foo/1.0.0/node_modules
-   |  ├─ bar -> ../../bar/2.0.0/node_modules/bar
-   |  └─ foo
-   |     ├─ index.js
-   |     └─ package.json
-   └─ bar/2.0.0/node_modules
-      └─ bar
-         ├─ index.js
-         └─ package.json
+└── .pnpm
+    ├── bar@1.0.0
+    │   └── node_modules
+    │       └── bar -> <store>/bar
+    │           ├── index.js
+    │           └── package.json
+    └── foo@1.0.0
+        └── node_modules
+            └── foo -> <store>/foo
+                ├── index.js
+                └── package.json
 ```
 
-虽然这个例子对于小项目来说过于复杂，但是对于大项目来说，它的结构看起来比 npm / Yarn 创建的结构更好。让我们看看为什么它是为何有效的。
+这是 `node_modules` 中的唯一的“真实”文件。一旦所有包都硬链接到 `node_modules`，就会创建符号链接来构建嵌套的依赖关系图结构。
 
-首先，你可能已经注意到，`node_modules` 根目录下的包只是一个符号链接。这是很好的，Node.js 忽略符号链接并执行真实路径。所以 `require(foo')` 将在 `node_modules/.registry.npmjs.org/foo/1.0.0/node_modules/foo/index.js` 路径中执行文件，而不是 `node_modules/foo/index.js`。
+你可能已经注意到，这两个包都硬链接到一个 `node_modules` 文件夹（`foo@1.0.0/node_modules/foo`）内的子文件夹中。这是必要的：
 
-其次，没有一个安装的包在其目录有自己的 `node_modules`。所以 `foo` 如何 `require` `bar` 呢？让我们看看 包含 `foo` 的文件夹：
+1. 允许包自行导入自己。`foo` 应该能够 `require('foo/package.json')` 或者 `import * as package from "foo/package.json"`。
+2. 避免循环符号链接。依赖以及需要依赖的包被放置在一个文件夹下。对于 Node.js 来说，依赖是在包的内部 `node_modules` 中或在任何其它在父目录 `node_modules` 中是没有区别的。
 
-```bash
-node_modules/.registry.npmjs.org/foo/1.0.0/node_modules
-├─ bar -> ../../bar/2.0.0/node_modules/bar
-└─ foo
-   ├─ index.js
-   └─ package.json
+安装的下一阶段是符号链接依赖项。`bar` 将被符号链接到 `foo@1.0.0/node_modules` 文件夹：
+
+```shell
+node_modules
+└── .pnpm
+    ├── bar@1.0.0
+    │   └── node_modules
+    │       └── bar -> <store>/bar
+    └── foo@1.0.0
+        └── node_modules
+            ├── foo -> <store>/foo
+            └── bar -> ../../bar@1.0.0/node_modules/bar
 ```
 
-如你所见
+接下来，处理直接依赖关系。`foo` 将被符号链接至根目录的 `node_modules` 文件夹，因为 `foo` 是项目的依赖项：
 
-1. `foo` 的依赖项 (只是 `bar`) 是安装的，但在目录结构的上一个级别上;
-2. 两个包都位于一个名为 `node_modules` 的文件夹中。
+```shell
+node_modules
+├── foo -> ./.pnpm/foo@1.0.0/node_modules/foo
+└── .pnpm
+    ├── bar@1.0.0
+    │   └── node_modules
+    │       └── bar -> <store>/bar
+    └── foo@1.0.0
+        └── node_modules
+            ├── foo -> <store>/foo
+            └── bar -> ../../bar@1.0.0/node_modules/bar
+```
 
-`foo` 可以 `require` `bar`，因为 Node.js 会在目录结构中查找模块，直到磁盘的根目录。同样 `foo` 可以 `require` `foo`，因为它在一个名为 `node_modules` 的文件夹中 (是的，这是一些 package 做的)。
+这是一个非常简单的例子。但是，无论依赖项的数量和依赖关系图的深度如何，布局都会保持这种结构。
+
+让我们添加 `qar@2.0.0` 作为 `bar` 和 `foo` 的依赖项。这是新的结构的样子：
+
+```shell
+node_modules
+├── foo -> ./.pnpm/foo@1.0.0/node_modules/foo
+└── .pnpm
+    ├── bar@1.0.0
+    │   └── node_modules
+    │       ├── bar -> <store>/bar
+    │       └── qar -> ../../qar@2.0.0/node_modules/qar
+    ├── foo@1.0.0
+    │   └── node_modules
+    │       ├── foo -> <store>/foo
+    │       ├── bar -> ../../bar@1.0.0/node_modules/bar
+    │       └── qar -> ../../qar@2.0.0/node_modules/qar
+    └── qar@2.0.0
+        └── node_modules
+            └── qar -> <store>/qar
+```
+
+如你所见，即使图形现在更深（`foo > bar > qar`），但目录深度仍然相同。
+
+这种布局乍一看可能很奇怪，但它与 Node 的模块解析算法完全兼容！解析模块时，Node 会忽略符号链接，因此当 `foo@1.0.0/node_modules/foo/index.js` 需要 `bar` 时，Node 不会使用在 `foo@1.0.0/node_modules/bar` 的 `bar`，相反，`bar` 是被解析到其实际位置（`bar@1.0.0/node_modules/bar`）。因此，bar 也可以解析其在 `bar@1.0.0/node_modules` 中的依赖项。
+
+这种布局的一大好处是只有真正在依赖项中的包才能访问。使用平铺的 `node_modules` 结构，所有被提升的包都可以访问。要了解更多关于为什么这是一个优势，见 [pnpm's strictness helps to avoid silly bugs](https://www.kochan.io/nodejs/pnpms-strictness-helps-to-avoid-silly-bugs.html)。
+
+## 其他特性
+
+- [Filtering](https://pnpm.io/filtering): 限定命令在指定的 package 子集运行；
+- [pnpm link](https://pnpm.io/cli/link): 将本地 package 变为系统级或其他路径下可访问；
+- [pnpm exec](https://pnpm.io/cli/exec): 运行项目作用域下的依赖指令；
+- [pnpm env <cmd>](https://pnpm.io/cli/env): 管理 Node.js 环境；
+- [Workspace](https://pnpm.io/workspaces): Monorepo 支持。
+
+## 参考
+
+- [pnpm - Motivation](https://pnpm.io/motivation)
+- [Flat node_modules is not the only way](https://pnpm.io/blog/2020/05/27/flat-node-modules-is-not-the-only-way)
+- [Why should we use pnpm?](https://www.kochan.io/nodejs/why-should-we-use-pnpm.html)
+- [pnpm vs npm](https://pnpm.io/pnpm-vs-npm)
