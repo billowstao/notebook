@@ -19,7 +19,7 @@ pnpm 是一个 Node.js 的另一种包管理工具，它是 npm, Yarn 的替代�
 
 ### 扁平化 `node_modules`
 
-在 npm v3 之前的版本，`node_modules` 的结构是可预测的和干净的，每个依赖在 `node_modules` 目录中，并且有它自己的 `node_modules` 目录，其中所有的依赖都在 `pakcage.json` 中指定。
+在 npm v3 之前的版本，`node_modules` 的结构是可预测的和干净的，每个依赖在 `node_modules` 目录中，并且有它自己的 `node_modules` 目录，其中所有的依赖都在 `package.json` 中指定。
 
 ```bash
 node_modules
@@ -84,7 +84,7 @@ Yarn 只是对 npm 的一个小小的改进。尽管它使安装速度更快，�
 | install |       |          | ✔              | 2.7s  | 5.9s  | 15s   | n/a      |
 | update  | n/a   | n/a      | n/a            | 2.2s  | 11.8s | 18.7s | 32.4s    |
 
-![pnpm bechmark](./resource/pnpm-benchmark.png)
+![pnpm benchmark](./resource/pnpm-benchmark.png)
 
 ## 高效
 
@@ -106,7 +106,7 @@ Yarn 只是对 npm 的一个小小的改进。尽管它使安装速度更快，�
 与 npm@3 不同的是，pnpm 试图解决 npm@2 所存在的问题，而不是扁平化依赖树。在由 pnpm 创建的 `node_modules` 文件夹中，所有的包都有自己的依赖组在一起，但是目录树不会像 npm@2 那样深。pnpm 使所有依赖关系保持扁平，但使用符号链接将它们组合在一起。
 
 ```bash
--> - 符号连接 (或者是 Windows 上的 Junction)
+# -> - 符号连接 (或者是 Windows 上的 Junction)
 
 node_modules
 ├─ foo -> .registry.npmjs.org/foo/1.0.0/node_modules/foo
@@ -122,10 +122,27 @@ node_modules
          └─ package.json
 ```
 
-虽然这个例子对于小项目来说过于复杂，但是对于大项目来说，它的结构看起来比 npm / Yarn 创建的结构更好。让我们看看为什么它是有效的。
+虽然这个例子对于小项目来说过于复杂，但是对于大项目来说，它的结构看起来比 npm / Yarn 创建的结构更好。让我们看看为什么它是为何有效的。
 
-TODO: pnpm 原理解释
+首先，你可能已经注意到，`node_modules` 根目录下的包只是一个符号链接。这是很好的，Node.js 忽略符号链接并执行真实路径。所以 `require(foo')` 将在 `node_modules/.registry.npmjs.org/foo/1.0.0/node_modules/foo/index.js` 路径中执行文件，而不是 `node_modules/foo/index.js`。
+
+其次，没有一个安装的包在其目录有自己的 `node_modules`。所以 `foo` 如何 `require` `bar` 呢？让我们看看 包含 `foo` 的文件夹：
+
+```bash
+node_modules/.registry.npmjs.org/foo/1.0.0/node_modules
+├─ bar -> ../../bar/2.0.0/node_modules/bar
+└─ foo
+   ├─ index.js
+   └─ package.json
+```
+
+如你所见
+
+1. `foo` 的依赖项 (只是 `bar`) 是安装的，但在目录结构的上一个级别上;
+2. 两个包都位于一个名为 `node_modules` 的文件夹中。
+
+`foo` 可以 `require` `bar`，因为 Node.js 会在目录结构中查找模块，直到磁盘的根目录。同样 `foo` 可以 `require` `foo`，因为它在一个名为 `node_modules` 的文件夹中 (是的，这是一些 package 做的)。
 
 ## 严格
 
-相较于 npm, Yarn 能够访问 `node_moduels` 中的任意包。在 pnpm 中，一个包只能访问 `package.json` 中指定的依赖项。
+相较于 npm, Yarn 能够访问 `node_modules` 中的任意包。在 pnpm 中，一个包只能访问 `package.json` 中指定的依赖项。
