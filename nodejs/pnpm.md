@@ -2,22 +2,11 @@
 
 > Node.js 的包管理工具经历了从 npm, yarn 到 pnpm 的发展过程。截止目前 (2021.12)，pnpm 为最新一代的包管理工具。pnpm 相较于其他包管理工具的优势有哪些，为何要选择 pnpm，本文为大家逐一介绍。
 
-## pnpm 概述
-
-pnpm 意为 performant npm, 官网地址: [http://pnpm.io](http://pnpm.io)
-
-优点：
-
-- 快速: pnpm 比替代方案快 2 倍
-- 高效: `node_modules` 中的文件是从一个单一的可内容寻址的存储中链接过来的
-- 支持 monorepos: pnpm 内置支持了单仓多包
-- 严格: pnpm 创建了一个非平铺的 `node_modules`，因此代码无法访问任意包
-
 ## 为什么不是 npm, Yarn
 
 pnpm 是一个 Node.js 的另一种包管理工具，它是 npm, Yarn 的替代，但是更快、更高效。下面概述一下 npm, Yarn 的原理和问题，以及 Yarn 相对于 npm 的改进。
 
-### 扁平化 `node_modules`
+### pnpm 不是扁平化 `node_modules`
 
 在 npm v3 之前的版本，`node_modules` 的结构是可预测的和干净的，每个依赖在 `node_modules` 目录中，并且有它自己的 `node_modules` 目录，其中所有的依赖都在 `package.json` 中指定。
 
@@ -68,6 +57,29 @@ Yarn 只是对 npm 的一个小小的改进。尽管它使安装速度更快，�
 - **离线模式**。pnpm 将所有下载的包的压缩文件保存在本地注册的镜像中。当包在本地可用时，它从不发出请求。使用`--offline` 参数，完全可以禁止 HTTP 请求。
 - **速度**。pnpm 不仅比 npm 快，还比 Yarn 快。无论使用冷缓存还是热缓存，它都比 Yarn 快。Yarn 从缓存中复制文件，而 pnpm 只从全局存储中链接文件。
 
+### 安装方式差异
+
+pnpm 不允许安装没有保存到 package.json 的包。如果没有参数传递给 `pnpm add`，包会被保存为常规依赖项。像 npm 一样，`--save-dev` 和`--save-optional` 可以用来将包安装为 `dev` 或 `optional` 的依赖项。
+
+由于这个限制，项目在使用 pnpm 时不会有任何额外的包，除非它们删除了一个依赖并使其孤立。这就是为什么 pnpm 的 [`prune` 命令](https://pnpm.io/cli/prune)的实现不允许你指定要修剪的包 —— 它总是删除所有无关的和孤立的包。
+
+### 严格
+
+相较于 npm, Yarn 能够访问 `node_modules` 中的任意包。在 pnpm 中，一个包只能访问 `package.json` 中指定的依赖项。
+
+## pnpm 概述
+
+![pnpm logo](./resource/pnpm-logo.svg)
+
+pnpm 意为 performant npm, 官网地址: [http://pnpm.io](http://pnpm.io)
+
+优点：
+
+- 快速: pnpm 比替代方案快 2 倍
+- 高效: `node_modules` 中的文件是从一个单一的可内容寻址的存储中链接过来的
+- 支持 monorepos: pnpm 内置支持了单仓多包
+- 严格: pnpm 创建了一个非平铺的 `node_modules`，因此代码无法访问任意包
+
 ## 快速
 
 参照官方提供的[JavaScript 包管理工具基准测试](https://pnpm.io/benchmarks)：
@@ -88,6 +100,8 @@ Yarn 只是对 npm 的一个小小的改进。尽管它使安装速度更快，�
 
 ## 高效
 
+![Saving disk space and boosting installation speed](./resource/pnpm-saving-disk-space.png)
+
 内容可寻址存储：
 
 当使用 npm 或 Yarn 时，如果你有 100 个项目使用了某个依赖，就会有 100 份该依赖的副本保存在硬盘上。对于 pnpm，依赖项将存储在一个内容可寻址的仓库中，因此：
@@ -98,6 +112,8 @@ Yarn 只是对 npm 的一个小小的改进。尽管它使安装速度更快，�
 因此，您在磁盘上节省了大量空间，这与项目和依赖项的数量成正比，并且安装速度要快得多！
 
 ### 这是如何做到的？
+
+![Creating a non-flat node_modules directory](./resource/pnpm-non-flat-node-modules.png)
 
 正如之前提到的，pnpm 不扁平化依赖树。因此，pnpm 使用的算法会简单很多！这就是为什么 pnpm 早期只有一个开发人员可以跟上 Yarn 的几十个贡献者的步伐。
 
@@ -142,7 +158,3 @@ node_modules/.registry.npmjs.org/foo/1.0.0/node_modules
 2. 两个包都位于一个名为 `node_modules` 的文件夹中。
 
 `foo` 可以 `require` `bar`，因为 Node.js 会在目录结构中查找模块，直到磁盘的根目录。同样 `foo` 可以 `require` `foo`，因为它在一个名为 `node_modules` 的文件夹中 (是的，这是一些 package 做的)。
-
-## 严格
-
-相较于 npm, Yarn 能够访问 `node_modules` 中的任意包。在 pnpm 中，一个包只能访问 `package.json` 中指定的依赖项。
