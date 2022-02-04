@@ -49,3 +49,5 @@
 ## 算法
 
 ### [数据结构](./algorithms/data-structures/README.md)
+
+- [链表](./algorithms/data-structures/linked-list/README.md)
